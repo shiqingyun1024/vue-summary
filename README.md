@@ -28,3 +28,7 @@ devServer:{
         }
     }
 ```
+#### 2、自定义指令（Vue.directive('loading',loading)） v-loading
+```
+
+```
