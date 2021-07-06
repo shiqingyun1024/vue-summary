@@ -8,7 +8,7 @@ let lazyLoad = {
                     console.log('进入可视区');
                     let elTarget = el.target;
                     let data_src = elTarget.getAttribute('data-src');
-                    elTarget.src = require(data_src);
+                    elTarget.src = data_src;
                     intersection.unobserve(elTarget)
                 }
             })

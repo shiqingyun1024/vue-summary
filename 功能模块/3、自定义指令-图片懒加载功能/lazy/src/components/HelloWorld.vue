@@ -270,8 +270,8 @@
         接着你可能会频繁见到 Authentication 和 Authorization 这两个单词，它们都是 Auth
         开头，但可不是一个意思，简单来说前者是验证，后者是授权。在编写登录系统时，要先验证用户身份，设置登录状态，给用户发送 token 就是授权。
     </p>
-    <img data-src="../images/1.jpeg" v-lazyLoad/>
-    <img data-src="../images/2.jpeg" v-lazyLoad/>
+    <img data-src="static/images/1.jpeg" v-lazyLoad/>
+    <img data-src="static/images/2.jpeg" v-lazyLoad/>
     <img src="../images/2.jpeg"/>
     <img src="../images/2.jpeg"/>
   </div>
