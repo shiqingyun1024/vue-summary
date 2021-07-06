@@ -59,3 +59,12 @@ let loading = {
  export default loading
 
 ```
+#### 3、自定义指令-图片懒加载功能（v-lazyLoad）
+```
+应用了html5的IntersectionObserver这个api
+```
+#### 4、事件总线eventbus（解决兄弟组件之间的通信问题）
+```
+兄弟组件之间的通信手段有三种，1、通过父组件 2、事件总线eventbus 3、vuex
+应用了html5的IntersectionObserver这个api
+```
