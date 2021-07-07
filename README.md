@@ -80,6 +80,18 @@ child2组件中  created(){
 注意child2组件中this.eventbus.$on是放在created()这个钩子函数中的。
 ```
 ### vue-router
+```
+vue-router的实现原理
+
+路由需要实现响应式
+1、vue-router中实现数据响应式的方式是借助于vue的响应式原理，所以在理解这个知识点的时候最好是有了解vue的响应式原理的实现。
+2、也正是这个原因，vue-router实现的功能，能够被vue使用。
+
+vue插件的使用
+1、实现vue-router，主要也是通过Vue的插件功能，也就是Vue.use(VueRouter),感兴趣的小伙伴，也可以先了解一下写Vue插件的过程。
+2、vue-router利用Vue.mixin方式，来混入了生命周期钩子=>beforeCreate
+在这个钩子中，实现了将我们创建出来的Vue实例vm的_router和_routerRoot属性的赋值。
+```
 #### 1、动态路由匹配
 ```
 ```
