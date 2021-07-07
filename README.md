@@ -61,10 +61,22 @@ let loading = {
 ```
 #### 3、自定义指令-图片懒加载功能（v-lazyLoad）
 ```
-应用了html5的IntersectionObserver这个api
+应用了html5的IntersectionObserver这个api，如果不支持的话，监听window的scroll滚动事件。
 ```
 #### 4、事件总线eventbus（解决兄弟组件之间的通信问题）
 ```
-兄弟组件之间的通信手段有三种，1、通过父组件 2、事件总线eventbus 3、vuex
-应用了html5的IntersectionObserver这个api
+兄弟组件之间的通信手段有三种，1、通过父组件进行中转通信 2、事件总线eventbus 3、vuex
+
+利用vue实例中的$emit(发送数据)和$on(接收数据)这两个方法
+
+Vue.prototype.eventbus = new Vue()
+
+child1组件中 this.eventbus.$emit('changename',this.child1name)
+child2组件中  created(){
+    this.eventbus.$on('changename',(name)=>{
+       this.child2name = name
+    })
+  }
+注意child2组件中this.eventbus.$on是放在created()这个钩子函数中的。
+
 ```
