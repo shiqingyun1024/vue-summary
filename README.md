@@ -67,7 +67,7 @@ let loading = {
 ```
 兄弟组件之间的通信手段有三种，1、通过父组件进行中转通信 2、事件总线eventbus 3、vuex
 
-利用vue实例中的$emit(发送数据)和$on(接收数据)这两个方法
+利用vue实例中的$emit(发送数据 发布 )和$on(接收数据 订阅 )这两个方法 == 发布订阅模式，这个进行总结一下
 
 Vue.prototype.eventbus = new Vue()
 
