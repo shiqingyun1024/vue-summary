@@ -78,5 +78,13 @@ child2组件中  created(){
     })
   }
 注意child2组件中this.eventbus.$on是放在created()这个钩子函数中的。
-
 ```
+### vue-router
+#### 1、动态路由匹配
+```
+```
+#### 2、嵌套路由
+```
+```
+### vuex
+
