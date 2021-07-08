@@ -13,6 +13,10 @@ export default {
   name: 'Home',
   components: {
     HelloWorld
+  },
+  created(){
+    console.log('home页面');
+    console.log(this.$route);
   }
 }
 </script>
