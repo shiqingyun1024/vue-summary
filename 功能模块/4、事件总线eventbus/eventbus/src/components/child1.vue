@@ -2,6 +2,7 @@
   <div class="child">
      <p>{{child1name}}</p>
      <button @click="change">改变name的值</button>
+     <!-- <button @click="">改变child1的值</button> -->
   </div>
 </template>
 
@@ -16,10 +17,14 @@ export default {
          child1name:this.name
      }
   },
+  created(){
+     console.log(this._events);
+  },
   methods:{
      change(){
          this.child1name = '小花'
          this.eventbus.$emit('changename',this.child1name)
+         this.$emit('ChangeChild','子组件1','子组件2')
      }
 
   }
