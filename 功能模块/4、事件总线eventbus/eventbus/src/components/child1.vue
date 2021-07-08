@@ -19,6 +19,8 @@ export default {
   },
   created(){
      console.log(this._events);
+     console.log(this._events.ChangeChild);
+     console.log(this._events.ChangeChild[0]);
   },
   methods:{
      change(){
@@ -26,7 +28,6 @@ export default {
          this.eventbus.$emit('changename',this.child1name)
          this.$emit('ChangeChild','子组件1','子组件2')
      }
-
   }
 }
 </script>
