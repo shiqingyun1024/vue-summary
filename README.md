@@ -486,6 +486,10 @@ router.push({ path: `/user/${userId}` }) // -> /user/123
 // 这里的 params 不生效   使用name时才生效，注意，使用path时，后面是query，带的是查询参数。
 router.push({ path: '/user', params: { userId }}) // -> /user
 
+同样的规则也适用于 router-link 组件的 to 属性。
+
+**注意：同样的规则也适用于 router-link 组件的 to 属性。**
+
 ```
 
 ### vuex
