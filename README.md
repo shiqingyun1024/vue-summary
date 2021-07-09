@@ -368,8 +368,56 @@ const router = new VueRouter({
     }
   ]
 })
+**注意： children是一个数组，它里面的子路由的path千万不能加'/'，因为子路由是相对路径，如果加了'/'，就变成绝对路径了。注意子路由中，千万不能加'/'**
 
-<h5>注意： children是一个数组，它里面的子路由的path千万不能加'/'，因为子路由是相对路径，如果加了'/'，就变成绝对路径了。注意子路由中，千万不能加'/'</h5>
+
+举两个实际应用的场景。
+{
+      path: '/replay',
+      name: '可回溯管理',
+      redirect: 'noredirect',
+      component: layout,
+      children: [
+        // /replay/rrwebList匹配成功, // rrwebList 会被渲染在 layout 的 <router-view> 中
+        { path: 'rrwebList', name: '销售页面回溯', component: () => import('./views/replay/rrwebList') },
+
+        { path: 'versionList', name: '产品版本管理', component: () => import('./views/replay/versionList') },
+
+        { path: 'rrwebDetail', name: '销售页面回溯', component: () => import('./views/replay/rrwebDetail') },
+
+        { path: 'chatList', name: '在线服务回溯', component: () => import('./views/replay/chatList') }
+      ]
+},
+
+
+ // 客户信息查询
+    {
+      path: '/customerInfo',
+      name: '客户信息查询',
+      component: layout,
+      children: [
+        // 访问客户查询的路径 可以是/customerInfo，也可以是/customerInfo/，因为子路由的path是为空的，所以customer会被渲染在 layout 的 <router-view> 中
+        { path: '', name: '', component: () => import('../views/customerInfo/customer') }
+      ]
+    },
+    // 医院信息查询
+    {
+      path: '/hospitalInfo',
+      name: '医院信息查询',
+      component: layout,
+      children: [
+        { path: '', name: '', component: () => import('../views/hospitalInfo/hospital') }
+      ]
+    },
+    // 共享文件
+    {
+      path: '/shareFile',
+      name: '共享文件',
+      component: layout,
+      children: [
+        { path: '', name: '', component: () => import('../views/shareFile/shareFile') }
+      ]
+    }
 
 
 要注意，以 / 开头的嵌套路径会被当作根路径。 这让你充分的使用嵌套组件而无须设置嵌套的路径。
