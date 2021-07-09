@@ -203,7 +203,7 @@ toArray方法：
 ```
 ### vue-router
 ```
-声明：注意：// 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调
+**声明： 注意： 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调**
 vue-router的实现原理
 
 路由需要实现响应式
@@ -236,8 +236,7 @@ const router = new VueRouter({
 
 一个“路径参数”使用冒号 : 标记。当匹配到一个路由时，参数值会被设置到 this.$route.params，可以在每个组件内使用。于是，我们可以更新 User 的模板，输出当前用户的 ID：
 
-注意：
-// 所以说动态路由也可以用于传参，用this.$route.params来获取。
+**注意： 所以说动态路由也可以用于传参，用this.$route.params来获取。**
 
 const User = {
   template: '<div>User {{ $route.params.id }}</div>'
@@ -269,9 +268,8 @@ const User = {
   }
 }
 
-注意：
-// 只有使用同一个组件来回跳转时，才会触发watch中的$route和beforeRouteUpdate，例如动态路由为 /user/:username    我们从/home 跳转到/user/foo后，是不会触发watch和beforeRouteUpdate
-// 但是我们从/user/foo跳转到/user/bar时，是会触发watch和beforeRouteUpdate的，因为/user/foo和/user/bar都是复用的同一个组件---user组件。
+**注意：只有使用同一个组件来回跳转时，才会触发watch中的$route和beforeRouteUpdate，例如动态路由为 /user/:username    我们从/home 跳转到/user/foo后，是不会触发watch和beforeRouteUpdate
+但是我们从/user/foo跳转到/user/bar时，是会触发watch和beforeRouteUpdate的，因为/user/foo和/user/bar都是复用的同一个组件---user组件。**
 
 捕获所有路由或 404 Not found 路由
 
@@ -290,8 +288,7 @@ const User = {
 
 当使用一个通配符时，$route.params 内会自动添加一个名为 pathMatch 参数。它包含了 URL 通过通配符被匹配的部分：
 
-注意：
-// 当使用一个通配符时，$route.params 内会自动添加一个名为 pathMatch 参数，  this.$route.params.pathMatch
+**注意：当使用一个通配符时，$route.params 内会自动添加一个名为 pathMatch 参数，  this.$route.params.pathMatch**
 
 // 给出一个路由 { path: '/user-*' }
 this.$router.push('/user-admin')
@@ -303,6 +300,100 @@ this.$route.params.pathMatch // '/non-existing'
 ```
 #### 2、嵌套路由
 ```
+什么是嵌套路由
+
+实际生活中的应用界面，通常由多层嵌套的组件组合而成。同样地，URL 中各段动态路径也按某种结构对应嵌套的各层组件，例如：
+
+/user/foo/profile                     /user/foo/posts
++------------------+                  +-----------------+
+| User             |                  | User            |
+| +--------------+ |                  | +-------------+ |
+| | Profile      | |  +------------>  | | Posts       | |
+| |              | |                  | |             | |
+| +--------------+ |                  | +-------------+ |
++------------------+                  +-----------------+
+
+借助 vue-router，使用嵌套路由配置，就可以很简单地表达这种关系。
+
+接着上节创建的 app：
+
+<div id="app">
+  <router-view></router-view>
+</div>
+
+const User = {
+  template: '<div>User {{ $route.params.id }}</div>'
+}
+
+const router = new VueRouter({
+  routes: [{ path: '/user/:id', component: User }]
+})
+
+**注意：<router-view>是出口，也就是组件最后都会被渲染在<router-view></router-view>中**
+
+这里的 <router-view> 是最顶层的出口，渲染最高级路由匹配到的组件。同样地，一个被渲染组件同样可以包含自己的嵌套 <router-view>。例如，在 User 组件的模板添加一个 <router-view>：
+
+const User = {
+  template: `
+    <div class="user">
+      <h2>User {{ $route.params.id }}</h2>
+      <router-view></router-view>
+    </div>
+  `
+}
+
+要在嵌套的出口中渲染组件，需要在 VueRouter 的参数中使用 children 配置
+
+**注意：如果想在 <router-view>渲染组件，一定要在VueRouter 的参数中使用 children 配置, 使用children配置，使用children配置，重要的话说三遍**
+
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/user/:id',
+      component: User,
+      children: [
+        {
+          // 当 /user/:id/profile 匹配成功，
+          // UserProfile 会被渲染在 User 的 <router-view> 中
+          path: 'profile',
+          component: UserProfile
+        },
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 会被渲染在 User 的 <router-view> 中
+          path: 'posts',
+          component: UserPosts
+        }
+      ]
+    }
+  ]
+})
+
+**注意： children是一个数组，它里面的子路由的path千万不能加'/'，因为子路由是相对路径，如果加了'/'，就变成绝对路径了。注意子路由中，千万不能加'/'**
+
+
+要注意，以 / 开头的嵌套路径会被当作根路径。 这让你充分的使用嵌套组件而无须设置嵌套的路径。
+
+你会发现，children 配置就是像 routes 配置一样的路由配置数组，所以呢，你可以嵌套多层路由。
+
+此时，基于上面的配置，当你访问 /user/foo 时，User 的出口是不会渲染任何东西，这是因为没有匹配到合适的子路由。如果你想要渲染点什么，可以提供一个 空的 子路由：
+
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/user/:id',
+      component: User,
+      children: [
+        // 当 /user/:id 匹配成功，
+        // UserHome 会被渲染在 User 的 <router-view> 中
+        { path: '', component: UserHome }
+
+        // ...其他子路由
+      ]
+    }
+  ]
+})
+
 ```
 ### vuex
 
