@@ -18,6 +18,8 @@ export default {
      console.log(this.msg);
   },
   watch:{
+    // 只有使用同一个组件来回跳转时，才会触发watch中的$route和beforeRouteUpdate，例如动态路由为 /user/:username    我们从/home 跳转到/user/foo后，是不会触发watch和beforeRouteUpdate
+    // 但是我们从/user/foo跳转到/user/bar时，是会触发watch和beforeRouteUpdate的，因为/user/foo和/user/bar都是复用的同一个组件---user组件。
     // 动态路由跳转，会复用同一个组件，所以只有第一次进入的时候会调用created，mounted。再次进入的时候不会调用。所以用watch监听$route的变化
     $route(to,from){
       console.log('路由更新');
@@ -25,6 +27,7 @@ export default {
        this.msg = this.$route.params.name
     }
   },
+  // 或者使用钩子函数 beforeRouteUpdate
   beforeRouteUpdate(to,from,next){
     console.log(to);
     console.log(from);

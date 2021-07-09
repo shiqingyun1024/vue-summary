@@ -203,6 +203,7 @@ toArray方法：
 ```
 ### vue-router
 ```
+声明：注意：// 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调
 vue-router的实现原理
 
 路由需要实现响应式
@@ -217,6 +218,88 @@ vue插件的使用
 ```
 #### 1、动态路由匹配
 ```
+动态路由的使用场景：
+我们经常需要把某种模式匹配到的所有路由，全都映射到同个组件。例如，我们有一个 User 组件，对于所有 ID 各不相同的用户，都要使用这个组件来渲染。那么，我们可以在 vue-router 的路由路径中使用“动态路径参数”(dynamic segment) 来达到这个效果：
+
+const User = {
+  template: '<div>User</div>'
+}
+
+const router = new VueRouter({
+  routes: [
+    // 动态路径参数 以冒号开头
+    { path: '/user/:id', component: User }
+  ]
+})
+
+现在呢，像 /user/foo 和 /user/bar 都将映射到相同的路由。
+
+一个“路径参数”使用冒号 : 标记。当匹配到一个路由时，参数值会被设置到 this.$route.params，可以在每个组件内使用。于是，我们可以更新 User 的模板，输出当前用户的 ID：
+
+注意：
+// 所以说动态路由也可以用于传参，用this.$route.params来获取。
+
+const User = {
+  template: '<div>User {{ $route.params.id }}</div>'
+}
+
+例子：
+/user/:username   /user/xiaohua  用this.$route.params获取到的是{ username: 'evan' }
+/user/:username/post/:post_id    /user/evan/post/123  用this.$route.params获取到的是{ username: 'evan', post_id: '123' }
+
+提醒一下，当使用路由参数时，例如从 /user/foo 导航到 /user/bar，原来的组件实例会被复用。因为两个路由都渲染同个组件，比起销毁再创建，复用则显得更加高效。不过，这也意味着组件的生命周期钩子不会再被调用。
+
+复用组件时，想对路由参数的变化作出响应的话，你可以简单地 watch (监测变化) $route 对象：
+
+const User = {
+  template: '...',
+  watch: {
+    $route(to, from) {
+      // 对路由变化作出响应...
+    }
+  }
+}
+或者使用 2.2 中引入的 beforeRouteUpdate 导航守卫：
+
+const User = {
+  template: '...',
+  beforeRouteUpdate(to, from, next) {
+    // react to route changes...
+    // don't forget to call next()
+  }
+}
+
+注意：
+// 只有使用同一个组件来回跳转时，才会触发watch中的$route和beforeRouteUpdate，例如动态路由为 /user/:username    我们从/home 跳转到/user/foo后，是不会触发watch和beforeRouteUpdate
+// 但是我们从/user/foo跳转到/user/bar时，是会触发watch和beforeRouteUpdate的，因为/user/foo和/user/bar都是复用的同一个组件---user组件。
+
+捕获所有路由或 404 Not found 路由
+
+常规参数只会匹配被 / 分隔的 URL 片段中的字符。如果想匹配任意路径，我们可以使用通配符 (*)：
+
+{
+  // 会匹配所有路径
+  path: '*'
+}
+{
+  // 会匹配以 `/user-` 开头的任意路径
+  path: '/user-*'
+}
+
+当使用通配符路由时，请确保路由的顺序是正确的，也就是说含有通配符的路由应该放在最后。路由 { path: '*' } 通常用于客户端 404 错误。如果你使用了History 模式，请确保正确配置你的服务器。
+
+当使用一个通配符时，$route.params 内会自动添加一个名为 pathMatch 参数。它包含了 URL 通过通配符被匹配的部分：
+
+注意：
+// 当使用一个通配符时，$route.params 内会自动添加一个名为 pathMatch 参数，  this.$route.params.pathMatch
+
+// 给出一个路由 { path: '/user-*' }
+this.$router.push('/user-admin')
+this.$route.params.pathMatch // 'admin'
+// 给出一个路由 { path: '*' }
+this.$router.push('/non-existing')
+this.$route.params.pathMatch // '/non-existing'
+
 ```
 #### 2、嵌套路由
 ```
