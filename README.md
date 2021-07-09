@@ -443,5 +443,50 @@ const router = new VueRouter({
 })
 
 ```
+#### 3、编程式导航
+```
+除了使用 <router-link> 创建 a 标签来定义导航链接，我们还可以借助 router 的实例方法，通过编写代码来实现。
+
+router.push(location, onComplete?, onAbort?)
+
+注意：在 Vue 实例内部，你可以通过 $router 访问路由实例。因此你可以调用 this.$router.push。
+
+想要导航到不同的 URL，则使用 router.push 方法。这个方法会向 history 栈添加一个新的记录，所以，当用户点击浏览器后退按钮时，则回到之前的 URL。
+
+**注意：思考一下这里push的原理是什么？向 history 栈添加一个新的记录，是不是用的H5的pushState方法呢**
+
+当你点击 <router-link> 时，这个方法会在内部调用，所以说，点击 <router-link :to="..."> 等同于调用 router.push(...)。
+
+声明式：<router-link :to="...">	  ---- 两种方式 1、<router-link :to="/user/foo">	 2、<router-link :to="{name: 'foo'}">（这种方式使用的是别名，修改路径后没有影响，所以推荐使用这种方式）
+编程式：router.push(...)
+
+
+该方法的参数可以是一个字符串路径，或者一个描述地址的对象。例如
+
+// 字符串 /home
+router.push('home')
+
+// 对象  /home
+router.push({ path: 'home' })
+
+// 命名的路由   --> /user/123
+router.push({ name: 'user', params: { userId: '123' }})
+
+// 带查询参数，变成 /register?plan=private
+router.push({ path: 'register', query: { plan: 'private' }})
+
+**注意：可以这样记忆，push里面是字符串或者对象，path对应query（查询），这两个单词的首字母 pq 正好相反，非常好记。name对应params（参数）命名路由后面跟路径，这个可以用this.$route.params获取。**
+
+
+注意：如果提供了 path，params 会被忽略，上述例子中的 query 并不属于这种情况。取而代之的是下面例子的做法，你需要提供路由的 name 或手写完整的带有参数的 path：
+
+const userId = '123'
+router.push({ name: 'user', params: { userId }}) // -> /user/123
+router.push({ path: `/user/${userId}` }) // -> /user/123
+// 这里的 params 不生效   使用name时才生效，注意，使用path时，后面是query，带的是查询参数。
+router.push({ path: '/user', params: { userId }}) // -> /user
+
+```
+
 ### vuex
 
