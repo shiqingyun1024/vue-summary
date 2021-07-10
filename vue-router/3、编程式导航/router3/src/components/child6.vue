@@ -10,7 +10,9 @@ export default {
     };
   },
   created() {
-    this.index = this.$route.params?this.$route.params:'';
+    // console.log(this.$route.params);
+    // this.index = this.$route.params.user;
+    this.index = this.$route.params?this.$route.params.user:'';
   }
 };
 </script>
