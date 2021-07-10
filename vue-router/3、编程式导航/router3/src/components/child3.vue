@@ -1,6 +1,6 @@
 <template>
-  <div class=”child2“>
-     This is child2 page
+  <div class=”child3“>
+     This is child3 page
   </div>
 </template>
 
