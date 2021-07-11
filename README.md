@@ -520,6 +520,33 @@ router-link的规则如下：
 **
 
 ```
+#### 4、命名路由
+```
+有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 routes 配置中给某个路由设置名称。
+
+**注意：使用命名路由，就避免了因为path变更，要更改组件中的router-link或者push中的路径，path经常变更，但是命名路由不经常变更**
+
+// 下面的例子是把命名路由和动态路由相结合
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/user/:userId',
+      name: 'user',
+      component: User
+    }
+  ]
+})
+
+要链接到一个命名路由，可以给 router-link 的 to 属性传一个对象：
+
+<router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
+这跟代码调用 router.push() 是一回事：
+
+router.push({ name: 'user', params: { userId: 123 } })
+这两种方式都会把路由导航到 /user/123 路径。
+
+```
+
 
 ### vuex
 
