@@ -2,6 +2,8 @@
   <div class="about">
     <h1>This is an about page</h1>
     <p>{{msg}}</p>
+    <router-link :to="{name:'child3',params:{name:'jack',user:{id:'23'}}}">child3页面</router-link>
+    <router-view ></router-view>
   </div>
 </template>
 <script>

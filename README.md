@@ -297,6 +297,8 @@ this.$route.params.pathMatch // 'admin'
 this.$router.push('/non-existing')
 this.$route.params.pathMatch // '/non-existing'
 
+**注意：我曾经思考，动态路由怎么传参（使用query传参），其实仔细想了想，没有必要，因为动态路由可以使用动态路径参数来传参，使用this.$route.params来获取路径参数。动态路径参数的value可以是对象，数组，字符串等，所以是满足我们的要求的。**
+
 ```
 #### 2、嵌套路由
 ```
