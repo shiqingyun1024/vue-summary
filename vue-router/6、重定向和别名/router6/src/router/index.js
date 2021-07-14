@@ -20,8 +20,28 @@ const routes = [
     children:[{
       path: 'child1',
       name: 'child1',
-      redirect: '/',
+      redirect: {name:'child3'},
       component: () => import(/* webpackChunkName: "child1" */ '../components/child1.vue'),
+    },{
+      path: 'child2',
+      name: 'child2',
+      redirect: '/',
+      component: () => import(/* webpackChunkName: "child2" */ '../components/child2.vue'),
+    },{
+      path: 'child3',
+      name: 'child3',
+      // redirect: '/',
+      component: () => import(/* webpackChunkName: "child3" */ '../components/child3.vue'),
+    },{
+      path: 'child4',
+      name: 'child4',
+      redirect: '/',
+      component: () => import(/* webpackChunkName: "child3" */ '../components/child4.vue'),
+    },{
+      path: 'child5',
+      name: 'child5',
+      // redirect: '/',
+      component: () => import(/* webpackChunkName: "child3" */ '../components/child5.vue'),
     }]
   }
 ]
