@@ -21,6 +21,10 @@ const routes = [
       path: 'child1',
       name: 'child1',
       redirect: {name:'child3'},
+      beforeEnter: (to, from, next) => {
+        console.log(`child1--12345`);
+        next()
+      },
       component: () => import(/* webpackChunkName: "child1" */ '../components/child1.vue'),
     },{
       path: 'child2',
@@ -30,12 +34,21 @@ const routes = [
     },{
       path: 'child3',
       name: 'child3',
+      beforeEnter: (to, from, next) => {
+        console.log(`child3--12345`);
+        next()
+      },
       // redirect: '/',
       component: () => import(/* webpackChunkName: "child3" */ '../components/child3.vue'),
     },{
       path: 'child4',
       name: 'child4',
-      redirect: '/',
+      // 在about中的子路由跳转时都会执行这个函数。
+      redirect: to=>{
+        console.log('------重定向');
+        console.log(to);
+        return {name:'child5'}
+      },
       component: () => import(/* webpackChunkName: "child3" */ '../components/child4.vue'),
     },{
       path: 'child5',

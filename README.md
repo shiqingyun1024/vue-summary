@@ -622,7 +622,7 @@ UserSettings 组件的 <template> 部分应该是类似下面的这段代码：
 ```
 #### 6、重定向和别名
 ```
-**注意：重定向是访问/a时，直接跳转到/b，无论是组件还是url都是/b，一旦路由中设置了redirect重定向，路由中的path、name、component都没有任何作用了**
+**注意：重定向是访问/a时，直接跳转到/b，无论是组件还是url都是/b，一旦路由中设置了redirect重定向，路由中的path、name、component、beforeEnter等都没有任何作用了**
 重定向也是通过 routes 配置来完成，下面例子是从 /a 重定向到 /b：
 
 const router = new VueRouter({
