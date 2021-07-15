@@ -49,12 +49,19 @@ const routes = [
         console.log(to);
         return {name:'child5'}
       },
-      component: () => import(/* webpackChunkName: "child3" */ '../components/child4.vue'),
+      component: () => import(/* webpackChunkName: "child4" */ '../components/child4.vue'),
     },{
       path: 'child5',
       name: 'child5',
       // redirect: '/',
-      component: () => import(/* webpackChunkName: "child3" */ '../components/child5.vue'),
+      component: () => import(/* webpackChunkName: "child5" */ '../components/child5.vue'),
+    },{
+      path: 'child6',
+      name: 'child6',
+      // 在url中直接访问/abc，会加载组件child6，所以child6可以使用/about/child6,也可以使用/abc
+      alias:'/abc',
+      // redirect: '/',
+      component: () => import(/* webpackChunkName: "child6" */ '../components/child6.vue'),
     }]
   }
 ]

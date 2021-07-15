@@ -710,6 +710,8 @@ const router = new VueRouter({
     { path: '/a', component: A, alias: '/b' }
   ]
 })
+**注意：/a加载的是组件A，/b加载的也是组件A。所以组件A，可以使用/a这个路径加载，也可以
+/a加载
 “别名”的功能让你可以自由地将 UI 结构映射到任意的 URL，而不是受限于配置的嵌套路由结构。
 ```
 
