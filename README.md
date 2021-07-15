@@ -221,8 +221,16 @@ methods中 getChild2(childParameters,parameter){
               console.log(parameter);  // 我是父组件中的参数--parent2
           }
         **注意：在getChild2中不要这样使用getChild2(arguments，parameter)，因为在strict mode（严格模式）下会报错，在严格模式下 字符串”arguments”不能用作标识符（变量或函数名、参数名等）**
+        arguments的位置也可以放在后面
+        <child2 @fromChild2="getChild2('我是父组件中的参数--parent2'，arguments)"></child2>
+        getChild2方法中的参数位置也要对应起来
+        getChild2(parameter,childParameters){
+              // console.log(arguments);
+              console.log(childParameters);  // ["我是子组件传过来的参数--child2", "我是子组件传过来的参数--child2", {"child2Obj": "我是子组件传过来的参数--child2"}]
+              console.log(parameter);  // 我是父组件中的参数--parent2
+        }
 
-2.1 自定义参数有多个时也可以采用这种形式
+2.1 子组件传过来的参数有多个时也可以采用这种形式
 子组件（child3）：this.$emit("fromChild3", "我是子组件传过来的参数--child3", "我是子组件传过来的参数--child3", {"child3Obj": "我是子组件传过来的参数--child3"});
 父组件：<child3 @fromChild3="getChild3('我是父组件中的参数--parent3'，...arguments)"></child3>
 methods中 getChild3(...parameters){

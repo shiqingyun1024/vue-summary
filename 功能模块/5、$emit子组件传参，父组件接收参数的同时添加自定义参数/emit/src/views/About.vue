@@ -4,7 +4,7 @@
     <child1 @fromChild1="getChild1($event,'我是父组件中的参数--child1')"></child1>
     </br>
     </br>
-    <child2 @fromChild2="getChild2(arguments,'我是父组件中的参数--child2','我是父组件中的参数--child2--第二个')"></child2>
+    <child2 @fromChild2="getChild2('我是父组件中的参数--child2','我是父组件中的参数--child2--第二个',arguments)"></child2>
     </br>
     </br>
     <child3 @fromChild3="getChild3('我是父组件中的参数--child3',...arguments)"></child3>
@@ -30,7 +30,7 @@ export default {
       console.log($event);
       console.log(parameter);
     },
-    getChild2(parameter,other1,other2){
+    getChild2(other1,other2,parameter){
       // console.log(arguments);
       console.log(parameter);
       console.log(other1);
