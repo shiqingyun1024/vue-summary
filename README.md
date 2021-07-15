@@ -201,6 +201,37 @@ toArray方法：
   }
 
 ```
+#### 5、$emit子组件传参，父组件接收参数的同时添加自定义参数
+```
+vue $emit子组件传参，父组件接收参数的同时添加自定义参数，这个是在项目中常见的应用场景。现在准备总结一下。
+总共有两种方式
+1、添加的自定义参数只有一个时（父组件可以使用$event接收子组件传过来的参数）
+子组件（child1）：this.$emit('fromChild1','我是子组件传过来的参数--child1')
+父组件：<child1 @fromChild1="getChild1($event,'我是父组件中的参数--parent1')"></child1>
+methods中 getChild1($event,parameter){
+            console.log($event);  // 我是子组件传过来的参数--child1
+            console.log(parameter); // 我是父组件中的参数--parent1
+          },
+2、添加的自定义参数有多个时（父组件可以使用arguments接收子组件传过来的参数）
+子组件（child2）：this.$emit("fromChild2", "我是子组件传过来的参数--child2", "我是子组件传过来的参数--child2", {"child2Obj": "我是子组件传过来的参数--child2"});
+父组件：<child2 @fromChild2="getChild2(arguments,'我是父组件中的参数--parent2')"></child2>
+methods中 getChild2(childParameters,parameter){
+              // console.log(arguments);
+              console.log(childParameters);  // ["我是子组件传过来的参数--child2", "我是子组件传过来的参数--child2", {"child2Obj": "我是子组件传过来的参数--child2"}]
+              console.log(parameter);  // 我是父组件中的参数--parent2
+          }
+        **注意：在getChild2中不要这样使用getChild2(arguments，parameter)，因为在strict mode（严格模式）下会报错，在严格模式下 字符串”arguments”不能用作标识符（变量或函数名、参数名等）**
+
+2.1 自定义参数有多个时也可以采用这种形式
+子组件（child3）：this.$emit("fromChild3", "我是子组件传过来的参数--child3", "我是子组件传过来的参数--child3", {"child3Obj": "我是子组件传过来的参数--child3"});
+父组件：<child2 @fromChild2="getChild2('我是父组件中的参数--parent3'，...arguments)"></child2>
+methods中 getChild3(...parameters){
+              console.log(parameters);  // ["我是父组件中的参数--parent3", "我是子组件传过来的参数--child3", "我是子组件传过来的参数--child3", {"child3Obj": "我是子组件传过来的参数--child3"}]
+          }
+          **注意：这种方式接收到的参数顺序，父组件传入的参数在最前面**
+
+
+```
 ### vue-router
 ```
 **声明： 注意： 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调**
