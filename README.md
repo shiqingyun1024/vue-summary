@@ -203,16 +203,16 @@ toArray方法：
 ```
 #### 5、$emit子组件传参，父组件接收参数的同时添加自定义参数
 ```
-vue $emit子组件传参，父组件接收参数的同时添加自定义参数，这个是在项目中常见的应用场景。现在准备总结一下。
+vue中子组件使用$emit传参，父组件接收参数的同时添加自定义参数，如何在父组件中获取子组件传过来的参数呢，在项目中会经常遇到这样的应用场景。
 总共有两种方式
-1、添加的自定义参数只有一个时（父组件可以使用$event接收子组件传过来的参数）
+1、子组件传过来的参数只有一个时（父组件可以使用$event接收子组件传过来的参数）
 子组件（child1）：this.$emit('fromChild1','我是子组件传过来的参数--child1')
 父组件：<child1 @fromChild1="getChild1($event,'我是父组件中的参数--parent1')"></child1>
 methods中 getChild1($event,parameter){
             console.log($event);  // 我是子组件传过来的参数--child1
             console.log(parameter); // 我是父组件中的参数--parent1
           },
-2、添加的自定义参数有多个时（父组件可以使用arguments接收子组件传过来的参数）
+2、子组件传过来的参数有多个时（父组件可以使用arguments接收子组件传过来的参数）
 子组件（child2）：this.$emit("fromChild2", "我是子组件传过来的参数--child2", "我是子组件传过来的参数--child2", {"child2Obj": "我是子组件传过来的参数--child2"});
 父组件：<child2 @fromChild2="getChild2(arguments,'我是父组件中的参数--parent2')"></child2>
 methods中 getChild2(childParameters,parameter){
@@ -224,7 +224,7 @@ methods中 getChild2(childParameters,parameter){
 
 2.1 自定义参数有多个时也可以采用这种形式
 子组件（child3）：this.$emit("fromChild3", "我是子组件传过来的参数--child3", "我是子组件传过来的参数--child3", {"child3Obj": "我是子组件传过来的参数--child3"});
-父组件：<child2 @fromChild2="getChild2('我是父组件中的参数--parent3'，...arguments)"></child2>
+父组件：<child3 @fromChild3="getChild3('我是父组件中的参数--parent3'，...arguments)"></child3>
 methods中 getChild3(...parameters){
               console.log(parameters);  // ["我是父组件中的参数--parent3", "我是子组件传过来的参数--child3", "我是子组件传过来的参数--child3", {"child3Obj": "我是子组件传过来的参数--child3"}]
           }
