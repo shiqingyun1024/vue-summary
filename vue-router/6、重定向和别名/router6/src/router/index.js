@@ -16,7 +16,46 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    children:[{
+      path: 'child1',
+      name: 'child1',
+      redirect: {name:'child3'},
+      beforeEnter: (to, from, next) => {
+        console.log(`child1--12345`);
+        next()
+      },
+      component: () => import(/* webpackChunkName: "child1" */ '../components/child1.vue'),
+    },{
+      path: 'child2',
+      name: 'child2',
+      redirect: '/',
+      component: () => import(/* webpackChunkName: "child2" */ '../components/child2.vue'),
+    },{
+      path: 'child3',
+      name: 'child3',
+      beforeEnter: (to, from, next) => {
+        console.log(`child3--12345`);
+        next()
+      },
+      // redirect: '/',
+      component: () => import(/* webpackChunkName: "child3" */ '../components/child3.vue'),
+    },{
+      path: 'child4',
+      name: 'child4',
+      // 在about中的子路由跳转时都会执行这个函数。
+      redirect: to=>{
+        console.log('------重定向');
+        console.log(to);
+        return {name:'child5'}
+      },
+      component: () => import(/* webpackChunkName: "child3" */ '../components/child4.vue'),
+    },{
+      path: 'child5',
+      name: 'child5',
+      // redirect: '/',
+      component: () => import(/* webpackChunkName: "child3" */ '../components/child5.vue'),
+    }]
   }
 ]
 
