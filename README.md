@@ -716,6 +716,36 @@ const router = new VueRouter({
 ```
 #### 7、路由组件传参
 ```
+在组件中使用 $route 会使之与其对应路由形成高度耦合，从而使组件只能在某些特定的 URL 上使用，限制了其灵活性。
+
+使用 props 将组件和路由解耦：
+
+取代与 $route 的耦合
+const User = {
+  template: '<div>User {{ $route.params.id }}</div>'
+}
+const router = new VueRouter({
+  routes: [{ path: '/user/:id', component: User }]
+})
+通过 props 解耦
+
+const User = {
+  props: ['id'],
+  template: '<div>User {{ id }}</div>'
+}
+const router = new VueRouter({
+  routes: [
+    { path: '/user/:id', component: User, props: true },
+
+    // 对于包含命名视图的路由，你必须分别为每个命名视图添加 `props` 选项：
+    {
+      path: '/user/:id',
+      components: { default: User, sidebar: Sidebar },
+      props: { default: true, sidebar: false }
+    }
+  ]
+})
+这样你便可以在任何地方使用该组件，使得该组件更易于重用和测试。
 
 ```
 ### vuex
