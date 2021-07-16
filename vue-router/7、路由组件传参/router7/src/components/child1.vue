@@ -8,7 +8,18 @@
 
 <script>
 export default {
-    props:['id']
+    props:['id'],
+    data(){
+        return {
+
+        }
+    },
+    watch:{
+        $route(newValue,oldValue){
+            console.log(newValue);
+            console.log(oldValue);
+        }
+    }
 
 }
 </script>

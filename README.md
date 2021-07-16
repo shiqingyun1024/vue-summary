@@ -313,7 +313,7 @@ const User = {
 }
 
 **注意：只有使用同一个组件来回跳转时，才会触发watch中的$route和beforeRouteUpdate，例如动态路由为 /user/:username    我们从/home 跳转到/user/foo后，是不会触发watch和beforeRouteUpdate
-但是我们从/user/foo跳转到/user/bar时，是会触发watch和beforeRouteUpdate的，因为/user/foo和/user/bar都是复用的同一个组件---user组件。**
+但是我们从/user/foo跳转到/user/bar时，是会触发watch和beforeRouteUpdate的，因为/user/foo和/user/bar都是复用的同一个组件---user组件。案例中我使用的是about作为复用组件**
 
 捕获所有路由或 404 Not found 路由
 
@@ -761,6 +761,7 @@ const router = new VueRouter({
 
 布尔模式
 如果 props 被设置为 true，route.params 将会被设置为组件属性。
+**注意：理解布尔模式：{ path: '/user/:id', component: User, props: true }中props 被设置为 true，那么组件中的props:['id'],这个props的id就是/user/:id中的id**
 
 #对象模式
 如果 props 是一个对象，它会被按原样设置为组件属性。当 props 是静态的时候有用。
