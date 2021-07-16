@@ -761,7 +761,7 @@ const router = new VueRouter({
 
 布尔模式
 如果 props 被设置为 true，route.params 将会被设置为组件属性。
-**注意：理解布尔模式：{ path: '/user/:id', component: User, props: true }中props 被设置为 true，那么组件中的props:['id'],这个props的id就是/user/:id中的id**
+**注意：理解布尔模式：{ path: '/user/:id', component: User, props: true }中props 被设置为 true，那么组件中的props:['id'],这个props的id就是/user/:id中的id，这样就不用在组件中使用this.$route.params去获取/user/:id中的id,这样就不用在组件中使用$route了，从而使$route和组件解耦。记住，是因为在组件中不使用$route了，使用 props 将组件和路由解耦**
 
 #对象模式
 如果 props 是一个对象，它会被按原样设置为组件属性。当 props 是静态的时候有用。
