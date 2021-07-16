@@ -243,6 +243,11 @@ methods中 getChild3(...parameters){
 ### vue-router
 ```
 **声明： 注意： 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调**
+
+**注意：路由跳转可以使用<router-link></router-link>或者this.$router.push
+但是一定要有路由出口<router-view></router-view>**
+
+
 vue-router的实现原理
 
 路由需要实现响应式
@@ -658,6 +663,13 @@ UserSettings 组件的 <template> 部分应该是类似下面的这段代码：
   }]
 }
 一个可以工作的示例的 demo 在这里 (opens new window)。
+**注意：命名视图中，跳转到一个path时，可以加载多个组件，并且渲染在对应的名称位置上。**
+例如：
+    <router-link :to="{name:'child'}">加载子页面</router-link>
+    <router-view name="child1"></router-view>
+    <router-view name="child2"></router-view>
+    <router-view name="child3"></router-view>
+    跳转到 /child时，会同时加载child1、child2、child3这三种组件
 ```
 #### 6、重定向和别名
 ```
