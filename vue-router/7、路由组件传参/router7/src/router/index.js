@@ -41,6 +41,22 @@ const routes = [
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "child3" */ '@/components/child3.vue'),
+    },{
+      path: 'child4',
+      name: 'child4',
+      props: {user:{id:'努力进大厂'}},
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "child3" */ '@/components/child4.vue'),
+    },{
+      path: 'child5/:id',
+      name: 'child5',
+      props: {user:{id:'努力进大厂'}},
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "child3" */ '@/components/child5.vue'),
     }]
   }
 ]

@@ -314,6 +314,24 @@ const User = {
 
 **注意：只有使用同一个组件来回跳转时，才会触发watch中的$route和beforeRouteUpdate，例如动态路由为 /user/:username    我们从/home 跳转到/user/foo后，是不会触发watch和beforeRouteUpdate
 但是我们从/user/foo跳转到/user/bar时，是会触发watch和beforeRouteUpdate的，因为/user/foo和/user/bar都是复用的同一个组件---user组件。案例中我使用的是about作为复用组件**
+    // 动态路径参数 以冒号开头
+    { path: '/about/:id', component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')}
+
+    // 使用watch监听$route的变化，第一次加载组件的时候不会触发
+    watch:{
+      $route(newValue,oldValue){
+        this.id = newValue.params.id 
+        console.log(newValue);  // 其实对应的是beforeRouteUpdate中的to
+        console.log(oldValue);  // 其实对应的是beforeRouteUpdate中的from
+      }
+    }
+    // 使用钩子函数 beforeRouteUpdate，第一次加载组件的时候不会触发
+    beforeRouteUpdate(to,from,next){
+        this.id = to.params.id
+        console.log(to);  // 目标路由  要跳转到哪个路由去
+        console.log(from); // 从哪个路由跳转过来的
+        next()
+    }
 
 捕获所有路由或 404 Not found 路由
 

@@ -1,14 +1,14 @@
 <template>
   <div class="child1">
-     <p>这是child4页面</p>
-     <p>user {{id}}</p>
+     <p>这是child3页面</p>
+     <p>user {{user.id}}</p>
 
   </div>
 </template>
 
 <script>
 export default {
-    props:['id'],
+    props:['user'],
     data(){
         return {
 
