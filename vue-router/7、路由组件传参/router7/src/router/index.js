@@ -44,11 +44,14 @@ const routes = [
     },{
       path: 'child4',
       name: 'child4',
-      props: {user:{id:'努力进大厂'}},
+      // 这种方式传递数组。组件中接收不到member
+      // props: {user:{id:'努力进大厂'},member:['123','456']},
+      // 把数组放在对象中，还可以，说明组件接收的是一个user大对象
+      props: {user:{id:'努力进大厂',member:['123','456']}},
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "child3" */ '@/components/child4.vue'),
+      component: () => import(/* webpackChunkName: "child4" */ '@/components/child4.vue'),
     },{
       path: 'child5/:id',
       name: 'child5',
@@ -56,7 +59,15 @@ const routes = [
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "child3" */ '@/components/child5.vue'),
+      component: () => import(/* webpackChunkName: "child5" */ '@/components/child5.vue'),
+    },{
+      path: 'child6',
+      name: 'child6',
+      props: route=>({query:route.query.id}),
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "child6" */ '@/components/child6.vue'),
     }]
   }
 ]

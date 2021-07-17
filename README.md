@@ -793,6 +793,21 @@ const router = new VueRouter({
     }
   ]
 })
+**注意：对象模式中 
+    {
+      path: 'child4',
+      name: 'child4',
+      // 这种方式传递数组。组件中接收不到member
+      // props: {user:{id:'努力进大厂'},member:['123','456']},
+      // 把数组放在对象中，还可以，说明组件接收的是一个user大对象
+      props: {user:{id:'努力进大厂',member:['123','456']}},
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "child4" */ '@/components/child4.vue'),
+    }
+**    
+
 #函数模式
 你可以创建一个函数返回 props。这样你便可以将参数转换成另一种类型，将静态值与基于路由的值结合等等。
 
@@ -806,6 +821,8 @@ const router = new VueRouter({
   ]
 })
 URL /search?q=vue 会将 {query: 'vue'} 作为属性传递给 SearchUser 组件。
+
+**注意：用this.$route.query.q进行接收**
 
 请尽可能保持 props 函数为无状态的，因为它只会在路由发生变化时起作用。如果你需要状态来定义 props，请使用包装组件，这样 Vue 才可以对状态变化做出反应。
 ```

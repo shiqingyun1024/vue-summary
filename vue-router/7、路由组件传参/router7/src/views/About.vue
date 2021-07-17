@@ -9,6 +9,7 @@
     <router-link :to="{name:'child4'}">go to child4</router-link></br>
     <router-link :to="{name:'child5',params:{id:'55'}}">go to child5 id为55</router-link></br>
     <router-link :to="{name:'child5',params:{id:'5555'}}">go to child5 id为5555</router-link></br>
+    <router-link :to="{path:'/about/child6',query:{id:'123'}}">go to child6</router-link></br>
     <router-view></router-view>
   </div>
 </template>
