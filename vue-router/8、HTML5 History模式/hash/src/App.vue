@@ -9,31 +9,31 @@
 </template>
 <script>
 export default {
-  created() {
-    window.onload = function() {
-      // hash变化时触发
-      window.onhashchange = function(opt) {
-        console.log(opt);
-      };
-    };
-    window.addEventListener('hashchange',(option)=>{
-           console.log("hash值的变化");
-    })
-  },
-  watch:{
-    $route(newValue,oldValue){
-      window.addEventListener('hashchange',(option)=>{
-           console.log("hash值的变化");
-      })
-      window.onhashchange = function(opt) {
-        console.log("hash值的变化");
-        console.log(opt);
-      };
-      // 这里面
-      console.log(newValue);
-      console.log(oldValue);
-    }
-  }
+  // created() {
+  //   window.onload = function() {
+  //     // hash变化时触发
+  //     window.onhashchange = function(opt) {
+  //       console.log(opt);
+  //     };
+  //   };
+  //   window.addEventListener('hashchange',(option)=>{
+  //          console.log("hash值的变化");
+  //   })
+  // },
+  // watch:{
+  //   $route(newValue,oldValue){
+  //     window.addEventListener('hashchange',(option)=>{
+  //          console.log("hash值的变化");
+  //     })
+  //     window.onhashchange = function(opt) {
+  //       console.log("hash值的变化");
+  //       console.log(opt);
+  //     };
+  //     // 这里面
+  //     console.log(newValue);
+  //     console.log(oldValue);
+  //   }
+  // }
 };
 </script>
 

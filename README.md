@@ -860,9 +860,19 @@ hash 值的改变，都会在浏览器的访问历史中增加一个记录。因
 
 我们可以使用 hashchange 事件来监听 hash 值的变化，从而对页面进行跳转(渲染)。
 
-1.2 应用
+1.2 应用以及源码分析
 下面通过一个实例看一下
 把vue-router的路由模式设置为hash模式
+const router = new VueRouter({
+  routes
+})
+把vue-router的路由模式设置为history模式
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
+注意对比一下这两个用法
 ```
 
 
