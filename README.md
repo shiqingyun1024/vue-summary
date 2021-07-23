@@ -958,6 +958,11 @@ transitionTo (
     )
   }
 }
+
+那么现在可以来看router在hash模式下一次push会发生的过程了：
+init -> router.push() -> hashHistory.push() -> History.transitionTo() -> History.updateRoute() -> History.cb() 
+// listen时传入的cb，遍历this.apps中每一个vm实例更新_route数据，触发vm的render函数更新视图
+
 ```
 
 
