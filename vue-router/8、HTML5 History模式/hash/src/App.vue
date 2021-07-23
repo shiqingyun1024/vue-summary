@@ -16,9 +16,15 @@ export default {
         console.log(opt);
       };
     };
+    window.addEventListener('hashchange',(option)=>{
+           console.log("hash值的变化");
+    })
   },
   watch:{
     $route(newValue,oldValue){
+      window.addEventListener('hashchange',(option)=>{
+           console.log("hash值的变化");
+      })
       window.onhashchange = function(opt) {
         console.log("hash值的变化");
         console.log(opt);

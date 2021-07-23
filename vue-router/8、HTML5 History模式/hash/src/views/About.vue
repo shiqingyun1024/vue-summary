@@ -6,3 +6,18 @@
     <router-view></router-view>
   </div>
 </template>
+<script>
+export default {
+created() {
+    window.onload = function() {
+      // hash变化时触发
+      window.onhashchange = function(opt) {
+        console.log(opt);
+      };
+    };
+    window.addEventListener('hashchange',(option)=>{
+           console.log("hash值的变化");
+    })
+  },
+}
+</script>
