@@ -862,17 +862,102 @@ hash 值的改变，都会在浏览器的访问历史中增加一个记录。因
 
 1.2 应用以及源码分析
 下面通过一个实例看一下
-把vue-router的路由模式设置为hash模式
+**把vue-router的路由模式设置为hash模式
 const router = new VueRouter({
   routes
 })
-把vue-router的路由模式设置为history模式
+**把vue-router的路由模式设置为history模式
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
-注意对比一下这两个用法
+hash模式的原理：
+// index.js
+export default class VueRouter {
+	// router初始化时写入listen的cb以便更新最新的route数据
+	init(app: any /* Vue component instance */) {
+		this.apps.push(app)
+		const history = this.history
+		history.listen(route => {
+		  // route数据修改时，对应更新vm实例上的_route数据
+      	  this.apps.forEach((app) => {
+            app._route = route
+          })
+        })
+	}
+	// router上的push方法代理的是history对象上的push方法
+	push (location: RawLocation, onComplete?: Function, onAbort?: Function) {
+	  // 在调用push方法时如未传递onComplete，onAbort回调函数，且支持Promise则返回一个promise对象
+      // $flow-disable-line
+      if (!onComplete && !onAbort && typeof Promise !== 'undefined') {
+        return new Promise((resolve, reject) => {
+          this.history.push(location, resolve, reject)
+        })
+      } else {
+        this.history.push(location, onComplete, onAbort)
+      }
+  }
+}
+
+// hash.js
+export class HashHistory extends History {
+  push (location: RawLocation, onComplete?: Function, onAbort?: Function) {
+    const { current: fromRoute } = this
+    // 继承自History类的方法
+    this.transitionTo(
+      location,
+      route => {
+      	// 修改浏览器上的url值
+        pushHash(route.fullPath)
+        handleScroll(this.router, route, fromRoute, false)
+        onComplete && onComplete(route)
+      },
+      onAbort
+    )
+  }
+}
+
+function pushHash (path) {
+  if (supportsPushState) {
+    pushState(getUrl(path))
+  } else {
+    window.location.hash = path
+  }
+}
+
+// base.js
+export class History {
+transitionTo (
+    location: RawLocation,
+    onComplete?: Function,
+    onAbort?: Function
+  ) {
+    const route = this.router.match(location, this.current)
+    // 校验此次跳转是否合法的方法
+    this.confirmTransition(
+      route,
+      () => {
+      // 更新current数据，并调用listen中写入的cb函数
+        this.updateRoute(route)
+        // 调用传入的完成函数，此处为hash.js中push时传入的第二个参数
+        onComplete && onComplete(route)
+        this.ensureURL()
+
+        // fire ready cbs once
+        if (!this.ready) {
+          this.ready = true
+          this.readyCbs.forEach(cb => {
+            cb(route)
+          })
+        }
+      },
+      err => {
+      // 错误处理回调
+      }
+    )
+  }
+}
 ```
 
 
