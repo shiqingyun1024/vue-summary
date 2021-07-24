@@ -845,10 +845,13 @@ const router = new VueRouter({
 ```
 SPA单页面应用。单页面应用指的是应用只有一个主页面，通过动态替换DOM内容并同步修改url地址，来模拟多页应用的效果。（**注意：只有一个主页面，动态替换DOM内容并同步修改url地址，来模拟多页面应用的效果**）切换页面的功能直接由前台脚本，而不是由后端渲染完毕后前端只负责显示（即浏览器中的url请求到后端，这个时候浏览器中的地址改变，不会发送请求）。SPA能够模拟多页面应用的效果，是因为前端路由机制。
 前端路由，可以理解为是一个前端不同页面的状态管理器，可以不向后台发送请求而直接通过前端技术实现多个页面的效果。
+实现方式有两种  1、利用hash的HashChange  2、HTML5 HistoryAPI
+```
 
 两种实现方式及其原理
-1、HashChange
-1.1 原理
+##### 8.1.1、HashChange
+```
+1. 原理
 HTML页面中通过锚点定位原理可进行无刷新跳转，触发后url地址中会多出"#"+"XXX"部分，同时在全局的window对象上触发hashChange事件，这样在页面锚点哈希改变为某个预设值的时候，通过代码触发对应的页面DOM改变，就可以实现基本的路由了，基于锚点哈希的路由比较直观，也是一般前端路由插件中最常用的方式。（vue-router中默认的路由模式）
 
 URL 中 hash 值只是客户端的一种状态，也就是说当向服务器端发出请求时，hash 部分不会被发送；
@@ -860,7 +863,7 @@ hash 值的改变，都会在浏览器的访问历史中增加一个记录。因
 
 我们可以使用 hashchange 事件来监听 hash 值的变化，从而对页面进行跳转(渲染)。
 
-1.2 应用以及源码分析
+2. 应用以及源码分析
 下面通过一个实例看一下
 **把vue-router的路由模式设置为hash模式
 const router = new VueRouter({
@@ -963,6 +966,29 @@ transitionTo (
 init -> router.push() -> hashHistory.push() -> History.transitionTo() -> History.updateRoute() -> History.cb() 
 // listen时传入的cb，遍历this.apps中每一个vm实例更新_route数据，触发vm的render函数更新视图
 
+**注意：window.location.replace是直接替换，在历史记录中不会新增历史记录。window.location.href是跳转到另外一个页面，相当于是在历史记录中新增一条记录**
+```
+##### 8.1.2、HTML5 HistoryAPI
+```
+1. 原理
+
+HTML5的History API为浏览器的全局history对象增加的扩展方法。一般用来解决ajax请求无法通过回退按钮回到请求前状态的问题。
+
+在HTML4中，已经支持window.history对象来控制页面历史记录跳转，常用的方法包括：
+
+- history.forward(); //在历史记录中前进一步
+- history.back(); //在历史记录中后退一步
+- history.go(n): //在历史记录中跳转n步骤，n=0为刷新本页,n=-1为后退一页。
+
+在HTML5中，window.history对象得到了扩展，新增的API包括：
+
+- history.pushState(data[,title][,url]);//向历史记录中追加一条记录
+- history.replaceState(data[,title][,url]);//替换当前页在历史记录中的信息。
+- history.state;//是一个属性，可以得到当前页的state信息。
+- window.onpopstate;//是一个事件，在点击浏览器后退按钮或js调用forward()、back()、go()时触发。监听函数中可传入一个event对象，event.state即为通过pushState()或replaceState()方法传入的data参数。
+
+2. 应用
+浏览器访问一个页面时，当前地址的状态信息会被压入历史栈,当调用history.pushState()方法向历史栈中压入一个新的state后，历史栈顶部的指针是指向新的state的。可以将其作用简单理解为 假装已经修改了url地址并进行了跳转 ,除非用户点击了浏览器的前进,回退,或是显式调用HTML4中的操作历史栈的方法，否则不会触发全局的popstate事件。
 ```
 
 
