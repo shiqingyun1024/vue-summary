@@ -1361,6 +1361,106 @@ beforeRouteEnter (to, from, next) {
 
 ```
 #### 13、滚动行为
+```
+使用前端路由，当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样。 vue-router 能做到，而且更好，它让你可以自定义路由切换时页面如何滚动。
+
+**注意: 这个功能只在支持 history.pushState 的浏览器中可用。在vue-router中的hash和history模式下都可以用**
+
+当创建一个 Router 实例，你可以提供一个 scrollBehavior 方法：
+const router = new VueRouter({
+  routes: [...],
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+  }
+})
+scrollBehavior 方法接收 to 和 from 路由对象。第三个参数 savedPosition 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。
+
+这个方法返回滚动位置的对象信息，长这样：
+{ x: number, y: number }
+{ selector: string, offset? : { x: number, y: number }} (offset 只在 2.6.0+ 支持)
+如果返回一个 falsy (译者注：falsy 不是 false，参考这里 (opens new window))的值，或者是一个空对象，那么不会发生滚动。
+举例：
+scrollBehavior (to, from, savedPosition) {
+  return { x: 0, y: 0 }
+}
+
+对于所有路由导航，简单地让页面滚动到顶部。
+
+返回 savedPosition，在按下 后退/前进 按钮时，就会像浏览器的原生表现那样：
+
+scrollBehavior (to, from, savedPosition) {
+  if (savedPosition) {
+    return savedPosition
+  } else {
+    return { x: 0, y: 0 }
+  }
+}
+
+如果你要模拟“滚动到锚点”的行为：
+
+scrollBehavior (to, from, savedPosition) {
+  if (to.hash) {
+    return {
+      selector: to.hash
+    }
+  }
+}
+我们还可以利用路由元信息更细颗粒度地控制滚动。
+
+异步滚动
+你也可以返回一个 Promise 来得出预期的位置描述：
+
+scrollBehavior (to, from, savedPosition) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ x: 0, y: 0 })
+    }, 500)
+  })
+}
+将其挂载到从页面级别的过渡组件的事件上，令其滚动行为和页面过渡一起良好运行是可能的。但是考虑到用例的多样性和复杂性，我们仅提供这个原始的接口，以支持不同用户场景的具体实现。
+
+平滑滚动
+只需将 behavior 选项添加到 scrollBehavior 内部返回的对象中，就可以为支持它的浏览器 (opens new window)启用原生平滑滚动：
+
+scrollBehavior (to, from, savedPosition) {
+  if (to.hash) {
+    return {
+      selector: to.hash,
+      behavior: 'smooth',
+    }
+  }
+}
+** 注意
+vue中url为http://localhost:5016/#/about
+{name: "About", meta: {…}, path: "/about", hash: "", query: {…}, …}
+fullPath: "/about"
+hash: ""
+matched: [{…}]
+meta: {}
+name: "About"
+params: {}
+path: "/about"
+query: {}
+__proto__: Object
+从上面可以看出，hash是为空的，为什么？
+如果用location.hash获取，值为#/about
+location是对整个路由进行判定，而路由信息对象是对其fullPath进行判定的，fullPath为"/about"，里面不含#，所以hash为空，如果fullPath为"/about#print"，则路由信息对象中的hash为#print。
+设置hash的方法
+#代表网页中的一个位置，其右边的字符，就是该位置的标识符。比如
+
+http://www.example.com/index.html#print
+就是代表index.html中的print位置。浏览器会自动把print位置滚动到页面可视区域内。
+
+设置方法：
+
+step1：设置一个锚点<a href="#print">定位到print位置</a>
+
+step2：在页面需要定位的内容加上id="print"。例如：<div id="print"></div>
+
+测试：step1设置的锚点，step2中id为print的内容会滚动到页面顶端（可观察滚动条的距离）。同时，页面的url末端中会出现#print的哈希值。
+**
+
+```
 #### 14、路由懒加载
 #### 15、导航故障
 
