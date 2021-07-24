@@ -1246,8 +1246,13 @@ watch: {
     this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
   }
 }
+
+transition详细的参数配置请见：https://cn.vuejs.org/v2/guide/transitions.html
+
 ```
 #### 12、数据获取
+```
+```
 #### 13、滚动行为
 #### 14、路由懒加载
 #### 15、导航故障
