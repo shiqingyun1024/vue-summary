@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>history.pushState</title>
+    
+</head>
+<body>
+    <div>
+        <p>使用history.pushState模式</p>
+        <ul id="list">
+            <li>vue</li>
+            <li>vuex</li>
+            <li>vue-router</li>
+        </ul>
+        <a href="123">1234</a>
+        <div id="show">
+
+        </div>
+    </div>
+    <script>
+        window.onload = function(){
+            console.log("页面加载完");
+            window.onpopstate = function(){
+                console.log('前进或者后退');
+            }
+            window.onhashchange = function(){
+                console.log('hash值的改变');
+            }
+            document.querySelector('#list').addEventListener('click',function(event){
+                console.log('点击');
+                console.log(event.target.nodeName);
+                if(event.target.nodeName === 'LI'){
+                    console.log('li点击');
+                    let content = event.target.innerHTML;
+                    let _newState;
+                    _newState = {
+                        url:location.origin + '/' + content,
+                        title: document.title,
+                        state:content
+                    };
+                    // 调用pushState方法跳转
+                    window.history.pushState(_newState,'','/'+content);
+                    console.log('you hava change the router to:',content);
+                    document.querySelector('#show').innerHTML = content;
+                }
+
+            })
+        }
+    </script>
+</body>
+</html>

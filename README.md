@@ -835,11 +835,15 @@ const router = new VueRouter({
   mode: 'history',
   routes: [...]
 })
-当你使用 history 模式时，URL 就像正常的 url，例如 http://yoursite.com/user/id，也好看！
 
+**注意：hash模式是利用hash值的改变不会引起页面的刷新，也不会去请求url，利用hashchange方法监听到hash值的变化，进而更新局部视图**
+
+当你使用 history 模式时，URL 就像正常的 url，例如 http://yoursite.com/user/id，也好看！
 不过这种模式要玩好，还需要后台配置支持。因为我们的应用是个单页客户端应用，如果后台没有正确的配置，当用户在浏览器直接访问 http://oursite.com/user/id 就会返回 404，这就不好看了。
 
 所以呢，你要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面，这个页面就是你 app 依赖的页面。
+
+**注意：history模式利用的是HTML5新增的history.pushState方法，这个方法是向历史栈中新增一条历史记录，但是不会刷新页面，所以可以模拟单页面应用。但是如果刷新页面或者直接在浏览器上输入这个url地址，会404，因为这个时候是浏览器向服务器发送请求，去请求这个页面，所以需要后端在服务器上进行相应的配置。**
 ```
 #### 8.1、前端路由的基本原理（SPA单页面应用）
 ```
