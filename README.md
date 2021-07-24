@@ -1127,20 +1127,82 @@ beforeRouteLeave (to, from, next) {
 #### 9.6、完整的导航解析流程
 ```
 1、导航被触发。
-2、在失活的组件里调用 beforeRouteLeave 守卫。
-3、调用全局的 beforeEach 守卫。
-4、在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。
-5、在路由配置里调用 beforeEnter。
+2、在失活的组件里调用 beforeRouteLeave 守卫。    组件内的守卫 beforeRouteLeave
+3、调用全局的 beforeEach 守卫。      全局前置守卫 beforeEach
+4、在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。  组件内的守卫 beforeRouteUpdate
+5、在路由配置里调用 beforeEnter。  路由独享的守卫  beforeEnter
 6、解析异步路由组件。
-7、在被激活的组件里调用 beforeRouteEnter。
-8、调用全局的 beforeResolve 守卫 (2.5+)。
+7、在被激活的组件里调用 beforeRouteEnter。  组件内的守卫 beforeRouteEnter
+8、调用全局的 beforeResolve 守卫 (2.5+)。   全局解析守卫  beforeResolve
 9、导航被确认。
-10、调用全局的 afterEach 钩子。
+10、调用全局的 afterEach 钩子。  全局后置钩子  afterEach
 11、触发 DOM 更新。
-12、调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+12、调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。 
+**注意：beforeRouteEnter 是支持给 next 传递回调的唯一守卫。 传递的回调函数最后才会执行。**
 ```
-
 #### 10、路由元信息
+```
+定义路由的时候可以配置 meta 字段
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      children: [
+        {
+          path: 'bar',
+          component: Bar,
+          // a meta field
+          meta: { requiresAuth: true }
+        }
+      ]
+    }
+  ]
+})
+
+那么如何访问这个 meta 字段呢？
+
+首先，我们称呼 routes 配置中的每个路由对象为 路由记录。路由记录可以是嵌套的，因此，当一个路由匹配成功后，他可能匹配多个路由记录
+
+例如，根据上面的路由配置，/foo/bar 这个 URL 将会匹配父路由记录以及子路由记录。
+
+一个路由匹配到的所有路由记录会暴露为 $route 对象 (还有在导航守卫中的路由对象) 的 $route.matched 数组。因此，我们需要遍历 $route.matched 来检查路由记录中的 meta 字段。
+
+下面例子展示在全局导航守卫中检查元字段：
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!auth.loggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 确保一定要调用 next()
+  }
+})
+
+获取的话也可以用to.meta，在组件中也可以这样用to.meta来获取元信息
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (!auth.loggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 确保一定要调用 next()
+  }
+})
+```
 #### 11、过渡动效
 #### 12、数据获取
 #### 13、滚动行为
