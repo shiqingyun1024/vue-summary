@@ -1098,9 +1098,46 @@ const Foo = {
   }
 }
 
+beforeRouteEnter 守卫 不能 访问 this，因为守卫在导航确认前被调用，因此即将登场的新组件还没被创建。
+
+不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
+beforeRouteEnter (to, from, next) {
+  next(vm => {
+    // 通过 `vm` 访问组件实例
+  })
+}
+注意 beforeRouteEnter 是支持给 next 传递回调的唯一守卫。对于 beforeRouteUpdate 和 beforeRouteLeave 来说，this 已经可用了，所以不支持传递回调，因为没有必要了。
+
+beforeRouteUpdate (to, from, next) {
+  // just use `this`
+  this.name = to.params.name
+  next()
+}
+这个离开守卫通常用来禁止用户在还未保存修改前突然离开。该导航可以通过 next(false) 来取消。
+beforeRouteLeave (to, from, next) {
+  const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+  if (answer) {
+    next()
+  } else {
+    next(false)
+  }
+}
+
 ```
 #### 9.6、完整的导航解析流程
 ```
+1、导航被触发。
+2、在失活的组件里调用 beforeRouteLeave 守卫。
+3、调用全局的 beforeEach 守卫。
+4、在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。
+5、在路由配置里调用 beforeEnter。
+6、解析异步路由组件。
+7、在被激活的组件里调用 beforeRouteEnter。
+8、调用全局的 beforeResolve 守卫 (2.5+)。
+9、导航被确认。
+10、调用全局的 afterEach 钩子。
+11、触发 DOM 更新。
+12、调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
 ```
 
 #### 10、路由元信息

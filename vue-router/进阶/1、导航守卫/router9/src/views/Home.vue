@@ -9,6 +9,9 @@
 export default {
   name: 'Home',
   components: {
+  },
+  beforeRouteLeave(){
+    console.log('1、组件内守卫--beforeRouteLeave');
   }
 }
 </script>
