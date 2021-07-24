@@ -1352,6 +1352,13 @@ export default {
 
 在为后面的视图获取数据时，用户会停留在当前的界面，因此建议在数据获取期间，显示一些进度条或者别的指示。如果数据获取失败，同样有必要展示一些全局的错误提醒。
 
+在导航完成前获取数据
+beforeRouteEnter (to, from, next) {
+    getPost(to.params.id, (err, post) => {
+      next(vm => vm.setData(err, post))
+    })
+},
+
 ```
 #### 13、滚动行为
 #### 14、路由懒加载
