@@ -10,8 +10,9 @@ export default {
   name: 'Home',
   components: {
   },
-  beforeRouteLeave(){
+  beforeRouteLeave(to,from,next){
     console.log('1、组件内守卫--beforeRouteLeave');
+    next()
   }
 }
 </script>

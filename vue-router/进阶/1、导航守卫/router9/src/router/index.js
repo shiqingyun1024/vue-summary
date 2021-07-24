@@ -27,6 +27,10 @@ const routes = [{
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import( /* webpackChunkName: "child1" */ '@/components/child1.vue'),
+      beforeEnter: (to, from, next) => {
+        console.log('4、路由独享的守卫--beforeEnter');
+        next();
+      }
     }, {
       path: 'child2',
       name: 'child2',
