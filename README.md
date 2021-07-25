@@ -1639,7 +1639,12 @@ router.push('/admin').catch(failure => {
    <router-view></router-view>
 </keep-alive>
 
-keep-alive缓存组件，独有的两个生命周期钩子：
+keep-alive缓存组件，独有的两个生命周期钩子：activated(激活) 和 deactivated(失活)
+两个新的生命周期钩子
+1、作用：路由组件所独有的两个钩子，用于捕获路由组件的激活状态。
+2、具体名字：
+   - activated路由组件被激活时触发。
+   - deactivated路由组件失活时触发。
 ```
 
 ### vuex
