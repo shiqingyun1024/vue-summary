@@ -9,12 +9,6 @@
 <script>
 export default {
     props:['id'],
-    data(){
-        return {
-
-        }
-    }
-
 }
 </script>
 

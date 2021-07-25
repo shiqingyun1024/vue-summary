@@ -29,45 +29,34 @@ const routes = [
       path: 'child2',
       name: 'child2',
       props: true,
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "child2" */ '../components/child2.vue'),
     },{
       path: 'child3',
       name: 'child3',
       props: true,
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "child3" */ '@/components/child3.vue'),
     },{
       path: 'child4',
       name: 'child4',
-      // 这种方式传递数组。组件中接收不到member
-      // props: {user:{id:'努力进大厂'},member:['123','456']},
-      // 把数组放在对象中，还可以，说明组件接收的是一个user大对象
-      props: {user:{id:'努力进大厂',member:['123','456']}},
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      // 这种方式在组件中可以直接用props:['user','members']接收
+      props: {user:{id:'努力进大厂'},members:['123','456']},
       component: () => import(/* webpackChunkName: "child4" */ '@/components/child4.vue'),
     },{
-      path: 'child5/:id',
+      path: 'child5/:id/:title',
       name: 'child5',
-      props: {user:{id:'努力进大厂'}},
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      props: {id:{text:'努力进大厂'},title:'一直努力着'},
       component: () => import(/* webpackChunkName: "child5" */ '@/components/child5.vue'),
     },{
       path: 'child6',
       name: 'child6',
-      props: route=>({query:route.query.id}),
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      // props: route=>({query:route.query.id,user:route.query.user}),
       component: () => import(/* webpackChunkName: "child6" */ '@/components/child6.vue'),
+      props($route){
+         return {
+           id:$route.query.id,
+           user:$route.query.user
+         }
+      }
     }]
   }
 ]

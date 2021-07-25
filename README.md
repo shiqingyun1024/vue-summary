@@ -559,7 +559,7 @@ router.push({ name: 'user', params: { userId: '123' }})
 // 带查询参数，变成 /register?plan=private
 router.push({ path: 'register', query: { plan: 'private' }})
 
-**注意：可以这样记忆，push里面是字符串或者对象，path对应query（查询），这两个单词的首字母 pq 正好相反，非常好记，这个用this.$route.query来获取查询参数。name对应params（参数）命名路由后面跟路径，这个可以用this.$route.params获取。**
+**注意：可以这样记忆，push里面是字符串或者对象，path对应query（查询），这两个单词的首字母 pq 正好相反，非常好记，这个用this.$route.query来获取查询参数，但是path不能对应params。name对应params（参数）命名路由后面跟路径，这个可以用this.$route.params获取，name也可以对应query，用this.$route.query来获取查询参数。**
 
 
 注意：如果提供了 path，params 会被忽略，上述例子中的 query 并不属于这种情况。取而代之的是下面例子的做法，你需要提供路由的 name 或手写完整的带有参数的 path：
@@ -826,6 +826,15 @@ const router = new VueRouter({
 
 布尔模式
 如果 props 被设置为 true，route.params 将会被设置为组件属性。
+例如：
+    {
+      path: 'child2',
+      name: 'child2',
+      props: true,
+      component: () => import(/* webpackChunkName: "child2" */ '../components/child2.vue'),
+    }
+使用布尔模式后，我们可以<router-link :to="{name:'child2',params:{user:{id:'1234'},members:[123]}}">go to child2</router-link>这样传参，在组件中直接用props:['user','members'] 接收
+
 **注意：理解布尔模式：{ path: '/user/:id', component: User, props: true }中props 被设置为 true，那么组件中的props:['id'],这个props的id就是/user/:id中的id，这样就不用在组件中使用this.$route.params去获取/user/:id中的id,这样就不用在组件中使用$route了，从而使$route和组件解耦。记住，是因为在组件中不使用$route了，使用 props 将组件和路由解耦**
 
 #对象模式
@@ -840,17 +849,12 @@ const router = new VueRouter({
     }
   ]
 })
-**注意：对象模式中 
+**注意：对象模式中传参，有一定的局限性，props传递的对象中都是写死的数据
     {
       path: 'child4',
       name: 'child4',
-      // 这种方式传递数组。组件中接收不到member
-      // props: {user:{id:'努力进大厂'},member:['123','456']},
-      // 把数组放在对象中，还可以，说明组件接收的是一个user大对象
-      props: {user:{id:'努力进大厂',member:['123','456']}},
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      // 这种方式也可以传递数组
+      props: {user:{id:'努力进大厂'},member:['123','456']},
       component: () => import(/* webpackChunkName: "child4" */ '@/components/child4.vue'),
     }
 **    
@@ -872,6 +876,29 @@ URL /search?q=vue 会将 {query: 'vue'} 作为属性传递给 SearchUser 组件�
 **注意：用this.$route.query.q进行接收**
 
 请尽可能保持 props 函数为无状态的，因为它只会在路由发生变化时起作用。如果你需要状态来定义 props，请使用包装组件，这样 Vue 才可以对状态变化做出反应。
+
+**注意：
+总结：
+1、布尔模式
+如果 props 被设置为 true，route.params 将会被设置为组件属性，通过组件的props直接获取，route.params可以通过path: '/user/:id' 这种方式配置，也可以通过<router-link :to="{name:'child1',params:{id:'1234'}}">child1</router-link>这种方式配置。
+2、对象模式
+路由中props设置为对象，那么在组件中可以直接用props接收。路由中props: {user:{id:'努力进大厂'},members:['123','456']},组件中props:['user','members']
+3、函数模式
+函数模式比较灵活,返回一个对象，这样query参数也可以作为props传过去，组件中以props的形式接收。
+props($route){
+  return {
+    id:$route.query.id,
+    user:$route.query.user
+  }
+}
+当然也可以直接返回一个对象
+props(){
+  return {
+    id:'123',
+    user:{name:'vue'}
+  }
+}
+**
 ```
 #### 8、HTML5 History模式
 ```

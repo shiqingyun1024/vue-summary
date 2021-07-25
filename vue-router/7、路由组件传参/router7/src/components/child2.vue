@@ -1,23 +1,14 @@
 <template>
   <div class="child1">
      <p>这是child2页面</p>
-     <p>user {{id}}</p>
-     <p>user {{$route.params.id}}</p>
+     <p>user: {{user}}</p>
+     <p>members: {{members}}</p>
   </div>
 </template>
 
 <script>
 export default {
-    // props:['id'],
-    data(){
-        return {
-           id:''
-        }
-    },
-    created(){
-      this.id = this.$route.params.id
-    }
-
+    props:['user','members'],
 }
 </script>
 

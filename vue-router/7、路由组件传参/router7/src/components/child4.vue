@@ -2,7 +2,7 @@
   <div class="child1">
      <p>这是child4页面</p>
      <p>user {{user.id}}</p>
-     <p>member {{user.member[0]+user.member[1]}}</p>
+     <p>member {{members[0]+members[1]}}</p>
 
   </div>
 </template>
@@ -29,18 +29,7 @@ export default {
           return []
         }
       }
-    },
-    data(){
-        return {
-          memebr:[]
-        }
-    },
-    created(){
-      console.log(this.$props);
-      console.log(this.user);
-      console.log(this.member);
     }
-
 }
 </script>
 
