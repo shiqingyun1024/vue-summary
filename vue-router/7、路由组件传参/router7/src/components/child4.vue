@@ -1,6 +1,6 @@
 <template>
   <div class="child1">
-     <p>这是child3页面</p>
+     <p>这是child4页面</p>
      <p>user {{user.id}}</p>
      <p>member {{user.member[0]+user.member[1]}}</p>
 

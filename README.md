@@ -247,6 +247,20 @@ methods中 getChild3(...parameters){
 **注意：路由跳转可以使用<router-link></router-link>或者this.$router.push
 但是一定要有路由出口<router-view></router-view>**
 
+Vue Router 是 Vue.js (opens new window)官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单页面应用变得易如反掌。包含的功能有：
+
+嵌套的路由/视图表
+模块化的、基于组件的路由配置
+路由参数、查询、通配符
+基于 Vue.js 过渡系统的视图过渡效果
+细粒度的导航控制
+带有自动激活的 CSS class 的链接
+HTML5 历史模式或 hash 模式，在 IE9 中自动降级
+自定义的滚动条行为
+
+**注意：个人理解，Vue Router就相当于生活中的路由器，上面有很多插槽，每个插槽就相当于一个路由（对应的是一个组件），路由就是一组key-value（一个插槽对应一个组件）的对应关系，多个路由，需要经过路由器的管理。 vue-router这个路由器的目的是为了实现单页面应用SPA。$router是路由器（一个项目里面只有一个，来控制那么多配置的$route），$route是路由，在routes中配置**
+
+
 
 vue-router的实现原理
 
@@ -691,7 +705,7 @@ UserSettings 组件的 <template> 部分应该是类似下面的这段代码：
 ```
 #### 6、重定向和别名
 ```
-**注意：重定向是访问/a时，直接跳转到/b，无论是组件还是url都是/b，一旦路由中设置了redirect重定向，路由中的path、name、component、beforeEnter等都没有任何作用了**
+**注意：重定向是访问/a时，直接重定向到/b，无论是组件还是url都是/b，一旦路由中设置了redirect重定向，路由/a中的path、name、component、beforeEnter等都没有任何作用了，因为重定向到/b了，最后执行的都是/b的path、name、component、beforeEnter等**
 重定向也是通过 routes 配置来完成，下面例子是从 /a 重定向到 /b：
 
 const router = new VueRouter({
@@ -746,6 +760,8 @@ const router = new VueRouter({
 ```
 #### 7、路由组件传参
 ```
+**注意：组件分为一般组件和路由组件，一般组件是我们使用时，在组件中引入进来，路由组件是在router中配置的组件，在跳转的时候我们不需要再引入，因为在router中已经配置好了。一般组件都是放在components文件中，路由组件都是放在pages文件中。路由组件进行切换时，会先销毁之前的组件，然后再渲染跳转后的组件。 vue-router这个路由器的目的是为了实现单页面应用SPA。$router是路由器（一个项目里面只有一个，来控制那么多配置的$route），$route是路由，在routes中配置**
+
 在组件中使用 $route 会使之与其对应路由形成高度耦合，从而使组件只能在某些特定的 URL 上使用，限制了其灵活性。
 
 使用 props 将组件和路由解耦：
@@ -1459,10 +1475,84 @@ step2：在页面需要定位的内容加上id="print"。例如：<div id="print
 
 测试：step1设置的锚点，step2中id为print的内容会滚动到页面顶端（可观察滚动条的距离）。同时，页面的url末端中会出现#print的哈希值。
 **
-
 ```
 #### 14、路由懒加载
+```
+当打包构建应用时，JavaScript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
+
+结合 Vue 的异步组件 (opens new window)和 Webpack 的代码分割功能 (opens new window)，轻松实现路由组件的懒加载。
+
+首先，可以将异步组件定义为返回一个 Promise 的工厂函数 (该函数返回的 Promise 应该 resolve 组件本身)：
+const Foo = () =>
+  Promise.resolve({
+    /* 组件定义对象 */
+  })
+第二，在 Webpack 2 中，我们可以使用动态 import (opens new window)语法来定义代码分块点 (split point)：
+
+import('./Foo.vue') // 返回 Promise
+注意
+如果您使用的是 Babel，你将需要添加 syntax-dynamic-import (opens new window)插件，才能使 Babel 可以正确地解析语法。
+结合这两者，这就是如何定义一个能够被 Webpack 自动代码分割的异步组件。
+
+const Foo = () => import('./Foo.vue')
+在路由配置中什么都不需要改变，只需要像往常一样使用 Foo：
+
+const router = new VueRouter({
+  routes: [{ path: '/foo', component: Foo }]
+})
+把组件按组分块
+有时候我们想把某个路由下的所有组件都打包在同个异步块 (chunk) 中。只需要使用 命名 chunk (opens new window)，一个特殊的注释语法来提供 chunk name (需要 Webpack > 2.4)。
+
+const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
+const Bar = () => import(/* webpackChunkName: "group-foo" */ './Bar.vue')
+const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue')
+Webpack 会将任何一个异步模块与相同的块名称组合到相同的异步块中。
+```
 #### 15、导航故障
+```
+译者注
+导航故障，或者叫导航失败，表示一次失败的导航，原文叫 navigation failures，本文统一采用导航故障。
+当使用 router-link 组件时，Vue Router 会自动调用 router.push 来触发一次导航。 虽然大多数链接的预期行为是将用户导航到一个新页面，但也有少数情况下用户将留在同一页面上：
+
+用户已经位于他们正在尝试导航到的页面
+一个导航守卫通过调用 next(false) 中断了这次导航
+一个导航守卫抛出了一个错误，或者调用了 next(new Error())
+当使用 router-link 组件时，这些失败都不会打印出错误。然而，如果你使用 router.push 或者 router.replace 的话，可能会在控制台看到一条 "Uncaught (in promise) Error" 这样的错误，后面跟着一条更具体的消息。让我们来了解一下如何区分导航故障。
+检测导航故障
+导航故障是一个 Error 实例，附带了一些额外的属性。要检查一个错误是否来自于路由器，可以使用 isNavigationFailure 函数：
+import VueRouter from 'vue-router'
+const { isNavigationFailure, NavigationFailureType } = VueRouter
+
+// 正在尝试访问 admin 页面
+router.push('/admin').catch(failure => {
+  if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
+    // 向用户显示一个小通知
+    showToast('Login in order to access the admin panel')
+  }
+})
+提示
+
+如果你忽略第二个参数：isNavigationFailure(failure)，那么就只会检查这个错误是不是一个导航故障。
+NavigationFailureType
+NavigationFailureType 可以帮助开发者来区分不同类型的导航故障。有四种不同的类型：
+
+redirected：在导航守卫中调用了 next(newLocation) 重定向到了其他地方。
+aborted：在导航守卫中调用了 next(false) 中断了本次导航。
+cancelled：在当前导航还没有完成之前又有了一个新的导航。比如，在等待导航守卫的过程中又调用了 router.push。
+duplicated：导航被阻止，因为我们已经在目标位置了。
+
+导航故障的属性
+所有的导航故障都会有 to 和 from 属性，分别用来表达这次失败的导航的目标位置和当前位置。
+
+// 正在尝试访问 admin 页面
+router.push('/admin').catch(failure => {
+  if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
+    failure.to.path // '/admin'
+    failure.from.path // '/'
+  }
+})
+在所有情况下，to 和 from 都是规范化的路由位置。
+```
 
 
 ### vuex
