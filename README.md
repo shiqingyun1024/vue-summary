@@ -247,6 +247,12 @@ methods中 getChild3(...parameters){
 **注意：路由跳转可以使用<router-link></router-link>或者this.$router.push
 但是一定要有路由出口<router-view></router-view>**
 
+**注意：<router-link></router-link>默认是push，就是直接往历史栈中增加一条数据，但是<router-link :replace='true'></router-link>，简写是<router-link replace></router-link>，这样就是在历史栈中替换当前的历史数据。**
+<router-link>的replace属性
+1、作用：控制路由跳转时操作浏览器历史记录的模式。
+2、浏览器的历史记录有两种写入方式：分别为push和replace，push是追加历史记录，replace是替换当前记录。路由跳转时候默认为push。
+3、如何开启replace模式：<router-link replace ....>News</router-link>
+
 Vue Router 是 Vue.js (opens new window)官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单页面应用变得易如反掌。包含的功能有：
 
 嵌套的路由/视图表
@@ -889,6 +895,13 @@ props($route){
   return {
     id:$route.query.id,
     user:$route.query.user
+  }
+}
+解构赋值的连续写法
+props({query:{id,title}}){
+  return {
+    id
+    user
   }
 }
 当然也可以直接返回一个对象
