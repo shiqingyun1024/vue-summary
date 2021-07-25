@@ -912,6 +912,12 @@ props(){
   }
 }
 **
+补充：缓存路由组件
+1、作用：让不展示的路由组件保持挂载，不被销毁。
+2、具体编码：
+<keep-alive include="News">
+   <router-view></router-view>
+</keep-alive>
 ```
 #### 8、HTML5 History模式
 ```
@@ -1624,7 +1630,17 @@ router.push('/admin').catch(failure => {
 })
 在所有情况下，to 和 from 都是规范化的路由位置。
 ```
+#### 16、缓存路由组件
+```
+缓存路由组件
+1、作用：让不展示的路由组件保持挂载，不被销毁。
+2、具体编码：
+<keep-alive include="News">
+   <router-view></router-view>
+</keep-alive>
 
+keep-alive缓存组件，独有的两个生命周期钩子：
+```
 
 ### vuex
 
