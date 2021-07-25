@@ -1632,6 +1632,7 @@ router.push('/admin').catch(failure => {
 ```
 #### 16、缓存路由组件
 ```
+主要用于保留组件状态或避免重新渲染。
 缓存路由组件
 1、作用：让不展示的路由组件保持挂载，不被销毁。
 2、具体编码：
@@ -1645,6 +1646,24 @@ keep-alive缓存组件，独有的两个生命周期钩子：activated(激活) �
 2、具体名字：
    - activated路由组件被激活时触发。
    - deactivated路由组件失活时触发。
+   
+nclude 和 exclude prop 允许组件有条件地缓存。二者都可以用逗号分隔字符串、正则表达式或一个数组来表示：
+
+<!-- 逗号分隔字符串 -->
+<keep-alive include="a,b">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 正则表达式 (使用 `v-bind`) -->
+<keep-alive :include="/a|b/">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 数组 (使用 `v-bind`) -->
+<keep-alive :include="['a', 'b']">
+  <component :is="view"></component>
+</keep-alive>
+匹配首先检查组件自身的 name 选项，如果 name 选项不可用，则匹配它的局部注册名称 (父组件 components 选项的键值)。匿名组件不能被匹配。
 ```
 
 ### vuex
