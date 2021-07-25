@@ -29,28 +29,35 @@ const routes = [
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "child2" */ '../components/child3.vue'),
+      component: () => import(/* webpackChunkName: "child3" */ '../components/child3.vue'),
     }, {
       path: 'child4',
       name: 'child4',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "child2" */ '../components/child4.vue'),
+      component: () => import(/* webpackChunkName: "child4" */ '../components/child4.vue'),
     }, {
       path: 'child5',
       name: 'child5',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "child2" */ '../components/child5.vue'),
+      component: () => import(/* webpackChunkName: "child5" */ '../components/child5.vue'),
     }, {
       path: 'child6/:user',
       name: 'child6',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "child2" */ '../components/child6.vue'),
+      component: () => import(/* webpackChunkName: "child6" */ '../components/child6.vue'),
+    },{
+      path: 'child7',
+      name: 'child7',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "child6" */ '../components/child7.vue'),
     }]
   },
   {

@@ -260,7 +260,13 @@ HTML5 历史模式或 hash 模式，在 IE9 中自动降级
 
 **注意：个人理解，Vue Router就相当于生活中的路由器，上面有很多插槽，每个插槽就相当于一个路由（对应的是一个组件），路由就是一组key-value（一个插槽对应一个组件）的对应关系，多个路由，需要经过路由器的管理。 vue-router这个路由器的目的是为了实现单页面应用SPA。$router是路由器（一个项目里面只有一个，来控制那么多配置的$route），$route是路由，在routes中配置**
 
-
+**注意：
+几个注意点
+1、路由组件通常存放在pages文件夹中，一般组件通常存放在components文件夹中。
+2、通过切换，“隐藏”了的路由组件，默认是被销毁掉的，需要的时候再去挂载。
+3、每个组件都有自己的$route属性，里面存储着自己的路由信息。
+4、整个应用只有一个router，可以通过组件的$router属性获取到。
+**
 
 vue-router的实现原理
 
@@ -564,6 +570,28 @@ router.push({ path: `/user/${userId}` }) // -> /user/123
 // 这里的 params 不生效   使用name时才生效，注意，使用path时，后面是query，带的是查询参数。
 router.push({ path: '/user', params: { userId }}) // -> /user
 
+    pushChild1(){
+      this.$router.push('/child1')
+    },
+    pushChild2(){
+      this.$router.push('/child2')
+    },
+    pushChild3(){
+      this.$router.push({path:'/child3'})
+    },
+    pushChild4(){
+      this.$router.push({path:'/child4',query:{user:'4'}})
+    },
+    pushChild5(){
+      this.$router.push({name:'child5'})
+    },
+    pushChild6(){
+      this.$router.push({name:'child6',params:{user:'6'}})
+    },
+    pushChild7(){
+      this.$router.push({name:'child7',query:{user:'7'}})
+    }
+
 同样的规则也适用于 router-link 组件的 to 属性。
 **注意：同样的规则也适用于 router-link 组件的 to 属性。**
 router-link的规则如下：
@@ -585,6 +613,9 @@ router-link的规则如下：
 
     <!-- name和params 使用命名路由并使用params传参  使用 v-bind 的js对象 可以省略v-bind 记住一定要使用v-bind进行绑定，否则不会生效 -->
     <router-link :to="{name :'child6',params:{user:'6'}}">child6页面--v-bind的js表达式-对象(包含命名路由和params参数)</router-link>
+
+    <!-- name和query 使用命名路由并使用query传参  使用 v-bind 的js对象 可以省略v-bind 记住一定要使用v-bind进行绑定，否则不会生效 -->
+    <router-link :to="{name :'child7',query:{user:'7'}}">child7页面--v-bind的js表达式-对象(包含命名路由和query参数)</router-link>
 
 **注意：上面的child6对应的是 路由设置是嵌套路由里面设置动态路由，
     {

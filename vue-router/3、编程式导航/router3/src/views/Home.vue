@@ -12,6 +12,8 @@
     </hr>
     <button @click="pushChild6">child6页面--v-bind的js表达式-对象(包含命名路由和params参数)</button></br>
     </hr>
+    <button @click="pushChild7">child7页面--v-bind的js表达式-对象(包含命名路由和query参数)</button></br>
+    </hr>
     <router-view></router-view>
   </div>
 </template>
@@ -35,7 +37,7 @@ export default {
       this.$router.push({path:'/child3'})
     },
     pushChild4(){
-      this.$router.push({path:'/child3',query:{user:'4'}})
+      this.$router.push({path:'/child4',query:{user:'4'}})
     },
     pushChild5(){
       this.$router.push({name:'child5'})
@@ -43,6 +45,9 @@ export default {
     pushChild6(){
       this.$router.push({name:'child6',params:{user:'6'}})
     },
+    pushChild7(){
+      this.$router.push({name:'child7',query:{user:'7'}})
+    }
   }
 }
 </script>
