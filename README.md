@@ -1651,6 +1651,7 @@ router.push('/admin').catch(failure => {
 ```
 #### 16、keep-alive缓存路由组件
 ```
+动态组件和路由组件都可以使用
 主要用于保留组件状态或避免重新渲染。
 缓存路由组件
 1、作用：让不展示的路由组件保持挂载，不被销毁。
@@ -1666,7 +1667,7 @@ keep-alive缓存组件，独有的两个生命周期钩子：activated(激活) �
    - activated路由组件被激活时触发。
    - deactivated路由组件失活时触发。
    
-nclude 和 exclude prop 允许组件有条件地缓存。二者都可以用逗号分隔字符串、正则表达式或一个数组来表示：
+include 和 exclude prop 允许组件有条件地缓存。二者都可以用逗号分隔字符串、正则表达式或一个数组来表示：
 
 <!-- 逗号分隔字符串 -->
 <keep-alive include="a,b">
