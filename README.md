@@ -1092,9 +1092,13 @@ HTML5的History API为浏览器的全局history对象增加的扩展方法。一
 #### 9、导航守卫
 ```
 正如其名，vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。有多种机会植入路由导航过程中：全局的, 单个路由独享的, 或者组件级的。
+路由守卫
+1、作用：对路由进行权限控制
+2、分类：全局守卫（beforeEach,beforeResolve,afterEach,）、独享守卫(beforeEnter)、组件内守卫(beforeRouteLeave,beforeRouteEnter,beforeRouteUpdate)
 ```
 #### 9.1、全局前置守卫
 ```
+**注意：全局前置路由守卫----初始化的时候被调用，每次路由切换之前被调用。**
 你可以使用 router.beforeEach 注册一个全局前置守卫：
 
 const router = new VueRouter({ ... })
@@ -1141,6 +1145,7 @@ router.beforeEach((to, from, next) => {
 ```
 #### 9.3、全局后置钩子
 ```
+**注意：全局前置路由守卫----初始化的时候被调用，每次路由切换之后被调用。 它没有next参数**
 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：
 
 router.afterEach((to, from) => {
@@ -1149,6 +1154,7 @@ router.afterEach((to, from) => {
 ```
 #### 9.4、路由独享的守卫
 ```
+**注意：个人理解，之所以设置独享守卫，是因为我们有时候需要对单独的某个路由做处理，如果用全局守卫beforeEach，那每个路由都会做判断处理，这样就没有必要了。所以我们直接对要做处理的这个路由做单独处理更好。于是就有了路由独享守卫beforeEnter。**
 你可以在路由配置上直接定义 beforeEnter 守卫：
 
 const router = new VueRouter({
