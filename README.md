@@ -938,6 +938,8 @@ const router = new VueRouter({
 
 **注意：history模式利用的是HTML5新增的history.pushState方法，这个方法是向历史栈中新增一条历史记录，但是不会刷新页面，不会去请求url，所以可以模拟单页面应用。但是如果刷新页面或者直接在浏览器上输入这个url地址，会404，因为这个刷新的时候，index.html/home(例子)这个url(会带这home参数)是浏览器向服务器发送请求，去请求这个url路径上的信息，我们在后端静态服务器上只有index.html，但是没有index.html/home，所以需要后端在服务器上进行相应的配置，要不然就会404**
 
+node-express-test这个demo实例对history模式出现404的原因在后端进行了配置。
+
 路由器的两种工作模式
 1、对于一个url来说，什么是hash值？----- #及其后面的内容就是hash值。 
 2、hash值不会包含在HTTP请求中，即：hash值不会带给服务器。
