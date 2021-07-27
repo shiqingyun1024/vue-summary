@@ -2,7 +2,8 @@
   <div class="about">
     <h1>This is an about page</h1>
     <button @click="changeComponent">切换组件</button>
-    <keep-alive>
+    <!-- 加上include就只会缓存child1组件了。 -->
+    <keep-alive include="child1">
       <component :is="currentTabComponent"></component>
     </keep-alive>
   </div>

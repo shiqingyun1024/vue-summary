@@ -1660,6 +1660,12 @@ router.push('/admin').catch(failure => {
    <router-view></router-view>
 </keep-alive>
 
+keep-alive的props
+
+include - 字符串或正则表达式。只有名称匹配的组件会被缓存。
+exclude - 字符串或正则表达式。任何名称匹配的组件都不会被缓存。
+max - 数字。最多可以缓存多少组件实例。
+
 keep-alive缓存组件，独有的两个生命周期钩子：activated(激活) 和 deactivated(失活)
 两个新的生命周期钩子
 1、作用：路由组件所独有的两个钩子，用于捕获路由组件的激活状态。
@@ -1684,6 +1690,7 @@ include 和 exclude prop 允许组件有条件地缓存。二者都可以用逗�
   <component :is="view"></component>
 </keep-alive>
 匹配首先检查组件自身的 name 选项，如果 name 选项不可用，则匹配它的局部注册名称 (父组件 components 选项的键值)。匿名组件不能被匹配。
+
 ```
 
 ### vuex
