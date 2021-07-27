@@ -1672,6 +1672,8 @@ keep-alive缓存组件，独有的两个生命周期钩子：activated(激活) �
 2、具体名字：
    - activated路由组件被激活时触发。
    - deactivated路由组件失活时触发。
+
+**注意：只有keep-alive包裹的组件才会有这两个生命周期钩子函数，如果没有被包裹，则组件中的这两个生命周期不执行。组件初次渲染的时候，created，mounted，activated等生命周期钩子都会执行，但是当再次进入的时候只会触发activated钩子函数，离开的时候只会触发deactivated这个钩子函数。**
    
 include 和 exclude prop 允许组件有条件地缓存。二者都可以用逗号分隔字符串、正则表达式或一个数组来表示：
 
