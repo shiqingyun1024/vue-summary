@@ -1663,7 +1663,7 @@ router.push('/admin').catch(failure => {
 keep-alive的props
 
 include - 字符串或正则表达式。只有名称匹配的组件会被缓存。
-exclude - 字符串或正则表达式。任何名称匹配的组件都不会被缓存。
+exclude - 字符串或正则表达式。任何名称匹配的组件都不会被缓存。 exclude的优先级大于include
 max - 数字。最多可以缓存多少组件实例。
 
 keep-alive缓存组件，独有的两个生命周期钩子：activated(激活) 和 deactivated(失活)
@@ -1698,6 +1698,7 @@ include 和 exclude prop 允许组件有条件地缓存。二者都可以用逗�
   <input v-model="aliveValue" type="text" v-if="show"/>
 </keep-alive>
 
+**注意：在大型项目当中，需要缓存其中的某些页面，在路由元信息当中定义一个属性，用于控制页面是否缓存。**
 ```
 
 ### vuex
