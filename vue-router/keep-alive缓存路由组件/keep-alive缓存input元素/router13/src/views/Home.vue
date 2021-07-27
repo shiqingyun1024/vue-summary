@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <keep-alive>
+      <input type="text" v-model="aliveValue" v-if="show"/>
+    </keep-alive>
+    <button @click="isShow">切换input</button>
   </div>
 </template>
 
@@ -13,6 +16,17 @@ export default {
   name: 'Home',
   components: {
     HelloWorld
+  },
+  data(){
+    return {
+      aliveValue:'',
+      show:true
+    }
+  },
+  methods:{
+    isShow(){
+       this.show = !this.show
+    }
   }
 }
 </script>

@@ -1653,7 +1653,7 @@ router.push('/admin').catch(failure => {
 ```
 动态组件、路由组件和组件内的元素(例如input)都可以使用
 主要用于保留组件状态或避免重新渲染。
-缓存路由组件
+一、缓存路由组件
 1、作用：让不展示的路由组件保持挂载，不被销毁。
 2、具体编码：
 <keep-alive include="News">
@@ -1676,7 +1676,7 @@ keep-alive缓存组件，独有的两个生命周期钩子：activated(激活) �
 **注意：只有keep-alive包裹的组件才会有这两个生命周期钩子函数，如果没有被包裹，则组件中的这两个生命周期不执行。组件初次渲染的时候，created，mounted，activated等生命周期钩子都会执行，但是当再次进入的时候只会触发activated钩子函数，离开的时候只会触发deactivated这个钩子函数。**
    
 include 和 exclude prop 允许组件有条件地缓存。二者都可以用逗号分隔字符串、正则表达式或一个数组来表示：
-
+二、缓存动态组件（规则同样适用于路由组件）
 <!-- 逗号分隔字符串 -->
 <keep-alive include="a,b">
   <component :is="view"></component>
@@ -1692,6 +1692,11 @@ include 和 exclude prop 允许组件有条件地缓存。二者都可以用逗�
   <component :is="view"></component>
 </keep-alive>
 匹配首先检查组件自身的 name 选项，如果 name 选项不可用，则匹配它的局部注册名称 (父组件 components 选项的键值)。匿名组件不能被匹配。
+
+三、缓存input元素等--即使用v-if，缓存一样生效。
+<keep-alive :include="/a|b/">
+  <input v-model="aliveValue" type="text" v-if="show"/>
+</keep-alive>
 
 ```
 
