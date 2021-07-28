@@ -1878,6 +1878,30 @@ computed: {
 // 第二种用法，当映射的计算属性的名称与 state 的子节点名称相同时，我们也可以给 mapState 传一个字符串数组。但是要注意，数组中一定是字符串。
 computed:mapState(['count','name','age','height','subjects'])
 
-
+// 第三种用法 扩展运算符 mapState里面可以放对象，也可以放数组。
+  computed: {
+    localComputed() {
+      return "时刻努力着";
+    },
+    ...mapState({
+      count: "count",
+      age: "age",
+      height: "height",
+      subjects: "subjects",
+      name: "name",
+      myname:'name',
+      allAge(state) {
+        return state.age + this.otherAge;
+      }
+    })
+  }
+  或者
+  // 第三种用法
+  computed: {
+    localComputed() {
+      return "时刻努力着";
+    },
+    ...mapState(['count','name','age','height','subjects'])
+  }
 ```
 
