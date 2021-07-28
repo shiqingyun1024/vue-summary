@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from '../../node_modules/vue/types'
+import Vuex from '../../node_modules/vuex/types'
 
 Vue.use(Vuex)
 
