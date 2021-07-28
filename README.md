@@ -1906,5 +1906,19 @@ computed:mapState(['count','name','age','height','subjects'])
 ```
 #### 2、Getter
 ```
+有时候我们需要从 store 中的 state 中派生出一些状态，例如对列表进行过滤并计数：
+
+computed: {
+  doneTodosCount () {
+    return this.$store.state.todos.filter(todo => todo.done).length
+  }
+}
+如果有多个组件需要用到此属性，我们要么复制这个函数，或者抽取到一个共享函数然后在多处导入它——无论哪种方式都不是很理想。
+
+Vuex 允许我们在 store 中定义“getter”（可以认为是 store 的计算属性）。就像计算属性一样，getter 的返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了改变才会被重新计算。
+
+**注意：getter可以理解为是 store 的计算属性，就像计算属性一样，getter 的返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了改变才会被重新计算。主要是对state中的值做一些计算操作，然后缓存起来，只有当state中的值变化时，getter中的值才会发生变化。**
+
+Getter 接受 state 作为其第一个参数：
 ```
 
