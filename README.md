@@ -1820,6 +1820,7 @@ mapState 辅助函数
 import { mapState } from 'vuex'
 
 export default {
+  <!-- 第一种用法 -->
   // ...
   computed: mapState({
     // 箭头函数可使代码更简练
@@ -1836,9 +1837,47 @@ export default {
 }
 
 当映射的计算属性的名称与 state 的子节点名称相同时，我们也可以给 mapState 传一个字符串数组。
+<!-- 第二种用法 -->
 computed: mapState([
   // 映射 this.count 为 store.state.count
   'count'
-])
+]),
+
+对象展开运算符
+mapState 函数返回的是一个对象。我们如何将它与局部计算属性混合使用呢？通常，我们需要使用一个工具函数将多个对象合并为一个，以使我们可以将最终对象传给 computed 属性。但是自从有了对象展开运算符，我们可以极大地简化写法：
+<!-- 第三种用法 -->
+computed: {
+  localComputed () { /* ... */ },
+  // 使用对象展开运算符将此对象混入到外部对象中
+  ...mapState({
+    // ...
+  })
+}
+组件仍然保有局部状态
+使用 Vuex 并不意味着你需要将所有的状态放入 Vuex。虽然将所有的状态放到 Vuex 会使状态变化更显式和易调试，但也会使代码变得冗长和不直观。如果有些状态严格属于单个组件，最好还是作为组件的局部状态。你应该根据你的应用开发需要进行权衡和确定。
+
+**注意：总结，mapState放在computed中有三种用法，1、computed: mapState({}) 2、computed: mapState([]) 3、computed:{localComputed () { /* ... */ },...mapState({// ...})} **
+
+// 第一种用法
+  computed:mapState({
+    // 可以使用箭头函数进行返回值
+    count:state=>state.count,
+    // 可以直接使用state中定义的字符串参数，等同于name=>state.name
+    myname:'name',
+    age:'age',
+    height:'height',
+    subjects:'subjects',
+    name:'name',
+    // 为了能够使用‘this’获取局部状态，必须使用常规函数
+    allAge(state){
+       return state.age + this.otherAge
+    }
+  })
+
+
+// 第二种用法，当映射的计算属性的名称与 state 的子节点名称相同时，我们也可以给 mapState 传一个字符串数组。但是要注意，数组中一定是字符串。
+computed:mapState(['count','name','age','height','subjects'])
+
+
 ```
 
