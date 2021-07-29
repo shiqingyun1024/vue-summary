@@ -2192,5 +2192,8 @@ store.commit('increment')
 // 任何由 "increment" 导致的状态变更都应该在此刻完成。
 为了处理异步操作，让我们来看一看 Action。
 ```
+#### Action
+```
+```
 
 
