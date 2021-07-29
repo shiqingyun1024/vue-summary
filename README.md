@@ -1856,7 +1856,7 @@ computed: {
 组件仍然保有局部状态
 使用 Vuex 并不意味着你需要将所有的状态放入 Vuex。虽然将所有的状态放到 Vuex 会使状态变化更显式和易调试，但也会使代码变得冗长和不直观。如果有些状态严格属于单个组件，最好还是作为组件的局部状态。你应该根据你的应用开发需要进行权衡和确定。
 
-**注意：总结，mapState放在computed中有三种用法，1、computed: mapState({}) 2、computed: mapState([]) 3、computed:{localComputed () { /* ... */ },...mapState({// ...})} **
+**注意：总结，mapState放在computed中有三种用法，1、computed: mapState({}) 2、computed: mapState([]) 3、computed:{localComputed () { /* ... */ },...mapState({// ...})} 。最后一定要记住mapState是一个方法，接受的参数一个对象或者数组。**
 
 // 第一种用法
   computed:mapState({
@@ -2033,7 +2033,164 @@ export default {
 ```
 #### 3、Mutation
 ```
+更改 Vuex 的 store 中的状态的唯一方法是提交 mutation。Vuex 中的 mutation 非常类似于事件：每个 mutation 都有一个字符串的 事件类型 (type) 和 一个 回调函数 (handler)。这个回调函数就是我们实际进行状态更改的地方，并且它会接受 state 作为第一个参数：
 
+const store = new Vuex.Store({
+  state: {
+    count: 1
+  },
+  mutations: {
+    increment (state) {
+      // 变更状态
+      state.count++
+    }
+  }
+})
+
+你不能直接调用一个 mutation handler。这个选项更像是事件注册：“当触发一个类型为 increment 的 mutation 时，调用此函数。”要唤醒一个 mutation handler，你需要以相应的 type 调用 store.commit 方法：
+
+store.commit('increment')
+
+提交载荷（Payload）
+**注意：注意载荷(payload)这个概念，说白了就是外界传入的参数。动态的去改state里面的值，并且从外面传入相应的参数。**
+你可以向 store.commit 传入额外的参数，即 mutation 的 载荷（payload）：
+
+// ...
+mutations: {
+  increment (state, n) {
+    state.count += n
+  }
+}
+store.commit('increment', 10)
+
+在大多数情况下，载荷应该是一个对象，这样可以包含多个字段并且记录的 mutation 会更易读：
+
+// ...
+mutations: {
+  increment (state, payload) {
+    state.count += payload.amount
+  }
+}
+store.commit('increment', {
+  amount: 10
+})
+
+对象风格的提交方式（这种方式比较好用一点）
+提交 mutation 的另一种方式是直接使用包含 type 属性的对象：
+
+store.commit({
+  type: 'increment',
+  amount: 10
+})
+当使用对象风格的提交方式，整个对象都作为载荷传给 mutation 函数，因此 handler 保持不变：
+
+mutations: {
+  increment (state, payload) {
+    state.count += payload.amount
+  }
+}
+**注意：在组件中使用时，有三种方法，方法如下：**
+    // 第一种写法，直接传入一个参数
+    increment1(){
+      this.$store.commit('increment1',10)
+    },
+    // 第二种写法，传入一个对象，把参数放在对象中
+    increment2(){
+      this.$store.commit('increment2',{number:20})
+    },
+    // 第三种写法，对象风格的提交方式commit({})  根据需要选择传入的方式
+    increment3(){
+      this.$store.commit({type:'increment3',amount:20})
+    },
+    // 第四种写法，使用mapMutaions，mapMutations是一个函数，可以传入对象或者数组作为参数。（用法和mapState相同）
+    // 直接放在一个数组里面
+    ...mapMutations([
+      // 将 `this.increment4()` 映射为 `this.$store.commit('increment4',{amount:20})`
+      'increment4',
+      'increment5'
+    ]),
+    // 第四种写法的另一种写法，传入数组
+    // 相当于起一个别名
+    ...mapMutations({
+      // 将 `this.add()` 映射为 `this.$store.commit('increment6')`
+      add:'increment6'
+    })
+
+
+Mutation 需遵守 Vue 的响应规则
+既然 Vuex 的 store 中的状态是响应式的，那么当我们变更状态时，监视状态的 Vue 组件也会自动更新。这也意味着 Vuex 中的 mutation 也需要与使用 Vue 一样遵守一些注意事项：
+
+1、最好提前在你的 store 中初始化好所有所需属性。
+
+2、当需要在对象上添加新属性时，你应该
+
+- 使用 Vue.set(obj, 'newProp', 123), 或者
+
+- 以新对象替换老对象。例如，利用对象展开运算符我们可以这样写：
+
+state.obj = { ...state.obj, newProp: 123 }
+
+
+使用常量替代 Mutation 事件类型
+**注意：相当于给事件名取一个别名，然后放在一个文件中进行统一管理。**
+使用常量替代 mutation 事件类型在各种 Flux 实现中是很常见的模式。这样可以使 linter 之类的工具发挥作用，同时把这些常量放在单独的文件中可以让你的代码合作者对整个 app 包含的 mutation 一目了然：
+// mutation-types.js
+export const SOME_MUTATION = 'SOME_MUTATION'
+// store.js
+import Vuex from 'vuex'
+import { SOME_MUTATION } from './mutation-types'
+
+const store = new Vuex.Store({
+  state: { ... },
+  mutations: {
+    // 我们可以使用 ES2015 风格的计算属性命名功能来使用一个常量作为函数名
+    [SOME_MUTATION] (state) {
+      // mutate state
+    }
+  }
+})
+用不用常量取决于你——在需要多人协作的大型项目中，这会很有帮助。但如果你不喜欢，你完全可以不这样做。
+
+Mutation 必须是同步函数
+**注意：Mutation 必须是同步函数**
+**注意：为什么Mutation必须是同步函数呢？ 答：官网上是这样说的，因为vuex是状态管理器，它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。如果mutation是异步函数，mutation 触发的时候，回调函数还没有被调用，不知道什么时候回调函数实际上被调用--- 实质上任何回调函数中进行的状态的改变都是不可追踪的。
+个人理解：如果mutation是异步函数，那么我们是不知道异步函数什么时候会执行的，因为它被放在任务队列里面了。所以在异步函数里面，state中的值什么改变，我们是未知的，这个时候就追踪不到state中值的改变，那vuex就没法在管理所有的状态了。**
+一条重要的原则就是要记住 mutation 必须是同步函数。为什么？请参考下面的例子：
+mutations: {
+  someMutation (state) {
+    api.callAsyncMethod(() => {
+      state.count++
+    })
+  }
+}
+现在想象，我们正在 debug 一个 app 并且观察 devtool 中的 mutation 日志。每一条 mutation 被记录，devtools 都需要捕捉到前一状态和后一状态的快照。然而，在上面的例子中 mutation 中的异步函数中的回调让这不可能完成：因为当 mutation 触发的时候，回调函数还没有被调用，devtools 不知道什么时候回调函数实际上被调用——实质上任何在回调函数中进行的状态的改变都是不可追踪的。
+
+在组件中提交 Mutation
+你可以在组件中使用 this.$store.commit('xxx') 提交 mutation，或者使用 mapMutations 辅助函数将组件中的 methods 映射为 store.commit 调用（需要在根节点注入 store）。
+
+import { mapMutations } from 'vuex'
+
+export default {
+  // ...
+  methods: {
+    ...mapMutations([
+      'increment', // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+
+      // `mapMutations` 也支持载荷：
+      'incrementBy' // 将 `this.incrementBy(amount)` 映射为 `this.$store.commit('incrementBy', amount)`
+    ]),
+    ...mapMutations({
+      add: 'increment' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+    })
+  }
+}
+
+下一步：Action
+在 mutation 中混合异步调用会导致你的程序很难调试。例如，当你调用了两个包含异步回调的 mutation 来改变状态，你怎么知道什么时候回调和哪个先回调呢？这就是为什么我们要区分这两个概念。在 Vuex 中，mutation 都是同步事务：
+
+store.commit('increment')
+// 任何由 "increment" 导致的状态变更都应该在此刻完成。
+为了处理异步操作，让我们来看一看 Action。
 ```
 
 
