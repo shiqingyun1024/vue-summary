@@ -1995,6 +1995,41 @@ export default {
   doneCount: 'doneTodosCount'
 })
 
+在组件中使用mapGetters有三种简洁的用法
+  // 第一种用法
+  computed:mapGetters({
+        // 可以设置别名
+        numbers:'numbersFilter',
+        // 可以设置别名
+        length:'getNumbersFilterLength',
+        // 返回的是一个函数，然后再在使用getNumbersById时传入相应的参数 getNumbersById(8)
+        getNumbersById:'getNumberById'
+  }),
+
+  // 第二种用法，直接传入一个数组，数组中是对应的参数名
+  computed:mapGetters(['numbersFilter','getNumbersFilterLength','getNumberById']),
+
+  // 第三种用法，使用扩展运算符， 如果computed中还定义了其他的参数，和mapGetters一块混合使用
+  computed:{
+    localComputed(){
+       return 2*3
+    },
+    ...mapGetters({
+        // 可以设置别名
+        numbers:'numbersFilter',
+        // 可以设置别名
+        length:'getNumbersFilterLength',
+        // 返回的是一个函数，然后再在使用getNumbersById时传入相应的参数 getNumbersById(8)
+        getNumbersById:'getNumberById'
+    }),
+  },
+  或者
+  computed:{
+    localComputed(){
+       return 2*3
+    },
+    ...mapGetters(['numbersFilter','getNumbersFilterLength','getNumberById'])
+  },
 
 ```
 
