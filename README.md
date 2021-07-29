@@ -2184,6 +2184,26 @@ export default {
     })
   }
 }
+**注意：在组件中的应用如下：直接在使用时传参。
+    <button @click="increment4({amount:30})">increment4</button>
+    <br>
+    <button @click="increment5({amount:40})">increment5</button>
+    <br>
+    <button @click="add({amount:50})">increment6</button>
+    <br>
+    // 第四种写法，使用mapMutaions（用法和mapState相同）
+    // 直接放在一个数组里面
+    ...mapMutations([
+      // 将 `this.increment4()` 映射为 `this.$store.commit('increment4',{amount:20})`
+      'increment4',
+      'increment5'
+    ]),
+    // 相当于起一个别名
+    ...mapMutations({
+      // 将 `this.add()` 映射为 `this.$store.commit('increment6')`
+      add:'increment6'
+    })
+**    
 
 下一步：Action
 在 mutation 中混合异步调用会导致你的程序很难调试。例如，当你调用了两个包含异步回调的 mutation 来改变状态，你怎么知道什么时候回调和哪个先回调呢？这就是为什么我们要区分这两个概念。在 Vuex 中，mutation 都是同步事务：
@@ -2194,6 +2214,39 @@ store.commit('increment')
 ```
 #### Action
 ```
+Action 类似于 mutation，不同在于：
+
+Action 提交的是 mutation，而不是直接变更状态。
+Action 可以包含任意异步操作。
+
+**注意：1、Action 提交的是 mutation，而不是直接变更状态。2、Action 可以包含任意异步操作。**
+
+让我们来注册一个简单的 action：
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  },
+  actions: {
+    increment (context) {
+      context.commit('increment')
+    }
+  }
+})
+
+Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，因此你可以调用 context.commit 提交一个 mutation，或者通过 context.state 和 context.getters 来获取 state 和 getters。当我们在之后介绍到 Modules 时，你就知道 context 对象为什么不是 store 实例本身了。
+
+分发 Action
+Action 通过 store.dispatch 方法触发：
+
+store.dispatch('increment')
+乍一眼看上去感觉多此一举，我们直接分发 mutation 岂不更方便？实际上并非如此，还记得 mutation 必须同步执行这个限制么？Action 就不受约束！我们可以在 action 内部执行异步操作：
+
+
 ```
 
 
