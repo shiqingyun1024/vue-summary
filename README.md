@@ -2597,4 +2597,90 @@ modules: {
     }
   }
 }
+
+在带命名空间的模块注册全局 action
+若需要在带命名空间的模块注册全局 action，你可添加 root: true，并将这个 action 的定义放在函数 handler 中。例如：
+
+{
+  actions: {
+    someOtherAction ({dispatch}) {
+      dispatch('someAction')
+    }
+  },
+  modules: {
+    foo: {
+      namespaced: true,
+
+      actions: {
+        someAction: {
+          root: true,
+          handler (namespacedContext, payload) { ... } // -> 'someAction'
+        }
+      }
+    }
+  }
+}
+#带命名空间的绑定函数
+当使用 mapState, mapGetters, mapActions 和 mapMutations 这些函数来绑定带命名空间的模块时，写起来可能比较繁琐：
+
+computed: {
+  ...mapState({
+    a: state => state.some.nested.module.a,
+    b: state => state.some.nested.module.b
+  })
+},
+methods: {
+  ...mapActions([
+    'some/nested/module/foo', // -> this['some/nested/module/foo']()
+    'some/nested/module/bar' // -> this['some/nested/module/bar']()
+  ])
+}
+对于这种情况，你可以将模块的空间名称字符串作为第一个参数传递给上述函数，这样所有绑定都会自动将该模块作为上下文。于是上面的例子可以简化为：
+
+computed: {
+  ...mapState('some/nested/module', {
+    a: state => state.a,
+    b: state => state.b
+  })
+},
+methods: {
+  ...mapActions('some/nested/module', [
+    'foo', // -> this.foo()
+    'bar' // -> this.bar()
+  ])
+}
+而且，你可以通过使用 createNamespacedHelpers 创建基于某个命名空间辅助函数。它返回一个对象，对象里有新的绑定在给定命名空间值上的组件绑定辅助函数：
+
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('some/nested/module')
+
+export default {
+  computed: {
+    // 在 `some/nested/module` 中查找
+    ...mapState({
+      a: state => state.a,
+      b: state => state.b
+    })
+  },
+  methods: {
+    // 在 `some/nested/module` 中查找
+    ...mapActions([
+      'foo',
+      'bar'
+    ])
+  }
+}
+#给插件开发者的注意事项
+如果你开发的插件（Plugin）提供了模块并允许用户将其添加到 Vuex store，可能需要考虑模块的空间名称问题。对于这种情况，你可以通过插件的参数对象来允许用户指定空间名称：
+
+// 通过插件的参数对象得到空间名称
+// 然后返回 Vuex 插件函数
+export function createPlugin (options = {}) {
+  return function (store) {
+    // 把空间名字添加到插件模块的类型（type）中去
+    const namespace = options.namespace || ''
+    store.dispatch(namespace + 'pluginAction')
+  }
+}
 ```
