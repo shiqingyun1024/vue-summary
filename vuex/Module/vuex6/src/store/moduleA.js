@@ -3,7 +3,10 @@ export default {
         countA:1
     }),
     getters:{
-        doubleCountA(state){
+        // 第二个参数必须为getters，第三个参数为全局根节点状态
+        doubleCountA(state,getters,rootState){
+            console.log(getters);
+            console.log(rootState);
             return state.countA*2
         }
     },
@@ -14,7 +17,8 @@ export default {
         }
     },
     actions:{
-       asyncIncrementA({commit},payload){
+       asyncIncrementA({commit,rootState},payload){
+           console.log(rootState);
            commit('incrementA',payload)
        }
     }

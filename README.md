@@ -2471,19 +2471,26 @@ const store = new Vuex.Store({
 store.state.a // -> moduleA 的状态
 store.state.b // -> moduleB 的状态
 
-**注意：如果组件中要使用moduleA中的state值，===> this.$store.state.a.countA。如果要使用moduleA中的getters值，===> this.$store.getters.doubleCountA。
+**注意：如果组件中要使用moduleA中的state值，===> this.$store.state.a.countA。
+       如果要使用moduleA中的getters值，===> this.$store.getters.doubleCountA。
+       如果要使用moduleA中的mutations，===> this.$store.commit('incrementA',{count:10})。
+       如果要使用moduleA中的actions，===> this.$store.dispatch('asyncIncrementA',{count:16})。
+  computed：
     countA(){
       // 记住一定要加state
       return this.$store.state.a.countA
-    },
-    countB(){
-      // 记住一定要加state
-      return this.$store.state.b.countB
     },
     getDoubleCountA(){
       // console.log(this.$store.getters);
       return this.$store.getters.doubleCountA
     }
+  methods：
+    changeCountA(){
+      this.$store.commit('incrementA',{count:10})
+    },
+    asyncCountA(){
+      this.$store.dispatch('asyncIncrementA',{count:16})
+    },
 **    
 
 模块的局部状态
