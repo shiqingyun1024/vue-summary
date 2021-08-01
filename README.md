@@ -2492,14 +2492,6 @@ store.state.b // -> moduleB 的状态
       this.$store.dispatch('asyncIncrementA',{count:16})
     },
 **   
-**注意：增加namespaced之后，
-       如果组件中要使用moduleA中的state值，===> this.$store.state.a.countA。
-       如果要使用moduleA中的getters值，===> this.$store.getters['a/doubleCountA']。
-       
-    countA(){
-      // 记住一定要加state
-      return this.$store.state.a.countA
-    },。** 
 
 模块的局部状态
 对于模块内部的 mutation 和 getter，接收的第一个参数是模块的局部状态对象。
@@ -2591,6 +2583,30 @@ const store = new Vuex.Store({
 })
 启用了命名空间的 getter 和 action 会收到局部化的 getter，dispatch 和 commit。换言之，你在使用模块内容（module assets）时不需要在同一模块内额外添加空间名前缀。更改 namespaced 属性后不需要修改模块内的代码。
 
+**注意：增加namespaced之后，
+       如果组件中要使用moduleA中的state值，===> this.$store.state.a.countA。
+       如果要使用moduleA中的getters值，===> this.$store.getters['a/doubleCountA']。
+       如果要使用moduleA中的mutations，===> this.$store.commit('a/incrementA',{count:10})。
+       如果要使用moduleA中的actions，===> this.$store.dispatch('b/asyncIncrementA',{count:16})。
+  computed：
+    countA(){
+      // 记住一定要加state，使用state的方式没有什么改变
+      return this.$store.state.a.countA
+    },
+    getDoubleCountA(){
+      // getters里面的方法变成通过路径去获取了
+      return this.$store.getters['a/doubleCountA']
+    }
+  methods：
+    changeCountA(){
+      // mutations里面的方法变成通过路径去获取了
+      this.$store.commit('a/incrementA',{count:10})
+    },
+    asyncCountA(){
+      // actions里面的方法变成通过路径去获取了
+      this.$store.dispatch('a/asyncIncrementA',{count:16})
+    }
+** 
 
 #在带命名空间的模块内访问全局内容（Global Assets）
 如果你希望使用全局 state 和 getter，rootState 和 rootGetters 会作为第三和第四参数传入 getter，也会通过 context 对象的属性传入 action。

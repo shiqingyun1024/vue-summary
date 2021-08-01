@@ -31,16 +31,16 @@ export default {
   },
   methods:{
     changeCountA(){
-      this.$store.commit('incrementA',{count:10})
+      this.$store.commit('a/incrementA',{count:10})
     },
     asyncCountA(){
-      this.$store.dispatch('asyncIncrementA',{count:16})
+      this.$store.dispatch('a/asyncIncrementA',{count:16})
     },
     changeCountB(){
-      this.$store.commit('incrementB',{count:20})
+      this.$store.commit('b/incrementB',{count:20})
     },
     asyncCountB(){
-      this.$store.dispatch('asyncIncrementB',{count:12})
+      this.$store.dispatch('b/asyncIncrementB',{count:12})
     },
   }
 }
