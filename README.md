@@ -2471,6 +2471,21 @@ const store = new Vuex.Store({
 store.state.a // -> moduleA 的状态
 store.state.b // -> moduleB 的状态
 
+**注意：如果组件中要使用moduleA中的state值，===> this.$store.state.a.countA。如果要使用moduleA中的getters值，===> this.$store.getters.doubleCountA。
+    countA(){
+      // 记住一定要加state
+      return this.$store.state.a.countA
+    },
+    countB(){
+      // 记住一定要加state
+      return this.$store.state.b.countB
+    },
+    getDoubleCountA(){
+      // console.log(this.$store.getters);
+      return this.$store.getters.doubleCountA
+    }
+**    
+
 模块的局部状态
 对于模块内部的 mutation 和 getter，接收的第一个参数是模块的局部状态对象。
 

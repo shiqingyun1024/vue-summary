@@ -2,11 +2,19 @@ export default {
     state:()=>({
         countB:2
     }),
-    getters:{},
+    getters:{
+        doubleCountB(state){
+            return state.countB*2
+        }
+    },
     mutations:{
         incrementB(state,paylaod){
             state.countB += paylaod.count
         }
     },
-    actions:{},
+    actions:{
+        asyncIncrementB({commit},payload){
+            commit('incrementB',payload)
+        }
+    },
 }
