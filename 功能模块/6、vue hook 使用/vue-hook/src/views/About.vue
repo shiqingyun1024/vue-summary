@@ -1,9 +1,11 @@
 <template>
   <div class="about">
     <h1>This is an about page</h1>
+    <child1 @hook:mounted="childMountedHandle"></child1>
   </div>
 </template>
 <script>
+import child1 from '@/components/child1.vue'
 export default {
   name:'about',
   data(){
@@ -24,6 +26,11 @@ export default {
       clearInterval(this.timer);
       this.timer = null;
     })
+  },
+  methods:{
+    childMountedHandle(){
+      
+    }
   }
 }
 </script>
