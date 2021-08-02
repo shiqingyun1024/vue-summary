@@ -71,6 +71,8 @@ let loading = {
 
 Vue.prototype.eventbus = new Vue()
 
+**注意：可以把事件总线简单理解为一个订阅发布的插件。**
+
 child1组件中 this.eventbus.$emit('changename',this.child1name)
 child2组件中  created(){
     this.eventbus.$on('changename',(name)=>{

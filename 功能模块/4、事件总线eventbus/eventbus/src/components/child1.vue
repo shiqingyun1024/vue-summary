@@ -24,9 +24,11 @@ export default {
   },
   methods:{
      change(){
+        console.log('emit');
          this.child1name = '小花'
          this.eventbus.$emit('changename',this.child1name)
          this.$emit('ChangeChild','子组件1','子组件2')
+         this.$emit('ChangeChild2','子组件1','子组件2')
      }
   }
 }

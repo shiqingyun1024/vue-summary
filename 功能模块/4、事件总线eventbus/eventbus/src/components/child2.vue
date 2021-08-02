@@ -16,8 +16,19 @@ export default {
      }
   },
   created(){
+    console.log('on');
     this.eventbus.$on('changename',(name)=>{
        this.child2name = name
+    })
+    this.$on('ChangeChild2',(params)=>{
+      console.log(123);
+      console.log(params);
+    })
+  },
+  mounted(){
+    this.$on('ChangeChild2',(params)=>{
+      console.log(123);
+      console.log(params);
     })
   }
 }

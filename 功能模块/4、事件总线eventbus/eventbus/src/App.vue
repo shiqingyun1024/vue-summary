@@ -14,17 +14,23 @@ export default {
     child1,
     child2,
   },
+  created() {
+    this.$on("ChangeChild2", (params) => {
+      console.log(123);
+      console.log(params);
+    });
+  },
   data() {
     return {
       name: "小黄",
     };
   },
-  methods:{
-    childChange(...value){
+  methods: {
+    childChange(...value) {
       console.log(value);
-      console.log('父组件')
-    }
-  }
+      console.log("父组件");
+    },
+  },
 };
 </script>
 <style lang="scss">
