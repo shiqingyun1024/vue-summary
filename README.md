@@ -73,6 +73,9 @@ Vue.prototype.eventbus = new Vue()
 
 **注意：可以把事件总线简单理解为一个订阅发布的插件。**
 
+在这里，我有两个疑问，第一个疑问是子组件向父组件传参的原理，说白了就是子组件通过$emit向父组件传参，父组件是怎么接收的，这里面的过程和原理？答：在《深入浅出vue.js》的14.5中可以找到答案。第二个疑问是：为什么不直接使用vue中的$on和$emit作为eventbus的事件总线？答：
+
+
 child1组件中 this.eventbus.$emit('changename',this.child1name)
 child2组件中  created(){
     this.eventbus.$on('changename',(name)=>{
