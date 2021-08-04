@@ -1736,14 +1736,18 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+**注意：注意注释，注释是自己的理解。**
 const store = new Vuex.Store({
-  state: {
+  state: {  // 相当于组件中的data ==>data
     count: 0
   },
-  mutations: {
-    increment (state) {
+  mutations: {  // 相当于组件中的method，同步更改state中的数据
+    increment (state) { 
       state.count++
     }
+  },
+  actions:{  // 异步操作完后将结果提交给mutations，主要是实现了异步操作。
+
   }
 })
 
