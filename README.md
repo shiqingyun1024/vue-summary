@@ -257,7 +257,53 @@ methods中 getChild3(...parameters){
 相当于<input type="text" :value="username2" @input="username2 = $event.target.value"/>
 
 ```
+#### 8、vue.use的原理理解
+```
+源码分析
+toArray 源码
 
+export function toArray (list: any, start?: number): Array<any> {
+  start = start || 0
+  let i = list.length - start
+  const ret: Array<any> = new Array(i)
+  while (i--) {
+    ret[i] = list[i + start]
+  }
+  return ret
+}
+
+Vue.use源码
+
+import { toArray } from '../util/index'
+export function initUse (Vue: GlobalAPI) {
+  Vue.use = function (plugin: Function | Object) {
+    const installedPlugins = (this._installedPlugins || (this._installedPlugins = []))
+    if (installedPlugins.indexOf(plugin) > -1) {
+      return this
+    }
+
+    // additional parameters
+    const args = toArray(arguments, 1)
+    // **注意：在这一步把Vue放在了参数第一位，所以install或者function的第一个参数是Vue。**
+    args.unshift(this)
+    if (typeof plugin.install === 'function') {
+      plugin.install.apply(plugin, args)
+    } else if (typeof plugin === 'function') {
+      plugin.apply(null, args)
+    }
+    installedPlugins.push(plugin)
+    return this
+  }
+}
+从源码中我们可以发现 vue 首先判断这个插件是否被注册过，不允许重复注册，并且接收的 plugin 参数的限制是 Function | Object 两种类型。
+对于这两种类型有不同的处理。
+首先将我们传入的参数整理成数组： const args = toArray(arguments, 1)；
+再将 Vue 对象添加到这个数组的起始位置 args.unshift(this) ,这里的 this 指向 Vue 对象；所以我们上面的例子打印的第一个参数都是Vue对象
+如果我们传入的 plugin(Vue.use的第一个参数) 的 install 是一个方法。也就是说如果我们传入一个对象，对象中包含 install 方法，那么我们就调用这个 plugin 的 install 方法并将整理好的数组当成参数传入 install 方法中， plugin.install.apply(plugin, args)；
+如果我们传入的 plugin 就是一个函数,那么我们就直接调用这个函数并将整理好的数组当成参数传入， plugin.apply(null, args)；
+之后给这个插件添加至已经添加过的插件数组中，标示已经注册过 installedPlugins.push(plugin)；
+最后返回 Vue 对象。
+```
 ### vue-router
 ```
 **声明： 注意： 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调**
