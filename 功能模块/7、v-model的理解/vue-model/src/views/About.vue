@@ -17,6 +17,7 @@
     <input type="radio" id="john" value="John" v-model="checkedName"/>
     <label for="john">John</label>
     <p>checkedName:{{checkedName}}</p>
+    </br>
     <!-- v-model等同于下面 :checked和@change，是一个语法糖 这里注意一定要加name属性，name属性是用来分组的，这样就实现了单选。-->
     <input type="radio" id="jack" value="Jack" name="checkedName2" :checked="checkedName2=='jack'" @change="checkedName2=$event.target.value"/>
     <label for="jack">Jack</label>
@@ -26,14 +27,27 @@
     </br>
     
     <!-- type为checkbox -->
-    <input type="checkbox" id="checkbox" v-model="checked" />
-    <label for="checkbox">{{ checked }}</label>
-    <br />
-    <br />
-    <input type="checkbox" id="checkbox2" :value="checked2" @change="change" />
-    <label for="checkbox2">{{ checked2 }}</label>
-    <br />
-    <br />
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames }}</span>
+    </br>
+    </br>
+    <!-- v-model等同于下面 :checked和@change，是一个语法糖 这里注意一定要加name属性，name属性是用来分组的，这样就实现了在一组内多选。 :checked="checkedNames2.includes('Jack')"-->
+    <input type="checkbox" id="jack2" value="Jack" name="checkedNames"  @change="change(checkedNames2,$event)">
+    <label for="jack2">Jack</label>
+    <input type="checkbox" id="john2" value="John" name="checkedNames" v-model="checkedNames2">
+    <label for="john2">John</label>
+    <input type="checkbox" id="mike2" value="Mike" name="checkedNames" v-model="checkedNames2">
+    <label for="mike2">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames2 }}</span>
+    </br>
+
 
     <!-- type="radio" -->
     <!-- <input type="radio" id="jack" value="Jack" @change="checkedName = $event.target.value"/>
@@ -69,15 +83,19 @@ export default {
       checked: false,
       checked2: false,
       checkedNames: [],
+      checkedNames2: [],
     };
   },
   methods: {
     // checked2=$event.target.value
-    change(e) {
-      {
-        console.log(e.target.value);
-      }
-    },
+    change(checkedNames2,e) {
+      console.log(checkedNames2);
+      console.log(e);
+      console.log(e.target.value);
+      let index = checkedNames2.findIndex(item=>item == e.target.value);
+      console.log(index);
+      index=== -1?checkedNames2.push(e.target.value): checkedNames2.splice(index,1)
+    }
   },
 };
 </script>
