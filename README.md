@@ -253,12 +253,8 @@ methods中 getChild3(...parameters){
 ```
 首先要清楚，v-model是vue的内置指令，它是一个语法糖，v-model，
 先看一下下面的这个例子：
-<input type="text" v-model="username" />
-相当于<input
-      type="text"
-      :value="username2"
-      @input="username2 = $event.target.value"
-    />
+     <input type="text" v-model="username" />
+相当于<input type="text" :value="username2" @input="username2 = $event.target.value"/>
 
 ```
 
