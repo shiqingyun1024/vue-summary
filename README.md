@@ -1,6 +1,8 @@
 # vue-summary
 vue的相关总结-- 包括vue2.x、vue3.0的学习笔记和相关的demo
 
+**声明： 注意： 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调**
+
 ### 1.深入浅出vue.js
 ```
 《深入浅出vue.js》这本书相关的总结
@@ -251,6 +253,8 @@ methods中 getChild3(...parameters){
 
 #### 7、v-model的原理理解
 ```
+**注意：v-model是vue的内置指令，它是一个语法糖，v-model。是:value和@input，或者:value和@change，或者:checked和@change的语法糖。所以用在组件中，相当于有了value这个props属性和change或者input的自定义事件。**
+
 首先要清楚，v-model是vue的内置指令，它是一个语法糖，v-model，
 
 v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
@@ -339,7 +343,7 @@ select 字段将 value 作为 prop 并将 change 作为事件。vc
 
     .trim 如果要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符：
     <input v-model.trim="msg">
-    
+
 
 ```
 #### 8、vue.use的原理理解
@@ -393,6 +397,7 @@ export function initUse (Vue: GlobalAPI) {
 ```
 **声明： 注意： 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调**
 
+**注意：vue-router这个路由器的目的是为了实现单页面应用SPA。vue-router这个路由器的目的是为了实现单页面应用SPA。vue-router这个路由器的目的是为了实现单页面应用SPA。重要的事情说三遍。**
 **注意：路由跳转可以使用<router-link></router-link>或者this.$router.push
 但是一定要有路由出口<router-view></router-view>**
 

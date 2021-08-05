@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+import home from './Home.vue'
 export default {
   name: "about",
   data() {
@@ -139,5 +140,9 @@ export default {
         : checkedNames2.splice(index, 1);
     }
   },
+  mounted(){
+    console.log("-----------------------------");
+    console.log(home);
+  }
 };
 </script>
