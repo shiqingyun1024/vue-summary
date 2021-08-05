@@ -11,9 +11,9 @@
     <p>选择了 {{selected2.value}}</p>
     </br>
     </br>
-    <tab-check :planList="planList" v-model="selected3"></tab-check>
+    <!-- <tab-check :planList="planList" v-model="selected3"></tab-check>
     <p>选择了 {{selected3.label}}</p>
-    <p>选择了 {{selected3.value}}</p>
+    <p>选择了 {{selected3.value}}</p> -->
   </div>
 </template>
 
