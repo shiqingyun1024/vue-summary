@@ -38,6 +38,7 @@
     </br>
     </br>
     <!-- v-model等同于下面 :checked和@change，是一个语法糖 这里注意一定要加name属性，name属性是用来分组的，这样就实现了在一组内多选。 :checked="checkedNames2.includes('Jack')"-->
+    <!-- 可以简单记作：cc（checked和change） 或者3c（checkbox，checked，change） -->
     <input type="checkbox" id="jack2" value="Jack" name="checkedNames"  @change="change(checkedNames2,$event)">
     <label for="jack2">Jack</label>
     <input type="checkbox" id="john2" value="John" name="checkedNames" v-model="checkedNames2">
@@ -47,28 +48,65 @@
     <br>
     <span>Checked names: {{ checkedNames2 }}</span>
     </br>
+    </br>
 
+    <!-- 选择框 -->
+    <!-- 单选时 -->
+    <div id="example-5">
+      <select v-model="selected">
+        <option disabled value="">请选择</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      </br>
+      <span>Selected: {{ selected }}</span>
+    </div>
+    </br>
+    </br>
+    <!-- v-model等同于下面 :value和@change，是一个语法糖-->
+    <!-- 可以简单记作：vc（value和change） -->
+     <div id="example-6">
+      <select :value="selected2" @change="selected2=$event.target.value">
+        <option disabled value="">请选择</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      </br>
+      <span>Selected2: {{ selected2 }}</span>
+    </div>
+    </br>
 
-    <!-- type="radio" -->
-    <!-- <input type="radio" id="jack" value="Jack" @change="checkedName = $event.target.value"/>
-    <label for="jack">Jack</label>
-    <input type="radio" id="john" value="John" v-model="checkedName" />
-    <label for="john">John</label>
-    <input type="radio" id="mike" value="Mike" v-model="checkedNam" />
-    <label for="mike">Mike</label>
-    <br />
-    <br />
-    <span>Checked names: {{ checkedName }}</span>
-    <br />
-    <br />
-    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames" />
-    <label for="jack">Jack</label>
-    <input type="checkbox" id="john" value="John" v-model="checkedNames" />
-    <label for="john">John</label>
-    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames" />
-    <label for="mike">Mike</label>
-    <br />
-    <span>Checked names: {{ checkedNames }}</span> -->
+    <!-- 选择框 -->
+    <!-- 多选时 按住 -->
+    <!-- multiple 属性规定可同时选择多个选项。
+         在不同操作系统中，选择多个选项的差异：
+         对于 windows：按住 Ctrl 按钮来选择多个选项
+         对于 Mac：按住 command 按钮来选择多个选项 -->
+    <div id="example-7">
+      <select multiple v-model="muselected" style="width: 50px;" >
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+        <option>D</option>
+      </select>
+      </br>
+      <span>multiple Selected: {{ muselected }}</span>
+    </div>
+    </br>
+    <!-- v-model等同于下面 :value和@change，是一个语法糖-->
+    <!-- 可以简单记作：vc（value和change） -->
+    <div id="example-8">
+      <select multiple :value="muselected2" @change="change(muselected2,$event)" style="width: 50px;" >
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+        <option>D</option>
+      </select>
+      </br>
+      <span>multiple Selected2: {{ muselected2 }}</span>
+    </div>
   </div>
 </template>
 <script>
@@ -80,21 +118,25 @@ export default {
       username2: "",
       checkedName: "",
       checkedName2: "",
-      checked: false,
-      checked2: false,
       checkedNames: [],
       checkedNames2: [],
+      selected:'',
+      selected2:'',
+      muselected:[],
+      muselected2:[],
     };
   },
   methods: {
     // checked2=$event.target.value
-    change(checkedNames2,e) {
+    change(checkedNames2, e) {
       console.log(checkedNames2);
       console.log(e);
       console.log(e.target.value);
-      let index = checkedNames2.findIndex(item=>item == e.target.value);
+      let index = checkedNames2.findIndex((item) => item == e.target.value);
       console.log(index);
-      index=== -1?checkedNames2.push(e.target.value): checkedNames2.splice(index,1)
+      index === -1
+        ? checkedNames2.push(e.target.value)
+        : checkedNames2.splice(index, 1);
     }
   },
 };

@@ -252,10 +252,81 @@ methods中 getChild3(...parameters){
 #### 7、v-model的原理理解
 ```
 首先要清楚，v-model是vue的内置指令，它是一个语法糖，v-model，
-先看一下下面的这个例子：
-     <input type="text" v-model="username" />
-相当于<input type="text" :value="username2" @input="username2 = $event.target.value"/>
 
+v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
+text 和 textarea 元素使用 value property 和 input 事件； vi
+checkbox 和 radio 使用 checked property 和 change 事件；cc
+select 字段将 value 作为 prop 并将 change 作为事件。vc
+
+先看一下下面的这个例子：
+     type类型为text时：v-model 等同于 :value和@input，是一个语法糖
+     <input type="text" v-model="username" />
+相当于<input type="text" :value="username2" @input="username = $event.target.value"/>
+
+     type类型为radio（单选框）时：v-model 等同于 :checked和@change，是一个语法糖，这里注意一定要加name属性，name属性是用来分组的，这样就实现了单选
+     <input type="radio" id="jack" value="Jack" v-model="checkedName"/>
+相当于<input type="radio" id="jack" value="Jack" name="checkedName2" :checked="checkedName2=='jack'" @change="checkedName2=$event.target.value"/>
+
+     type类型为checkbox（多选框）时：v-model 等同于 :checked和@change，是一个语法糖，这里注意一定要加name属性，name属性是用来分组的，这样就实现了多选
+     <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+相当于<input type="checkbox" id="jack2" value="Jack" name="checkedNames"  @change="change(checkedNames2,$event)">
+      change(checkedNames2,e) {
+        let index = checkedNames2.findIndex(item=>item == e.target.value);
+        index=== -1?checkedNames2.push(e.target.value): checkedNames2.splice(index,1)
+      }
+
+    <!-- 选择框 -->
+    <!-- 单选时 -->
+    <div id="example-5">
+      <select v-model="selected">
+        <option disabled value="">请选择</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      </br>
+      <span>Selected: {{ selected }}</span>
+    </div>
+    相当于
+    <div id="example-6">
+      <select :value="selected2" @change="selected2=$event.target.value">
+        <option disabled value="">请选择</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      </br>
+      <span>Selected2: {{ selected2 }}</span>
+    </div>
+
+     <!-- 选择框 -->
+     <!-- 多选时 -->
+     <div id="example-7">
+      <select multiple v-model="muselected" style="width: 50px;" >
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+        <option>D</option>
+      </select>
+      </br>
+      <span>multiple Selected: {{ muselected }}</span>
+    </div>
+    相当于
+    <div id="example-8">
+      <select multiple :value="muselected2" @change="change(muselected2,$event)" style="width: 50px;" >
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+        <option>D</option>
+      </select>
+      </br>
+      <span>multiple Selected2: {{ muselected2 }}</span>
+    </div>
+
+    change(checkedNames2,e) {
+      let index = checkedNames2.findIndex(item=>item == e.target.value);
+      index=== -1?checkedNames2.push(e.target.value): checkedNames2.splice(index,1);
+    }
 ```
 #### 8、vue.use的原理理解
 ```
