@@ -253,7 +253,7 @@ methods中 getChild3(...parameters){
 
 #### 7、v-model的原理理解
 ```
-**注意：v-model是vue的内置指令，它是一个语法糖，v-model。是:value和@input，或者:value和@change，或者:checked和@change的语法糖。所以用在组件中，相当于有了value这个props属性和change或者input的自定义事件。**
+**注意：v-model是vue的内置指令，它是一个语法糖，v-model。是:value和@input (组件中默认是这个)，或者:value和@change，或者:checked和@change的语法糖。所以用在组件中，相当于有了value这个props属性和change或者input的自定义事件。**
 
 首先要清楚，v-model是vue的内置指令，它是一个语法糖，v-model，
 
