@@ -2,16 +2,20 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <tab-bar :planList="planList" v-model="selected"></tab-bar>
-    <tab-slider :planList="planList" v-model="selected"></tab-slider>
     <p>选择了 {{selected.label}}</p>
     <p>选择了 {{selected.value}}</p>
+    </br>
+    </br>
+    <tab-slider :planList="planList" v-model="selected2"></tab-slider>
+    <p>选择了 {{selected2.label}}</p>
+    <p>选择了 {{selected2.value}}</p>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import tabBar from '@/components/tab-bar.vue'
-import tabSlider from '@/components/tab-silder.vue'
+import tabSlider from '@/components/tab-slider.vue'
 export default {
   name: 'Home',
   components: {
@@ -26,6 +30,7 @@ export default {
         {label:'个人中心',value:'center'}
       ],
       selected:{label:'',value:''},
+      selected2:{label:'',value:''},
     }
   }
 }

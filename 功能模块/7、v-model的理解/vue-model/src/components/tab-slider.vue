@@ -10,7 +10,10 @@
 
 <script>
 export default {
-  name: "tab-bar",
+  name: "tab-slider",
+  model:{
+    event:'change'
+  },
   props: {
     planList: {
       type: Array,
@@ -21,7 +24,8 @@ export default {
   },
   methods: {
     selectBar(index) {
-        this.$emit('input',this.planList[index])
+        this.$emit('change',this.planList[index])
+        // this.$emit('input',this.planList[index])
     },
   },
 };

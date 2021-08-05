@@ -255,10 +255,12 @@ methods中 getChild3(...parameters){
 ```
 **注意：v-model是vue的内置指令，它是一个语法糖，v-model。是:value和@input (组件中默认是这个)，或者:value和@change，或者:checked和@change的语法糖。所以用在组件中，相当于有了value这个props属性和change或者input的自定义事件。**
 
+**注意：组件中默认是:value和@input，如果要自定义，在model中定义prop和event，model:{prop:'',event:''}**
+
 首先要清楚，v-model是vue的内置指令，它是一个语法糖，v-model，
 
 v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
-text 和 textarea 元素使用 value property 和 input 事件； vi
+text 和 textarea 元素使用 value property 和 input 事件； vi   **注意：textarea 元素中如果有换行，可以给双向绑定的元素设置white-space:pre-line;的样式，可以保留textarea里面的格式，包括空格、回车、tab、换行。**
 checkbox 和 radio 使用 checked property 和 change 事件；cc
 select 字段将 value 作为 prop 并将 change 作为事件。vc
 
