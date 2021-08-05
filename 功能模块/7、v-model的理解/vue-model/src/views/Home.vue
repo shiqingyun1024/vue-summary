@@ -9,6 +9,11 @@
     <tab-slider :planList="planList" v-model="selected2"></tab-slider>
     <p>选择了 {{selected2.label}}</p>
     <p>选择了 {{selected2.value}}</p>
+    </br>
+    </br>
+    <tab-check :planList="planList" v-model="selected3"></tab-check>
+    <p>选择了 {{selected3.label}}</p>
+    <p>选择了 {{selected3.value}}</p>
   </div>
 </template>
 
@@ -16,11 +21,13 @@
 // @ is an alias to /src
 import tabBar from '@/components/tab-bar.vue'
 import tabSlider from '@/components/tab-slider.vue'
+import tabCheck from '@/components/tab-check.vue'
 export default {
   name: 'Home',
   components: {
     tabBar,
-    tabSlider
+    tabSlider,
+    tabCheck
   },
   data(){
     return{
@@ -31,6 +38,7 @@ export default {
       ],
       selected:{label:'',value:''},
       selected2:{label:'',value:''},
+      selected3:{label:'',value:''},
     }
   }
 }
