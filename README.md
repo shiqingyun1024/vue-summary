@@ -397,6 +397,31 @@ export function initUse (Vue: GlobalAPI) {
 ```
 #### 9、.sync修饰符的理解
 ```
+**注意：对于.sync，我的个人理解，它是一个语法糖（和v-model有些类似），:title.sync等同于v-bind:title和v-on:update:title **
+sync的中文意思是同步
+父组件中:
+<child1 :title.sync="name"></child1>
+相当于
+<child1 v-bind:title="name" v-on:update:title="name=$event"></child1>
+
+子组件中
+<template>
+  <div>
+      <p>{{title}}</p>
+      <button @click="change">修改</button>
+  </div>
+</template>
+
+<script>
+export default {
+    props:['title'],
+    methods:{
+        change(){
+           this.$emit('update:title','小黄')
+        }
+    }
+}
+</script>
 ```
 ### vue-router
 ```
