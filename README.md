@@ -395,6 +395,9 @@ export function initUse (Vue: GlobalAPI) {
 之后给这个插件添加至已经添加过的插件数组中，标示已经注册过 installedPlugins.push(plugin)；
 最后返回 Vue 对象。
 ```
+#### 9、.sync修饰符的理解
+```
+```
 ### vue-router
 ```
 **声明： 注意： 是自己做的特殊标记，会加上自己的语言描述，用于描述或者强调**
