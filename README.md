@@ -60,6 +60,19 @@ let loading = {
 }
  export default loading
 
+最近又补充了一点：把mock数据和v-loading的封装结合在一起，模拟了从后端去请求数据的情况。
+**注意：收获点有以下几点。
+1、安装axios时，axios不能直接使用Vue.use(axios)，因为axios内部没有封装install方法。所以这个可以使用Vue.prototype.$http=axios或者安装vue-axios的插件，Vue.use(VueAxios,axios)。vue-axios插件的原理也是把axios挂载到Vue.prototype上。
+2、Vue.directive('loading',loading)中的loading是一个对象，里面的包含inserted(插入)，update(更新)等方法。在获取loading.vue中的元素时，一定要先进行挂载，
+import loadingCom from './loading.vue'
+let vueLoading = Vue.extend(loadingCom);
+// 如果 Vue 实例el在实例化时没有进行$mount()挂载，它将处于“卸载”状态，没有关联的 DOM 元素。vm.$mount()可用于手动启动未挂载的 Vue 实例的挂载。
+let loadingDom = new vueLoading().$mount().$el; // 获取到DOM元素
+// 同时记得把DOM元素赋值给el上的一个元素，这样在update(el,binding)方法中，可以removeChild的时候可以直接remove掉loadingDom元素
+el.instanceDom = loadingDom
+**
+
+
 ```
 #### 3、自定义指令-图片懒加载功能（v-lazyLoad）
 ```
