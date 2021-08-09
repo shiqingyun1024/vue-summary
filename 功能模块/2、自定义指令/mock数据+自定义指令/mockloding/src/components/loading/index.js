@@ -3,16 +3,10 @@ import Vue from 'vue'
 export default {
     // 当被绑定的元素插入到 DOM 中时……  被绑定元素插入父节点时调用
   inserted(el,binding) {
-    console.log('绑定的元素');
-    console.log(el);
-    console.log('一个对象');
-    console.log(binding);
-    console.log('组件');
-    console.log(loadingCom);
     let vueLoading = Vue.extend(loadingCom);
     let loadingDom = new vueLoading().$mount().$el;
     el.instanceDom = loadingDom
-    console.log(loadingDom);
+    // console.log(loadingDom);
     if(binding.value){
         el.appendChild(loadingDom)
     }

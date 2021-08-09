@@ -2,6 +2,7 @@ module.exports = {
     devServer: {
         open:true,
         port:2030,
+        // 在before中只能匹配get请求
         before(app) {
             app.get('/api/list', (req, res) => {
                 res.json({
@@ -29,6 +30,18 @@ module.exports = {
                         },
                     ]
                 })
+            }),
+            // 进行重定向，post请求重定向到get请求，浏览器中会返回302的状态
+            app.post('/api/**',(req,res)=>{
+                res.redirect(req.originalUrl); // 重定向到对应路径
+            })
+        },
+        setup(app){
+            app.post('/api/list',(req,res)=>{
+                console.log('post请求');
+                console.log(req);
+                console.log(res);
+                res.redirect(req.originalUrl); // 重定向到对应路径
             })
         }
     }

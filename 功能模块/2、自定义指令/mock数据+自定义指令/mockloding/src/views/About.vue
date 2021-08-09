@@ -2,7 +2,7 @@
   <div class="about">
     <h1>This is an about page</h1>
     <div v-loading="loading">
-      <p v-for="(item, index) of list">{{ item.label }}:{{ item.value }}</p>
+      <p v-for="(item, index) of list" :key="index">{{ item.label }}:{{ item.value }}</p>
     </div>
   </div>
 </template>
@@ -18,6 +18,8 @@ export default {
   created() {
     // console.log(this.axios);
     setTimeout(this.getList, 3000);
+    console.log('post请求--about页面');
+    this.getPostList();
   },
   methods: {
     getList() {
@@ -28,6 +30,11 @@ export default {
         }
       });
     },
+    getPostList(){
+      this.axios.post("api/list").then(res=>{
+        console.log(res);
+      })
+    }
   },
 };
 </script>
