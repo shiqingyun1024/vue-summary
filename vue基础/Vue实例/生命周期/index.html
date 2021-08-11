@@ -20,7 +20,14 @@
             data: {
                 message: 'Hello outerHTML'
             },
-            template:'<div>hello template</div>'
+            template:'<div>hello template</div>',
+            // Vue 选项中的 render 函数若存在，
+            // 则 Vue 构造函数不会从 template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模板编译渲染函数。
+            // h 就是createElement 
+            render(h){
+                return h('p','努力着，从不放弃')
+                // 最后渲染到页面上的是努力着，从不放弃
+            }
         })
     </script>
 </body>
