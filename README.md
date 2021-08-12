@@ -113,6 +113,17 @@ new Vue({
 生命周期图示
 下图展示了实例的生命周期。你不需要立马弄明白所有的东西，不过随着你的不断学习和使用，它的参考价值会越来越高。
 https://cn.vuejs.org/images/lifecycle.png
+生命周期钩子函数：
+1、beforeCreate
+2、created
+3、beforeMount
+4、mounted
+5、beforeUpdate
+6、updated
+7、beforeDestroy
+8、destroyed
+9、activated  // keep-alive包裹的组件独有的，激活时调用
+9、deactivated  // keep-alive包裹的组件独有的 路由组件失活时触发。
 
 ```
 
