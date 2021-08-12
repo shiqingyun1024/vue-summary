@@ -112,6 +112,8 @@ new Vue({
 
 生命周期图示
 下图展示了实例的生命周期。你不需要立马弄明白所有的东西，不过随着你的不断学习和使用，它的参考价值会越来越高。
+VUE的生命周期钩子函数：就是指在一个组件/实例从创建到销毁的过程自动执行的函数，主要为：创建、挂载、更新、销毁四个模块。
+注：在组件/实例的整个生命周期中，钩子函数都是可被自动调用的，且生命周期函数的执行顺序与书写的顺序无关
 https://cn.vuejs.org/images/lifecycle.png
 生命周期钩子函数：
 1、beforeCreate
@@ -123,7 +125,8 @@ https://cn.vuejs.org/images/lifecycle.png
 7、beforeDestroy
 8、destroyed
 9、activated  // keep-alive包裹的组件独有的，激活时调用
-9、deactivated  // keep-alive包裹的组件独有的 路由组件失活时触发。
+10、deactivated  // keep-alive包裹的组件独有的 路由组件失活时触发。
+11、errorCaptured  // 
 
 ```
 
