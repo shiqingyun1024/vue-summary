@@ -126,7 +126,8 @@ https://cn.vuejs.org/images/lifecycle.png
 8、destroyed
 9、activated  // keep-alive包裹的组件独有的，激活时调用
 10、deactivated  // keep-alive包裹的组件独有的 路由组件失活时触发。
-11、errorCaptured  // 
+11、errorCaptured  // 你可以在此钩子中修改组件的状态。因此在捕获错误时，在模板或渲染函数中有一个条件判断来绕过其它内容就很重要；不然该组件可能会进入一个无限的渲染循环。
+
 
 ```
 
