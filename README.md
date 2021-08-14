@@ -116,8 +116,19 @@ VUE的生命周期钩子函数：就是指在一个组件/实例从创建到销�
 注：在组件/实例的整个生命周期中，钩子函数都是可被自动调用的，且生命周期函数的执行顺序与书写的顺序无关
 https://cn.vuejs.org/images/lifecycle.png
 生命周期钩子函数：
-1、beforeCreate
-2、created
+  new Vue() 
+      | 
+    初始化 
+  事件 & 生命周期 
+（刚刚初始化一个空的Vue实例对象，此时，在这个对象上，只有一些默认的生命周期函数和默认的事件，其他的均未创建） 
+      |
+1、beforeCreate    创建Vue实例前的钩子函数
+      |
+    初始化
+  注入 & 校验 
+（初始化data和methods） 
+      |
+2、created    
 3、beforeMount
 4、mounted
 5、beforeUpdate
