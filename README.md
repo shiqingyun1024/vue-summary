@@ -128,7 +128,40 @@ https://cn.vuejs.org/images/lifecycle.png
   注入 & 校验 
 （初始化data和methods） 
       |
-2、created    
+2、created   实例创建完成之后的钩子函数
+      |
+  是否指定"el"选项 ————否
+      |              |
+      |              |
+      |         当调用vm.$mount(el)函数时
+      是             |
+      |              |
+      |              |
+    是否指定  ————————|
+  ”template“ 选项
+      |
+|————————————---|（编译模板，把data对象里面的数据和VUE语法写的模板编译成HTML）
+|               |
+是              否
+|               | 将el外部的HTML作为template编译
+将template编译   |
+到render函数中   |
+|               |
+—————————————————
+       |
+
+3、beforeMount
+4、mounted
+5、beforeUpdate
+6、updated
+7、beforeDestroy
+8、destroyed
+9、activated  // keep-alive包裹的组件独有的，激活时调用
+10、deactivated  // keep-alive包裹的组件独有的 路由组件失活时触发。
+11、errorCaptured  // 你可以在此钩子中修改组件的状态。因此在捕获错误时，在模板或渲染函数中有一个条件判断来绕过其它内容就很重要；不然该组件可能会进入一个无限的渲染循环。
+
+1、beforeCreate
+2、created
 3、beforeMount
 4、mounted
 5、beforeUpdate
