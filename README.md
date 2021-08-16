@@ -153,9 +153,20 @@ https://cn.vuejs.org/images/lifecycle.png
        |
        |
 创建vm.$el，并用其替换”el“  （将编译好的HTML替换掉el属性所指向的dom对象或替换对应HTML标签里面的内容）
-4、mounted
-5、beforeUpdate
-6、updated
+       |
+4、mounted  （mounted将编译好的HTML挂载到页面完成后执行的钩子函数，此时可以发送ajax请求获取数据的操作进行数据初始化。但，mounted在整个实例声明内只执行一次。）
+       |
+    挂载完毕 （实时监控data里面的数据变化，以便随时更新）
+       |
+{ 5、beforeUpdate  （当data被修改时触发，这个时候页面上的值还没有改变，也就是虚拟DOM还没有重新渲染）
+       |
+虚拟DOM重新渲染，并应用更新
+       |
+6、updated  （updated执行时，页面和data数据已经保持同步，都是最新的）}  加大括号的原因是这两个生命周期钩子函数时挂载完毕后，数据更新触发的函数，如果数据没有更新，就不会去执行这两个函数。
+
+       |
+       
+       
 7、beforeDestroy
 8、destroyed
 9、activated  // keep-alive包裹的组件独有的，激活时调用
