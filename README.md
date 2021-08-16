@@ -165,10 +165,17 @@ https://cn.vuejs.org/images/lifecycle.png
 6、updated  （updated执行时，页面和data数据已经保持同步，都是最新的）}  加大括号的原因是这两个生命周期钩子函数时挂载完毕后，数据更新触发的函数，如果数据没有更新，就不会去执行这两个函数。
 
        |
-       
-       
-7、beforeDestroy
-8、destroyed
+  当调用vm.$destory()函数时
+       |      
+7、beforeDestroy （Vue实例销毁之前执行的钩子函数）当执行beforeDestroy钩子函数时，
+Vue实例就已经从运行阶段进入销毁阶段，此时，组件中所有data、methods、以及过滤器，指令等，都处于可用状态，此时还
+未真正执行销毁过程
+       |
+解除绑定，销毁子组件以及事件监听器
+       |
+8、destroyed （当执行destroyed函数时，组件已经被完全销毁，此时组件中所有data、methods、以及过滤器，指令
+等，都已经不可用了。）
+
 9、activated  // keep-alive包裹的组件独有的，激活时调用
 10、deactivated  // keep-alive包裹的组件独有的 路由组件失活时触发。
 11、errorCaptured  // 你可以在此钩子中修改组件的状态。因此在捕获错误时，在模板或渲染函数中有一个条件判断来绕过其它内容就很重要；不然该组件可能会进入一个无限的渲染循环。
