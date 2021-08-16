@@ -149,8 +149,10 @@ https://cn.vuejs.org/images/lifecycle.png
 |               |
 —————————————————
        |
-
-3、beforeMount
+3、beforeMount  beforeMount开始挂载编译生成的HTML到对应位置时触发的钩子函数。但：此时还未将编译出的HTML渲染到页面上
+       |
+       |
+创建vm.$el，并用其替换”el“  （将编译好的HTML替换掉el属性所指向的dom对象或替换对应HTML标签里面的内容）
 4、mounted
 5、beforeUpdate
 6、updated
