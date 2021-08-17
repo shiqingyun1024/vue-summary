@@ -1,7 +1,9 @@
 <template>
   <div>
-      <label for=""><input type="radio" ></label>
-      
+      <p v-for="item in data" :key="item.label">
+          <label :for="item.label"></label>
+          <input id="item.label" type="radio" name="bar" :value="item.label">
+      </p>   
   </div>
 </template>
 
