@@ -208,6 +208,34 @@ Vue.js 使用了基于 HTML 的模板语法，允许开发者声明式地将 DOM
 
 Mustache 标签将会被替代为对应数据对象上 msg property 的值。无论何时，绑定的数据对象上 msg property 发生了改变，插值处的内容都会更新。
 
+指令
+指令 (Directives) 是带有 v- 前缀的特殊 attribute。指令 attribute 的值预期是单个 JavaScript 表达式 (v-for 是例外情况，稍后我们再讨论)。指令的职责是，当表达式的值改变时，将其产生的连带影响，响应式地作用于 DOM。回顾我们在介绍中看到的例子：
+
+参数
+一些指令能够接收一个“参数”，在指令名称之后以冒号表示。例如，v-bind 指令可以用于响应式地更新 HTML attribute：
+
+<a v-bind:href="url">...</a>
+在这里 href 是参数，告知 v-bind 指令将该元素的 href attribute 与表达式 url 的值绑定。
+
+另一个例子是 v-on 指令，它用于监听 DOM 事件：
+
+<a v-on:click="doSomething">...</a>
+在这里参数是监听的事件名。我们也会更详细地讨论事件处理。
+
+动态参数
+从 2.6.0 开始，可以用方括号括起来的 JavaScript 表达式作为一个指令的参数：
+
+<!--
+注意，参数表达式的写法存在一些约束，如之后的“对动态参数表达式的约束”章节所述。
+-->
+<a v-bind:[attributeName]="url"> ... </a>
+这里的 attributeName 会被作为一个 JavaScript 表达式进行动态求值，求得的值将会作为最终的参数来使用。例如，如果你的 Vue 实例有一个 data property attributeName，其值为 "href"，那么这个绑定将等价于 v-bind:href。
+
+同样地，你可以使用动态参数为一个动态的事件名绑定处理函数：
+
+<a v-on:[eventName]="doSomething"> ... </a>
+在这个示例中，当 eventName 的值为 "focus" 时，v-on:[eventName] 将等价于 v-on:focus。
+
 ```
 
 ### 1.深入浅出vue.js
