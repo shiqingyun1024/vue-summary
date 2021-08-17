@@ -19,9 +19,9 @@ export default {
        message:'about页面',
        index:0,
        tabs:[
-         {label:'选项1'},
-         {label:'选项2'},
-         {label:'选项3'}
+         {label:'选项1',value:'about1'},
+         {label:'选项2',value:'about2'},
+         {label:'选项3',value:'about3'}
        ]
     }
   },
