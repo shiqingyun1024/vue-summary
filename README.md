@@ -660,6 +660,11 @@ select 字段将 value 作为 prop 并将 change 作为事件。vc
     .trim 如果要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符：
     <input v-model.trim="msg">
 
+    **注意：v-model可以用在自定义组件上，这个时候它是:value和@input的语法糖，例如：
+    <tab-bar :data="tabs" v-model="selectedLabel">
+    </tab-bar>
+    其实是<tab-bar :data="tabs" v-model="selectedLabel">
+    </tab-bar>
 
 ```
 #### 8、vue.use的原理理解

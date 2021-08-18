@@ -22,13 +22,14 @@ export default {
          {label:'选项1',value:'about1'},
          {label:'选项2',value:'about2'},
          {label:'选项3',value:'about3'}
-       ]
+       ],
+       selectedLabel:'about1'
     }
   },
   computed:{
-    selectedLabel(){
-      return this.tabs[this.index].label
-    }
+    // selectedLabel(){
+    //   return this.tabs[this.index].value
+    // }
   }
 }
 </script>

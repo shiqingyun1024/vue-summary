@@ -4,13 +4,13 @@
     <tab-bar :planList="planList" v-model="selected"></tab-bar>
     <p>选择了 {{selected.label}}</p>
     <p>选择了 {{selected.value}}</p>
-    </br>
-    </br>
+    <br/>
+    <br/>
     <tab-slider :planList="planList" v-model="selected2"></tab-slider>
     <p>选择了 {{selected2.label}}</p>
     <p>选择了 {{selected2.value}}</p>
-    </br>
-    </br>
+    <br/>
+    <br/>
     <!-- <tab-check :planList="planList" v-model="selected3"></tab-check>
     <p>选择了 {{selected3.label}}</p>
     <p>选择了 {{selected3.value}}</p> -->
