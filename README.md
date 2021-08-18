@@ -663,8 +663,9 @@ select 字段将 value 作为 prop 并将 change 作为事件。vc
     **注意：v-model可以用在自定义组件上，这个时候它是:value和@input的语法糖，例如：
     <tab-bar :data="tabs" v-model="selectedLabel">
     </tab-bar>
-    其实是<tab-bar :data="tabs" v-model="selectedLabel">
-    </tab-bar>
+    其实是<tab-bar :data="tabs" :value="selectedLabel" @input="selectedLabel=$event.target.value">
+    </tab-bar>的语法糖
+    **
 
 ```
 #### 8、vue.use的原理理解
