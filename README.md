@@ -301,6 +301,38 @@ computed: {
 我们为什么需要缓存？假设我们有一个性能开销比较大的计算属性 A，它需要遍历一个巨大的数组并做大量的计算。然后我们可能有其他的计算属性依赖于 A。如果没有缓存，我们将不可避免的多次执行 A 的 getter！如果你不希望有缓存，请用方法来替代。
 
 计算属性 vs 侦听属性
+**注意：我的个人理解，如果一个属性是随着其他的属性变化而变化，那么就用计算属性。这个是被动的，其他的属性变，这个属性跟着变。
+如果一个属性有变化，影响到其他属性也变化，那么就用侦听属性。这个是主动的，如果这个属性有变化，其他属性也跟着变化，都写在watch里面（其实也可以理解为computed中的setter）**
+
+计算属性的setter
+计算属性默认只有getter，不过在需要时你也可以提供一个setter：
+我们具体来分析一下
+computed:{
+  fullName:{
+    // getter
+    get(){
+      return this.firstName + '' + this.lastName
+    },
+    // setter
+    set(newValue){
+      var names = newValue.split('')
+      this.name1 = names[0]
+      this.name2 = names[names.length - 1]
+    }
+  }
+}
+methods:{
+  change(){
+    this.fullname = '改 变'
+  }
+}
+**注意：getter和setter是两个相互独立的过程，
+上面例子中 get只会在初始化页面和firstName、lastName发生改变的时候才会触发。
+如果只是触发了change方法，导致fullname的值发生了改变，而firstName、lastName没有发生任何改变，则不会触发get。
+记住只有firstName、lastName发生改变后才会触发get。
+那么同理，当get中的firstName或lastName发生改变时，导致fullName的值发生改变，这个时候也不会触发set，
+只有当给fullname赋值的时候（例如：fullname="改 变"）时才会触发set。
+所以说getter和setter是两个相互独立的过程。**
 
 ```
 
