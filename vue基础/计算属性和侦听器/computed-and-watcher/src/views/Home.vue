@@ -34,12 +34,14 @@ export default {
          console.log('触发getter属性');
          return this.firstname+''+this.lastname
        },
+      //  set是fullname直接改变的时候触发，例如给fullname='12 34'直接这样赋值会触发，
+      //  但是如果是因为firstname和lastname的改变导致的fullname的变化，是不会触发setter的。
        set(newValue,oldValue){
          console.log(newValue);
          console.log(oldValue);
-        var names = newValue.split(' ')
-      this.newname = names[0]
-      this.newname2 = names[names.length - 1]
+         var names = newValue.split(' ')
+         this.newname = names[0]
+         this.newname2 = names[names.length - 1]
        }
      }
   },
@@ -49,6 +51,13 @@ export default {
          console.log(oldValue);
          this.newname="通过watcher改变";
          this.firstname="通过watcher改变2";
+     },
+     //  有时候需要监听到computed中的数据的变化，进而做一些操作。所以要合理搭配使用。
+     fullname(newValue,oldValue){
+       console.log(newValue);
+       console.log(oldValue);
+       console.log('在watch中监听到了computed中fullname的变化');
+
      }
   },
   methods:{
