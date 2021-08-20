@@ -43,7 +43,7 @@ export default {
        }
      }
   },
-  watcher:{
+  watch:{
      watcherName(newValue,oldValue){
          console.log(newValue);
          console.log(oldValue);
