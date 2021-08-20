@@ -1,7 +1,7 @@
 # vue-summary
 vue的相关总结-- 包括vue2.x、vue3.0的学习笔记和相关的demo
 
-**声明： 注意： 是自己做的特殊标记，会加上自己的理解，用于描述或者强调**
+**声明： 注意： 是自己做的特殊标记，会加上自己的理解，用于描述或者强调 文本中的#号代表小标题的意思**
 ## vue基础
 ```
 总结一下vue官方文档中所有的基础知识和原理。其中会穿插一些源码知识。
@@ -340,6 +340,71 @@ methods:{
 当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的。
 **注意：个人理解是，主要是用在数据发生改变时，对其他数据变化的影响，比如在这个属性发生变化时，对其他属性进行赋值，调用函数等。watch里面可以监听data中定义好的数据，也可以监听computed定义的函数数据。根据开发场景选择。监听数据变化，然后操作其他属性。**
 
+```
+### Class 与 Style 绑定
+```
+操作元素的 class 列表和内联样式是数据绑定的一个常见需求。因为它们都是 attribute，所以我们可以用 v-bind 处理它们：只需要通过表达式计算出字符串结果即可。不过，字符串拼接麻烦且易错。因此，在将 v-bind 用于 class 和 style 时，Vue.js 做了专门的增强。表达式结果的类型除了字符串之外，还可以是对象或数组。
+**注意：表达式结果的类型可以是字符串、对象或者数组。**
+主要是对class和Style的组合使用，多看看官方文档即可。
+```
+### 条件渲染
+```
+v-if 指令用于条件性地渲染一块内容。这块内容只会在指令的表达式返回 truthy 值的时候被渲染。
+** 注意：关于对truthy的解释==在 JavaScript 中，truthy（真值）指的是在布尔值上下文中，转换后的值为真的值。所有值都是真值，除非它们被定义为 假值（即除 false、0、""、null、undefined 和 NaN 以外皆为真值）**
+
+<h1 v-if="awesome">Vue is awesome!</h1>
+<h1 v-else>Oh no 😢</h1>
+
+# 在 <template> 元素上使用 v-if 条件渲染分组
+因为 v-if 是一个指令，所以必须将它添加到一个元素上。但是如果想切换多个元素呢？此时可以把一个 <template> 元素当做不可见的包裹元素，并在上面使用 v-if。最终的渲染结果将不包含 <template> 元素。
+** 注意：<template>元素最终不会被渲染在页面中。相当于不想添加多余的元素时，会用到。**
+<template v-if="ok">
+  <h1>Title</h1>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+</template>
+
+# v-else
+你可以使用 v-else 指令来表示 v-if 的“else 块”：
+<div v-if="Math.random() > 0.5">
+  Now you see me
+</div>
+<div v-else>
+  Now you don't
+</div>
+v-else 元素必须紧跟在带 v-if 或者 v-else-if 的元素的后面，否则它将不会被识别。
+
+# v-else-if
+v-else-if，顾名思义，充当 v-if 的“else-if 块”，可以连续使用：
+<div v-if="type === 'A'">
+  A
+</div>
+<div v-else-if="type === 'B'">
+  B
+</div>
+<div v-else-if="type === 'C'">
+  C
+</div>
+<div v-else>
+  Not A/B/C
+</div>
+类似于 v-else，v-else-if 也必须紧跟在带 v-if 或者 v-else-if 的元素之后。
+
+# 用 key 管理可复用的元素
+Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。这么做除了使 Vue 变得非常快之外，还有其它一些好处。例如，如果你允许用户在不同的登录方式之间切换：
+** 注意：这个点在开发时会经常碰到，所以一定要加key值进行区分。**
+<template v-if="loginType === 'username'">
+  <label>Username</label>
+  <input placeholder="Enter your username">
+</template>
+<template v-else>
+  <label>Email</label>
+  <input placeholder="Enter your email address">
+</template>
+
+那么在上面的代码中切换 loginType 将不会清除用户已经输入的内容。因为两个模板使用了相同的元素，<input> 不会被替换掉——仅仅是替换了它的 placeholder。
+
+自己动手试一试，在输入框中输入一些文本，然后按下切换按钮：
 
 ```
 
