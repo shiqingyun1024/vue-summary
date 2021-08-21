@@ -19,8 +19,9 @@
         Vue.config.productionTip = false;
         let vm = new Vue({
            el:'#app',
-           data
+           data:data
         })
+        // vm这个Vue实例拿到了data，存在了自身上的_data属性上，因此vm._data === data，把data中的数据存在了_data中。  
     </script>
 </body>
 </html>

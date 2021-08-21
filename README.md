@@ -1157,7 +1157,7 @@ Object.definePrototype(obj2,'x',{
            data
         })
 
-Vue上有一个内部属性_data，这个_data里面的值其实是和Vue外面定义的data是一样的。
+Vue上有一个内部属性_data，这个_data里面的值其实是和Vue外面定义的data是一样的。其实data被vm这个Vue实例存在了自身的属性_data中。所以如下：
 vm._data === data // true，然后对_data做了一些操作，比如数据劫持等。
 
 ** 注意：数据代理，一个对象(obj1)代理另外一个对象(obj2)中的属性的操作（读和写），其中的做法利用Object.definePrototype(obj1,'name',{
@@ -1176,7 +1176,15 @@ vm._data === data // true，然后对_data做了一些操作，比如数据劫�
 所以从上面我们就能深刻的理解了，数据代理其实就是一个对象(obj1)代理另外一个对象(obj2)中的属性的操作（读和写）这句话的含义了。
 **
 
-
+总结：
+1、Vue中的数据代理：
+       通过vm这个Vue实例对象来代理data对象中属性的操作（读和写）
+2、Vue中数据代理的好处：
+       更加方便的操作data中的数据
+3、基本原理：
+       通过Object.defineProperty()把data对象中所有属性添加到vm上。
+       为每一个添加到vm上的属性，都指定一个getter/setter。
+       在getter/setter内部去操作（读/写）data中对应的属性。
 ```
 ## vue-router
 ### vue-router
