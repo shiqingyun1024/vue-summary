@@ -1131,6 +1131,52 @@ descriptor：要定义或修改的属性描述符。是一个对象。
             configurable:true // 默认为false，是否可以删除。 记忆口诀：删c => 陕西
         })
 
+上面是实现的方式，下面我们来看一下什么是数据代理？
+什么是数据代理？
+通过一个对象代理对另一个对象中属性的操作（读和写）  
+简单的数据代理的例子：我通过obj2可以操作obj中的属性x，所以叫数据代理。
+let obj = {x:1};     
+let obj2 = {y:2}; 
+Object.definePrototype(obj2,'x',{
+  get(){
+    return obj.x
+  },
+  set(value){
+     obj.x = value
+  }
+})  
+
+通过下面这个例子分析一下Vue中的数据代理
+        let data = {
+            name:'小时',
+            age:18
+        }
+        Vue.config.productionTip = false;
+        let vm = new Vue({
+           el:'#app',
+           data
+        })
+
+Vue上有一个内部属性_data，这个_data里面的值其实是和Vue外面定义的data是一样的。
+vm._data === data // true，然后对_data做了一些操作，比如数据劫持等。
+
+** 注意：数据代理，一个对象(obj1)代理另外一个对象(obj2)中的属性的操作（读和写），其中的做法利用Object.definePrototype(obj1,'name',{
+  <!-- get()是在获取obj1.name的时候触发 ，例如 console.log(obj1.name)-->
+  get(){
+    <!-- 这样obj1中的name就相当于obj2中的name，其实obj1中的name就是obj2中的name，因为是return的 obj2.name-->
+    return obj2.name;
+  },
+  <!-- set()是在修改obj1.name的时候触发 例如 obj1.name = '小林' -->
+  set(value){
+    <!-- 当修改obj1.name的时候会触发setter， 在setter内部我们发现其实修改的是obj2.name这个值，因为在gett中我们知道，obj1.name就是obj2.name，所以修改obj2.name的值，就是修改了obj1.name-->
+    obj2.name = value
+  }
+})
+从上面的例子，我们发现，获取obj1.name时，其实获取的是obj2.name，我们修改obj1.name时，其实修改的是obj2.name ==>获取和修改都是在obj1上做的，但是其实最终获取和修改的值都是obj2上的属性。
+所以从上面我们就能深刻的理解了，数据代理其实就是一个对象(obj1)代理另外一个对象(obj2)中的属性的操作（读和写）这句话的含义了。
+**
+
+
 ```
 ## vue-router
 ### vue-router
