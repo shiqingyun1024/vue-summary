@@ -1083,7 +1083,55 @@ export default {
 
 ```
 
+#### 10、数据代理，vue2.x中的数据代理使用了Object.definePrototype(obj, prop, descriptor)
+```
+语法：
+Object.defineProperty(obj, prop, descriptor)
+参数
+obj ：要定义属性的对象。
+prop ：要定义或修改的属性的名称或 Symbol 。
+descriptor：要定义或修改的属性描述符。是一个对象。
 
+对象里目前存在的属性描述符有两种主要形式：数据描述符和存取描述符。
+数据描述符是一个具有值的属性，该值可以是可写的，也可以是不可写的。
+存取描述符是由 getter 函数和 setter 函数所描述的属性。
+一个描述符只能是这两者其中之一；不能同时是两者。
+
+这两种描述符都是对象。
+
+  let person1 = {
+            name:'jack',
+            age:18,
+            address:'上海市',
+            job:'前端开发'
+        },person2 = {
+            name:'peter',
+            age:18
+        };
+        // 数据属性
+        Object.defineProperty(person2,'address',{
+            value:person1.address,
+            enumerable:true,// 默认为false，是否可枚举，说白了就是是否可以遍历。  记忆口诀：遍e =>变异或者是遍历（e）
+            writable:true, //默认为false，是否可以修改。  记忆口诀：w修 w改 => w 拼音念 屋   那就可以记忆为午(w)休(修)
+            configurable:true // 默认为false，是否可以删除。 记忆口诀：删c => 陕西
+        })
+        // 访问器属性
+        Object.defineProperty(person2,'job',{
+            // 获取函数  例如：console.log(person2.job) 会调用getter（getter是因为属性名为get，属性值为一个函数，所以可以统称为getter）
+            get:function(){
+                console.log('调用get方法');
+                return person1.job;
+            },
+            // 设置函数 例如：person2.job = '全栈开发'，会调用setter（同getter）
+            set(newValue){
+                console.log('调用set方法');
+                person1.job = newValue
+            },
+            enumerable:true,// 默认为false，是否可枚举，说白了就是是否可以遍历。  记忆口诀：遍e =>变异或者是遍历（e）
+            configurable:true // 默认为false，是否可以删除。 记忆口诀：删c => 陕西
+        })
+
+```
 ## vue-router
 ### vue-router
 ```
