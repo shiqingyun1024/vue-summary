@@ -733,9 +733,9 @@ methods: {
 **注意：passive的作用是事件的默认行为立即执行（不用去查看有没有阻止默认事件的行为了），而且无需等待事件回调执行完毕。**
 **注意：关于事件修饰符的具体使用，请看我的博客：https://blog.csdn.net/xiaolinlife/article/details/107013723。关于.capture、.once和.passive的原理，请看我的这一篇博客：https://blog.csdn.net/xiaolinlife/article/details/119852945**
 
-# 按键修饰符
+# 按键修饰符 在键盘事件 keyup（键盘已谈起）和keydown（键盘按下，还没谈起）的时候触发
 .enter
-.tab
+.tab （只有在keydown的事件触发下才有效果，tab有移动光标的左右）
 .delete (捕获“删除”和“退格”键)
 .esc
 .space
@@ -744,8 +744,12 @@ methods: {
 .left
 .right
 
+Vue未提供别名的按键，可以使用按键原始的key值去绑定，但注意要转为kebab-case(短横线命名)
+
 # 系统修饰键
 可以用如下修饰符来实现仅在按下相应按键时才触发鼠标或键盘事件的监听器。
+1、配合keyup使用：按下修饰键的同时。再按下其他键，随后释放其他键，事件才被触发。
+2、配合keydown使用：正常触发事件。
 .ctrl
 .alt
 .shift
@@ -758,6 +762,8 @@ methods: {
 .left
 .right
 .middle
+
+Vue.config.keyCodes.自定义键名 = 键码，可以去定制按键别名。
 ```
 ### 1.深入浅出vue.js
 ```
