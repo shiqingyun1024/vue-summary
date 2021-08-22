@@ -642,6 +642,95 @@ v-for 也可以接受整数。在这种情况下，它会把模板重复对应�
 **
 ```
 
+
+### 事件处理
+```
+# 监听事件
+可以用 v-on 指令监听 DOM 事件，并在触发时运行一些 JavaScript 代码。
+示例：
+<div id="example-1">
+  <button v-on:click="counter += 1">Add 1</button>
+  <p>The button above has been clicked {{ counter }} times.</p>
+</div>
+var example1 = new Vue({
+  el: '#example-1',
+  data: {
+    counter: 0
+  }
+})
+
+# 事件处理方法
+然而许多事件处理逻辑会更为复杂，所以直接把 JavaScript 代码写在 v-on 指令中是不可行的。因此 v-on 还可以接收一个需要调用的方法名称。
+<div id="example-2">
+  <!-- `greet` 是在下面定义的方法名 -->
+  <button v-on:click="greet">Greet</button>
+</div>
+var example2 = new Vue({
+  el: '#example-2',
+  data: {
+    name: 'Vue.js'
+  },
+  // 在 `methods` 对象中定义方法
+  methods: {
+    greet: function (event) {
+      // `this` 在方法里指向当前 Vue 实例
+      alert('Hello ' + this.name + '!')
+      // `event` 是原生 DOM 事件
+      if (event) {
+        alert(event.target.tagName)
+      }
+    }
+  }
+})
+
+// 也可以用 JavaScript 直接调用方法
+example2.greet() // => 'Hello Vue.js!'
+
+# 内联处理器中的方法
+除了直接绑定到一个方法，也可以在内联 JavaScript 语句中调用方法：
+<div id="example-3">
+  <button v-on:click="say('hi')">Say hi</button>
+  <button v-on:click="say('what')">Say what</button>
+</div>
+new Vue({
+  el: '#example-3',
+  methods: {
+    say: function (message) {
+      alert(message)
+    }
+  }
+})
+
+有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 $event 把它传入方法：
+**注意：当需要在方法中访问原始的DOM事件时，可以用特殊变量 $event把它传入方法。
+<button v-on:click="warn('Form cannot be submitted yet.', $event)">
+  Submit
+</button>
+// ...
+methods: {
+  warn: function (message, event) {
+    // 现在我们可以访问原生事件对象
+    if (event) {
+      event.preventDefault()
+      alert(event.target.tagName)
+    }
+    alert(message)
+  }
+}
+
+# 事件修饰符。
+** 注意啊：这是面试考察的重点。**
+在事件处理程序中调用 event.preventDefault() 或 event.stopPropagation() 是非常常见的需求。尽管我们可以在方法中轻松实现这点，但更好的方式是：方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
+
+为了解决这个问题，Vue.js 为 v-on 提供了事件修饰符。之前提过，修饰符是由点开头的指令后缀来表示的。
+
+.stop   stopPropagation 停止冒泡（停止冒泡到父元素）==>记忆口诀：s停或者停s=> 试（s）听（停）或者是 思茅
+.prevent   preventDefault 阻止默认事件（例如a标签的点击）===>记忆口诀：p默 => 皮膜
+.capture  主要是在事件的捕获阶段触发父级元素的事件。===> 捕c 或者 获c => 补c
+.self  只当在 event.target 是当前元素自身时触发处理函数。===> s自 或者 自s => 自杀
+.once 点击事件将只会触发一次
+.passive  会告诉浏览器你不想阻止事件的默认行为。====>不阻止默认行为，记忆口诀：p不默=>皮步模
+```
 ### 1.深入浅出vue.js
 ```
 《深入浅出vue.js》这本书相关的总结
@@ -1186,6 +1275,7 @@ vm._data === data // true，然后对_data做了一些操作，比如数据劫�
        为每一个添加到vm上的属性，都指定一个getter/setter。
        在getter/setter内部去操作（读/写）data中对应的属性。
 ```
+
 ## vue-router
 ### vue-router
 ```
