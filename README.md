@@ -754,6 +754,7 @@ Vue未提供别名的按键，可以使用按键原始的key值去绑定，但�
 .alt
 .shift
 .meta
+<input type="text" placeholder="按下回车提示输入" @keyup.ctrl.y="showInfo">  // 这样ctrl+y的时候才会触发showInfo事件
 
 .exact 修饰符
 .exact
@@ -764,6 +765,10 @@ Vue未提供别名的按键，可以使用按键原始的key值去绑定，但�
 .middle
 
 Vue.config.keyCodes.自定义键名 = 键码，可以去定制按键别名。
+```
+### 表单输入绑定
+```
+你可以用 v-model 指令在表单 <input>、<textarea> 及 <select> 元素上创建双向数据绑定。它会根据控件类型自动选取正确的方法来更新元素。尽管有些神奇，但 v-model 本质上不过是语法糖。它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。
 ```
 ### 1.深入浅出vue.js
 ```
