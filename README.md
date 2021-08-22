@@ -726,10 +726,38 @@ methods: {
 
 .stop   stopPropagation 停止冒泡（停止冒泡到父元素）==>记忆口诀：s停或者停s=> 试（s）听（停）或者是 思茅
 .prevent   preventDefault 阻止默认事件（例如a标签的点击）===>记忆口诀：p默 => 皮膜
-.capture  主要是在事件的捕获阶段触发父级元素的事件。===> 捕c 或者 获c => 补c
+.capture  主要是在事件的捕获阶段触发父级元素的事件(父级元素要加上capture这个修饰符)。===> 捕c 或者 获c => 补c
 .self  只当在 event.target 是当前元素自身时触发处理函数。===> s自 或者 自s => 自杀
 .once 点击事件将只会触发一次
-.passive  会告诉浏览器你不想阻止事件的默认行为。====>不阻止默认行为，记忆口诀：p不默=>皮步模
+.passive  会告诉浏览器你不想阻止事件的默认行为，不用去查看有没有阻止默认事件的行为了。====>不阻止默认行为，记忆口诀：p不默=>皮步模。
+**注意：passive的作用是事件的默认行为立即执行（不用去查看有没有阻止默认事件的行为了），而且无需等待事件回调执行完毕。**
+**注意：关于事件修饰符的具体使用，请看我的博客：https://blog.csdn.net/xiaolinlife/article/details/107013723。关于.capture、.once和.passive的原理，请看我的这一篇博客：https://blog.csdn.net/xiaolinlife/article/details/119852945**
+
+# 按键修饰符
+.enter
+.tab
+.delete (捕获“删除”和“退格”键)
+.esc
+.space
+.up
+.down
+.left
+.right
+
+# 系统修饰键
+可以用如下修饰符来实现仅在按下相应按键时才触发鼠标或键盘事件的监听器。
+.ctrl
+.alt
+.shift
+.meta
+
+.exact 修饰符
+.exact
+
+# 鼠标按钮修饰符
+.left
+.right
+.middle
 ```
 ### 1.深入浅出vue.js
 ```

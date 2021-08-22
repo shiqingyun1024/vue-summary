@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修饰符.capture的原理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div>
+        <div id="outer">
+            <p id="middle">
+                <button id="inter">点击触发</button>
+            </p>
+        </div>
+        <div id='app'>
+            <div @click.capture="log('11')" @click="log('12')" @click.self="log('13')" style="background-color: aqua; height: 400px; width: 400px;">
+                <div @click.capture="log('21')" @click="log('22')" @click.self="log('23')" style="background-color: #2195de; height: 200px; width: 400px;">
+                    <div @click.capture="log('31')" @click="log('32')" @click.self="log('33')" style="background-color: #9521de; height: 100px; width: 400px;color:#fff;line-height: 50px;text-align: center;">
+                        <a @click.passive="log('41')" @click.capture="log('42')" href="javascript: console.log('默认事件')" style="display: block;height: 50px;width: 4oopx;background-color: red;">点击a标签</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el:"#app",
+            methods:{
+                log(value){
+                    console.log(value)
+                }
+            }
+        })
+        document.querySelector('#outer').addEventListener('click',function(){
+            console.log('button元素');
+        },{capture:true})
+        document.querySelector('#middle').addEventListener('click',function(){
+            console.log('p元素')
+        },{capture:true})
+        document.querySelector('#outer').addEventListener('click',function(){
+            console.log('div元素')
+        },{capture:true})
+        // 打印的顺序为  div元素 --- p元素 --- button元素    在捕获阶段触发所有的事件。
+    </script>
+</body>
+</html>
