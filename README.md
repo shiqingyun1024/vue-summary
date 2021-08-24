@@ -805,6 +805,12 @@ select 字段将 value 作为 prop 并将 change 作为事件。
 <br>
 <span>Checked names: {{ checkedNames }}</span>
 
+new Vue({
+  el: '...',
+  data: {
+    checkedNames: []
+  }
+})
 ```
 ### 1.深入浅出vue.js
 ```
