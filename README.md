@@ -779,6 +779,15 @@ checkbox 和 radio 使用 checked property 和 change 事件；
 select 字段将 value 作为 prop 并将 change 作为事件。
 对于需要使用输入法 (如中文、日文、韩文等) 的语言，你会发现 v-model 不会在输入法组合文字过程中得到更新。如果你也想处理这个过程，请使用 input 事件。
 
+<input v-model="message" placeholder="edit me">
+<p>Message is: {{ message }}</p>
+
+<span>Multiline message is:</span>
+<p style="white-space: pre-line;">{{ message }}</p>
+<br>
+<textarea v-model="message" placeholder="add multiple lines"></textarea>
+在文本区域插值 (<textarea>{{text}}</textarea>) 并不会生效，应用 v-model 来代替。
+
 ```
 ### 1.深入浅出vue.js
 ```
