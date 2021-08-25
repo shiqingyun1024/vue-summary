@@ -8,6 +8,9 @@
 // @ is an alias to /src
 
 export default {
-  name: 'Home'
+  name: 'Home',
+  created(){
+    console.log(process.env.NODE_ENV);
+  }
 }
 </script>
