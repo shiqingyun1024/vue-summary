@@ -831,7 +831,26 @@ new Vue({
 
 <input v-model.trim="msg">
 
+```
+### 组件基础
+```
+这里有一个 Vue 组件的示例：
 
+// 定义一个名为 button-counter 的新组件
+Vue.component('button-counter', {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+})
+
+组件是可复用的 Vue 实例，且带有一个名字：在这个例子中是 <button-counter>。我们可以在一个通过 new Vue 创建的 Vue 根实例中，把这个组件作为自定义元素来使用：
+<div id="components-demo">
+  <button-counter></button-counter>
+</div>
+new Vue({ el: '#components-demo' })
 ```
 ### 1.深入浅出vue.js
 ```
