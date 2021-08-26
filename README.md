@@ -851,6 +851,19 @@ Vue.component('button-counter', {
   <button-counter></button-counter>
 </div>
 new Vue({ el: '#components-demo' })
+
+因为组件是可复用的 Vue 实例，所以它们与 new Vue 接收相同的选项，例如 data、computed、watch、methods 以及生命周期钩子等。仅有的例外是像 el 这样根实例特有的选项。
+
+组件的复用
+你可以将组件进行任意次数的复用：
+
+<div id="components-demo">
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+</div>
+
+注意当点击按钮时，每个组件都会各自独立维护它的 count。因为你每用一次组件，就会有一个它的新实例被创建。
 ```
 ### 1.深入浅出vue.js
 ```
