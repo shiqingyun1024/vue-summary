@@ -864,6 +864,19 @@ new Vue({ el: '#components-demo' })
 </div>
 
 注意当点击按钮时，每个组件都会各自独立维护它的 count。因为你每用一次组件，就会有一个它的新实例被创建。
+
+# data 必须是一个函数
+当我们定义这个 <button-counter> 组件时，你可能会发现它的 data 并不是像这样直接提供一个对象：
+data: {
+  count: 0
+}
+取而代之的是，一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+
+data: function () {
+  return {
+    count: 0
+  }
+}
 ```
 ### 1.深入浅出vue.js
 ```
