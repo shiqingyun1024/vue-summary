@@ -1319,7 +1319,7 @@ export default {
 
 ```
 
-#### 10、数据代理，vue2.x中的数据代理使用了Object.definePrototype(obj, prop, descriptor)
+#### 10、数据代理，vue2.x中的数据代理使用了Object.defineProperty(obj, prop, descriptor)
 ```
 语法：
 Object.defineProperty(obj, prop, descriptor)
@@ -1421,6 +1421,13 @@ vm._data === data // true，然后对_data做了一些操作，比如数据劫�
        通过Object.defineProperty()把data对象中所有属性添加到vm上。
        为每一个添加到vm上的属性，都指定一个getter/setter。
        在getter/setter内部去操作（读/写）data中对应的属性。
+
+**注意：现在Vue3.0已经用Proxy代替了Object.defineProperty来做数据代理，那为什么要用Proxy来代替呢？是因为Proxy API
+       的性能要优于Object.defineProperty吗，其实不然，实际上Proxy在性能上是要比Object.defineProperty，既然Proxy
+       慢，为啥Vue3还是选择了它来实现数据响应式呢？因为Proxy本质上是对某个对象的劫持，这样它不仅仅可以监听对象某个属性
+       值的变化，还可以监听对象属性的新增和删除；而Object.defineProperty是给对象的某个已经存在的属性添加对应的getter
+       和setter，所以它只能监听这个属性值的变化，而不能去监听对象属性的新增和删除。**
+
 ```
 
 ## vue-router
