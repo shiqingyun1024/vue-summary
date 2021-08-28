@@ -1080,7 +1080,73 @@ Vue.component('alert-box', {
 ### 组件注册
 ```
 组件注册分为全局注册和局部注册。
-这个时候我有个疑问，那就是组件祖册
+# 全局注册：
+Vue.component('my-component-name', {
+  // ... 选项 ...
+})
+这些组件是全局注册的。也就是说它们在注册之后可以用在任何新创建的 Vue 根实例 (new Vue) 的模板中。比如：
+
+Vue.component('component-a', { /* ... */ })
+Vue.component('component-b', { /* ... */ })
+Vue.component('component-c', { /* ... */ })
+
+new Vue({ el: '#app' })
+<div id="app">
+  <component-a></component-a>
+  <component-b></component-b>
+  <component-c></component-c>
+</div>
+在所有子组件中也是如此，也就是说这三个组件在各自内部也都可以相互使用。
+
+# 局部注册
+全局注册往往是不够理想的。比如，如果你使用一个像 webpack 这样的构建系统，全局注册所有的组件意味着即便你已经不再使用一个组件了，它仍然会被包含在你最终的构建结果中。这造成了用户下载的 JavaScript 的无谓的增加。
+在这些情况下，你可以通过一个普通的 JavaScript 对象来定义组件：
+
+var ComponentA = { /* ... */ }
+var ComponentB = { /* ... */ }
+var ComponentC = { /* ... */ }
+然后在 components 选项中定义你想要使用的组件：
+
+new Vue({
+  el: '#app',
+  components: {
+    'component-a': ComponentA,
+    'component-b': ComponentB
+  }
+})
+
+对于 components 对象中的每个 property 来说，其 property 名就是自定义元素的名字，其 property 值就是这个组件的选项对象。
+注意局部注册的组件在其子组件中不可用。例如，如果你希望 ComponentA 在 ComponentB 中可用，则你需要这样写：
+var ComponentA = { /* ... */ }
+
+var ComponentB = {
+  components: {
+    'component-a': ComponentA
+  },
+  // ...
+}
+或者如果你通过 Babel 和 webpack 使用 ES2015 模块，那么代码看起来更像：
+
+import ComponentA from './ComponentA.vue'
+
+export default {
+  components: {
+    ComponentA
+  },
+  // ...
+}
+注意在 ES2015+ 中，在对象中放一个类似 ComponentA 的变量名其实是 ComponentA: ComponentA 的缩写，即这个变量名同时是：
+
+用在模板中的自定义元素的名称
+包含了这个组件选项的变量名
+
+**注意：之前我有个疑问，那就是平时项目中没有使用Vue.component()对组件进行注册，只是在引入相关的组件时，调用了
+import checkbox from "./checkbox";
+components: {
+    checkbox,
+},这样类似的组件。这个时候就算注册了组件吗？
+ 现在看来，项目中使用的是局部注册。所以实践和理论相结合是很重要的。
+  **
 ```
 ### 1.深入浅出vue.js
 ```
