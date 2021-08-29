@@ -1297,6 +1297,45 @@ props: {
 
 <!-- 用一个变量进行动态赋值。-->
 <blog-post v-bind:is-published="post.isPublished"></blog-post>
+
+## 传入一个数组
+<!-- 即便数组是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+<!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+<blog-post v-bind:comment-ids="[234, 266, 273]"></blog-post>
+
+<!-- 用一个变量进行动态赋值。-->
+<blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+
+## 传入一个对象
+<!-- 即便对象是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+<!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+<blog-post
+  v-bind:author="{
+    name: 'Veronica',
+    company: 'Veridian Dynamics'
+  }"
+></blog-post>
+
+<!-- 用一个变量进行动态赋值。-->
+<blog-post v-bind:author="post.author"></blog-post>
+
+## 传入一个对象的所有 property
+如果你想要将一个对象的所有 property 都作为 prop 传入，你可以使用不带参数的 v-bind (取代 v-bind:prop-name)。例如，对于一个给定的对象 post：
+post: {
+  id: 1,
+  title: 'My Journey with Vue'
+}
+下面的模板：
+
+<blog-post v-bind="post"></blog-post>
+等价于：
+**注意：是下面方式的简写。**
+
+<blog-post
+  v-bind:id="post.id"
+  v-bind:title="post.title"
+></blog-post>
+
 ```
 
 ### 1.深入浅出vue.js
