@@ -375,8 +375,6 @@ methods:{
    (2).使用watch时根据数据的具体结构，决定是否采用深度监视。   
 
 **注意：个人理解是，主要是用在数据发生改变时，对其他数据变化的影响，比如在这个属性发生变化时，对其他属性进行赋值，调用函数等。watch里面可以监听data中定义好的数据，也可以监听computed定义的函数数据。根据开发场景选择。监听数据变化，然后操作其他属性。**
-
-
 ```
 ### Class 与 Style 绑定
 ```
@@ -1272,7 +1270,6 @@ requireComponent.keys().forEach(fileName => {
 记住全局注册的行为必须在根 Vue 实例 (通过 new Vue) 创建之前发生。这里有一个真实项目情景下的示例。
 ** 注意：全局注册的行为必须在根Vue实例（通过 new Vue）创建之前发生。**
 ```
-
 ### Prop
 ```
 Prop 的大小写 (camelCase vs kebab-case)
@@ -1440,6 +1437,68 @@ Vue.component('my-component', {
 
 **注意：props 会在一个组件实例创建之前进行验证，所以实例的property (如 data、computed 等) 在 default 或 validator 函数中是不可用的。**
 
+```
+### 自定义事件
+```
+# 事件名
+不同于组件和 prop，事件名不存在任何自动化的大小写转换。而是触发的事件名需要完全匹配监听这个事件所用的名称。举个例子，如果触发一个 camelCase 名字的事件：
+
+this.$emit('myEvent')
+则监听这个名字的 kebab-case 版本是不会有任何效果的：
+
+<!-- 没有效果 -->
+<my-component v-on:my-event="doSomething"></my-component>
+不同于组件和 prop，事件名不会被用作一个 JavaScript 变量名或 property 名，所以就没有理由使用 camelCase 或 PascalCase 了。并且 v-on 事件监听器在 DOM 模板中会被自动转换为全小写 (因为 HTML 是大小写不敏感的)，所以 v-on:myEvent 将会变成 v-on:myevent——导致 myEvent 不可能被监听到。
+
+因此，我们推荐你始终使用 kebab-case 的事件名。
+
+# 自定义组件的 v-model
+一个组件上的 v-model 默认会利用名为 value 的 prop 和名为 input 的事件，但是像单选框、复选框等类型的输入控件可能会将 value attribute 用于不同的目的。model 选项可以用来避免这样的冲突：
+**注意：model属性的作用是添加prop属性和event事件。**
+Vue.component('base-checkbox', {
+  model: {
+    prop: 'checked',
+    event: 'change'
+  },
+  props: {
+    checked: Boolean
+  },
+  template: `
+    <input
+      type="checkbox"
+      v-bind:checked="checked"
+      v-on:change="$emit('change', $event.target.checked)"
+    >
+  `
+})
+现在在这个组件上使用 v-model 的时候：
+<base-checkbox v-model="lovingVue"></base-checkbox>
+这里的 lovingVue 的值将会传入这个名为 checked 的 prop。同时当 <base-checkbox> 触发一个 change 事件并附带一个新的值的时候，这个 lovingVue 的 property 将会被更新。
+注意你仍然需要在组件的 props 选项里声明 checked 这个 prop。
+
+# 将原生事件绑定到组件
+你可能有很多次想要在一个组件的根元素上直接监听一个原生事件。这时，你可以使用 v-on 的 .native 修饰符：
+
+<base-input v-on:focus.native="onFocus"></base-input>
+在有的时候这是很有用的，不过在你尝试监听一个类似 <input> 的非常特定的元素时，这并不是个好主意。比如上述 <base-input> 组件可能做了如下重构，所以根元素实际上是一个 <label> 元素：
+
+<label>
+  {{ label }}
+  <input
+    v-bind="$attrs"
+    v-bind:value="value"
+    v-on:input="$emit('input', $event.target.value)"
+  >
+</label>
+这时，父级的 .native 监听器将静默失败。它不会产生任何报错，但是 onFocus 处理函数不会如你预期地被调用。
+
+为了解决这个问题，Vue 提供了一个 $listeners property，它是一个对象，里面包含了作用在这个组件上的所有监听器。例如：
+{
+  focus: function (event) { /* ... */ }
+  input: function (value) { /* ... */ },
+}
+
+有了这个 $listeners property，你就可以配合 v-on="$listeners" 将所有的事件监听器指向这个组件的某个特定的子元素。对于类似 <input> 的你希望它也可以配合 v-model 工作的组件来说，为这些监听器创建一个类似下述 inputListeners 的计算属性通常是非常有用的：
 ```
 
 ### 1.深入浅出vue.js
