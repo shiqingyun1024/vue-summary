@@ -1619,6 +1619,24 @@ this.$emit('update:title', newTitle)
 将 v-bind.sync 用在一个字面量的对象上，例如 v-bind.sync=”{ title: doc.title }”，是无法正常工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。
 
 ```
+### 插槽
+```
+在 2.6.0 中，我们为具名插槽和作用域插槽引入了一个新的统一的语法 (即 v-slot 指令)。它取代了 slot 和 slot-scope 这两个目前已被废弃但未被移除且仍在文档中的 attribute。新语法的由来可查阅这份 RFC。
+
+# 插槽内容
+Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 Web Components 规范草案，将 <slot> 元素作为承载分发内容的出口。
+它允许你像这样合成组件：
+<navigation-link url="/profile">
+  Your Profile
+</navigation-link>
+然后你在 <navigation-link> 的模板中可能会写为：
+<a
+  v-bind:href="url"
+  class="nav-link"
+>
+  <slot></slot>
+</a>
+```
 
 ### 1.深入浅出vue.js
 ```
