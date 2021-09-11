@@ -4170,7 +4170,7 @@ store.commit('increment')
 // 任何由 "increment" 导致的状态变更都应该在此刻完成。
 为了处理异步操作，让我们来看一看 Action。
 ```
-#### Action
+#### 4、Action
 ```
 Action 类似于 mutation，不同在于：
 
@@ -4400,7 +4400,7 @@ actions: {
 
 ```
 
-#### Module
+#### 5、Module
 ```
 由于使用单一状态树，应用的所有状态会集中到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿。
 
