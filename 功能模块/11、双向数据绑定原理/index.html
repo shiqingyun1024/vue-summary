@@ -13,6 +13,7 @@
         {{str}}
         <p>{{str}}</p>
         <h1>{{str}}</h1>
+        <button @click="btn">点击</button>
     </div>
     
     <script type="module">
@@ -25,6 +26,11 @@
             el:'#app',
             data:{
               str:'双向数据绑定的原理'
+            },
+            methods:{
+                btn(){
+                    console.log('123456')
+                }
             }
         })
     </script>
