@@ -3,6 +3,7 @@ export default class Vue{
         this.$el = document.querySelector(options.el);
         this.$data = options.data;
         this.$methods = options.methods;
+        this.proxyData();
         this.compile(this.$el);
     }
     // 劫持data中的属性，并且给大对象赋值
@@ -10,10 +11,10 @@ export default class Vue{
         for(let key in this.$data){
             Object.defineProperty(this,key,{
                 get(){
-                   return this.$data[ke]
+                   return this.$data[key]
                 },
-                set(newVal,oldVal){
-                    // if()
+                set(newVal){
+                    this.$data[key] = newVal
 
                 }
             })
