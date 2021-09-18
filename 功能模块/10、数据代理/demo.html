@@ -33,8 +33,10 @@
                 return person1.job;
             },
             // 设置函数 例如：person2.job = '全栈开发'，会调用setter（同getter）
-            set(newValue){
+            set(newValue,oldValue){
                 console.log('调用set方法');
+                console.log(newValue);
+                console.log(oldValue);
                 person1.job = newValue
             },
             enumerable:true,// 默认为false，是否可枚举，说白了就是是否可以遍历。  记忆口诀：遍e =>变异或者是遍历（e）

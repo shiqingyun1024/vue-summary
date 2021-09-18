@@ -5,12 +5,32 @@ export default class Vue{
         this.$methods = options.methods;
         this.compile(this.$el);
     }
+    // 劫持data中的属性，并且给大对象赋值
+    proxyData(){
+        for(let key in this.$data){
+            Object.defineProperty(this,key,{
+                get(){
+                   return this.$data[ke]
+                },
+                set(newVal,oldVal){
+                    // if()
+
+                }
+            })
+        }
+    }
+    // 编译解析
     compile(node){
         node.childNodes.forEach(element => {
             if(element.nodeType== '1'){  // nodeType等于3是元素节点
                 if(element.hasAttribute('@click')){
                     let key = element.getAttribute('@click')
-                    element.addEventListener('click',this.$methods[key])
+                    // element.addEventListener('click',this.$methods[key])
+                    element.addEventListener('click',(event)=>{
+
+                        this.$methods[key].call(this,event)
+                        // this.eventFn()
+                    })
                 }
                 if(element.childNodes.length>0){
                     this.compile(element);
@@ -26,5 +46,14 @@ export default class Vue{
                 })
             }
         });
+    }
+}
+
+class watcher{
+    constructor(vm,key,){
+
+    }
+    update(){
+
     }
 }
