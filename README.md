@@ -5242,6 +5242,15 @@ Vue.js是采用数据劫持结合发布订阅模式，通过Object.definePropert
   (2)、自身必须有一个update()方法。(3)、待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
 4、MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Oberver来监听自己的model数据变化，通过Complie来解析编译模板指令，最终利用
 Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化->视图更新；视图交互变化（input）->数据model变更的双向绑定效果。
+
+另外一种描述：
+实现一个监听器 Observer：对数据对象进行遍历，包括子属性对象的属性，利用 Object.defineProperty() 对属性都加上 setter 和 getter。这样的话，给这个对象的某个值赋值，就会触发 setter，那么就能监听到了数据变化。
+
+实现一个解析器 Compile：解析 Vue 模板指令，将模板中的变量都替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，调用更新函数进行数据更新。
+
+实现一个订阅者 Watcher：Watcher 订阅者是 Observer 和 Compile 之间通信的桥梁 ，主要的任务是订阅 Observer 中的属性值变化的消息，当收到属性值变化的消息时，触发解析器 Compile 中对应的更新函数。
+
+实现一个订阅器 Dep：订阅器采用 发布-订阅 设计模式，用来收集订阅者 Watcher，对监听器 Observer 和 订阅者 Watcher 进行统一管理。
 ```
 ### 2、MVVM、MVC、MVP的区别
 ```
