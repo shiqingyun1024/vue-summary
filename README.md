@@ -1112,6 +1112,37 @@ Vue.component('alert-box', {
 
 ```
 ## 深入了解组件
+### 父子组件执行顺序
+```
+父组件beforeCreate --> 父组件created --> 父组件beforeMount --> 子组件beforeCreate --> 子组件created --> 子组件beforeMount --> 子组件mounted --> 父组件mounted 
+
+父组件中
+mounted(){
+    console.log('123456');
+}
+
+子组件中
+
+created(){
+        setTimeout(()=>{
+           console.log('子组件执行1');
+       },2000)
+},
+async mounted(){
+       await setTimeout(()=>{
+           this.flag="改变"
+           console.log('子组件执行3')
+       },2000)
+       console.log('子组件执行2');
+}
+
+那么执行的顺序是
+123456
+子组件执行2
+子组件执行1
+子组件执行3
+
+```
 ### 组件注册
 ```
 组件注册分为全局注册和局部注册。

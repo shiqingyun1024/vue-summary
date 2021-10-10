@@ -17,6 +17,7 @@ export default {
     async mounted(){
        await setTimeout(()=>{
            this.flag="改变"
+           console.log('子组件执行3')
        },2000)
        console.log('子组件执行2');
     }
