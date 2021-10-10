@@ -2,6 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <Hello msg="Welcome to Your Vue.js App"/>
+    
   </div>
 </template>
 
@@ -19,6 +20,9 @@ export default {
        console.log(res);
        console.log(res.data); //{"errno":0,"data":{"goods":["牛奶","鸡蛋"]}}
      })
+  },
+  mounted(){
+    console.log('123456');
   }
 }
 </script>
