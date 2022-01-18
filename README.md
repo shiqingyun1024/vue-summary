@@ -122,13 +122,13 @@ https://cn.vuejs.org/images/lifecycle.png
   事件 & 生命周期 
 （刚刚初始化一个空的Vue实例对象，此时，在这个对象上，只有一些默认的生命周期函数和默认的事件，其他的均未创建） 
       |
-1、beforeCreate    创建Vue实例前的钩子函数
+1、beforeCreate    创建Vue实例前的钩子函数   **注意：vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。**
       |
     初始化
   注入 & 校验 
-（初始化data和methods） 
+（初始化data和methods **注意：vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。**） 
       |
-2、created   实例创建完成之后的钩子函数
+2、created   实例创建完成之后的钩子函数  **注意：vue实例的数据对象data有了，$el还没有。**
       |
   是否指定"el"选项 ————否
       |              |
@@ -150,7 +150,7 @@ https://cn.vuejs.org/images/lifecycle.png
 —————————————————
        |
 3、beforeMount  beforeMount开始挂载编译生成的HTML到对应位置时触发的钩子函数。但：此时还未将编译出的HTML渲染到页面上
-       |
+       |        **注意：vue实例的$el和data都初始化了，但还是虚拟的dom节点，具体的data.filter还未替换。**
        |
 创建vm.$el，并用其替换”el“  （将编译好的HTML替换掉el属性所指向的dom对象或替换对应HTML标签里面的内容）
        |
@@ -191,6 +191,43 @@ Vue实例就已经从运行阶段进入销毁阶段，此时，组件中所有da
 9、activated  // keep-alive包裹的组件独有的，激活时调用
 10、deactivated  // keep-alive包裹的组件独有的 路由组件失活时触发。
 11、errorCaptured  // 你可以在此钩子中修改组件的状态。因此在捕获错误时，在模板或渲染函数中有一个条件判断来绕过其它内容就很重要；不然该组件可能会进入一个无限的渲染循环。
+
+
+钩子函数	                       触发的行为	                                                   在此阶段可以做的事情
+beforeCreadted	   vue实例的挂载元素$el和数据对象data都为undefined，还未初始化。	                   加loading事件
+created	           vue实例的数据对象data有了，$el还没有	                                        结束loading、请求数据为mounted渲染做准备
+beforeMount	   vue实例的$el和data都初始化了，但还是虚拟的dom节点，具体的data.filter还未替换。	        ..
+mounted	           vue实例挂载完成，data.filter成功渲染	                                         配合路由钩子使用
+beforeUpdate	   data更新时触发	
+updated	           data更新时触发	                                                             数据更新时，做一些处理（此处也可以用watch进行观测）
+beforeDestroy	   组件销毁时触发	
+destroyed	   组件销毁时触发，vue实例解除了事件监听以及和dom的绑定（无响应了），但DOM节点依旧存在	组件销毁时进行提示
+
+    1、beforeCreate：在实例初始化之后，**数据观测(data observer) ** 和 event/watcher事件配置 之前被调用，注意是 之前，此时data、watcher、methods统统滴没有。
+    这个时候的vue实例还什么都没有，但是$route对象是存在的，可以根据路由信息进行重定向之类的操作。
+
+    2、created：在实例已经创建完成之后被调用。在这一步，实例已完成以下配置：数据观测(data observer) ，属性和方法的运算， watch/event 事件回调。然而，挂载阶段还没开始，$el属性目前不可见。
+    此时 this.$data 可以访问，watcher、events、methods也出现了，若根据后台接口动态改变data和methods的场景下，可以使用。
+
+    3、beforeMount：在挂载开始之前被调用，相关的 render 函数 首次被调用。但是render正在执行中，此时DOM还是无法操作的。我打印了此时的vue实例对象，相比于created生命周期，此时只是多了一个$el的属性，然而其值为undefined。
+    使用场景我上文已经提到了，页面渲染时所需要的数据，应尽量在这之前完成赋值。
+
+    4、mounted：在挂载之后被调用。在这一步 创建vm.$el并替换el，并挂载到实例上。（官方文档中的 “如果root实例挂载了一个文档内元素，当mounted被调用时vm.$el也在文档内” 这句话存疑）
+    此时元素已经渲染完成了，依赖于DOM的代码就放在这里吧~比如监听DOM事件。
+
+    5、beforeUpdate：$vm.data更新之后，虚拟DOM重新渲染 和打补丁之前被调用。
+    你可以在这个钩子中进一步地修改$vm.data，这不会触发附加的重渲染过程。
+
+    6、updated：虚拟DOM重新渲染 和打补丁之后被调用。
+    当这个钩子被调用时，组件DOM的data已经更新，所以你现在可以执行依赖于DOM的操作。但是不要在此时修改data，否则会继续触发beforeUpdate、updated这两个生命周期，进入死循环！
+
+    7、beforeDestroy：实例被销毁之前调用。在这一步，实例仍然完全可用。
+    实例要被销毁了，赶在被销毁之前搞点事情吧哈哈~
+
+    8、destroyed：Vue实例销毁后调用。此时，Vue实例指示的所有东西已经解绑定，所有的事件监听器都已经被移除，所有的子实例也已经被销毁。
+    这时候能做的事情已经不多了，只能加点儿提示toast之类的东西吧。
+
+注：beforeMount、mounted、beforeUpdate、updated、beforeDestroy、destroyed这几个钩子函数，在服务器端渲染期间不被调用。
 
 ```
 ### 模板语法
